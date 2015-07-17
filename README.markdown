@@ -1,7 +1,7 @@
 CWAC-Cam2: Taking Pictures. Made (Somewhat) Sensible. Again.
 ============================================================
 
-Taking picturesusing a third-party app is fairly straightforward,
+Taking pictures using a third-party app is fairly straightforward,
 using `ACTION_IMAGE_CAPTURE`. However, different camera
 apps have slightly different behavior, meaning that you are prone to getting
 inconsistent results.
