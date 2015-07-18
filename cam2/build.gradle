@@ -1,9 +1,5 @@
 apply plugin: 'com.android.library'
 
-repositories {
-    jcenter() // required for testing-support-lib dependencies
-}
-
 dependencies {
     compile 'com.github.clans:fab:1.5.3'
     compile 'de.greenrobot:eventbus:2.4.0'
