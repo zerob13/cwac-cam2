@@ -177,7 +177,9 @@ public class CameraController implements CameraView.StateCallback {
    * @param xact a PictureTransaction describing what should be taken
    */
   public void takePicture(PictureTransaction xact) {
-    engine.takePicture(session, xact);
+    if (session!=null) {
+      engine.takePicture(session, xact);
+    }
   }
 
   private CameraView getPreview(CameraDescriptor camera) {
