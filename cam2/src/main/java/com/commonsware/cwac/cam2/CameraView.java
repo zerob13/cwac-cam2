@@ -16,6 +16,7 @@ package com.commonsware.cwac.cam2;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
@@ -29,7 +30,7 @@ import com.commonsware.cwac.cam2.util.Size;
  * as a View for the user to see and interact with. Also handles
  * maintaining aspect ratios and dealing with full-bleed previews.
  */
-public class CameraView extends TextureView implements TextureView.SurfaceTextureListener {
+public class CameraView extends AutoFitTextureView implements TextureView.SurfaceTextureListener {
   interface StateCallback {
     void onReady(CameraView cv);
     void onDestroyed(CameraView cv);
@@ -92,6 +93,17 @@ public class CameraView extends TextureView implements TextureView.SurfaceTextur
   public void setPreviewSize(Size previewSize) {
     this.previewSize=previewSize;
 
+android.util.Log.e(getClass().getSimpleName(), previewSize.toString());
+
+    int orientation=getResources().getConfiguration().orientation;
+
+    if (orientation==Configuration.ORIENTATION_LANDSCAPE) {
+      setAspectRatio(previewSize.getWidth(), previewSize.getHeight());
+    }
+    else {
+      setAspectRatio(previewSize.getHeight(), previewSize.getWidth());
+    }
+
     enterTheMatrix();
   }
 
@@ -99,6 +111,7 @@ public class CameraView extends TextureView implements TextureView.SurfaceTextur
     stateCallback=cb;
   }
 
+/*
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -137,6 +150,7 @@ public class CameraView extends TextureView implements TextureView.SurfaceTextur
     }
   }
 
+*/
   private void initListener() {
     setSurfaceTextureListener(this);
   }
@@ -192,6 +206,8 @@ public class CameraView extends TextureView implements TextureView.SurfaceTextur
     else if (Surface.ROTATION_180==rotation) {
       matrix.postRotate(180, centerX, centerY);
     }
+
+android.util.Log.e(getClass().getSimpleName(), matrix.toString());
 
     setTransform(matrix);
   }

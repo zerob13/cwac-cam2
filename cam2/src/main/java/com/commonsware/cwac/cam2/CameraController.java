@@ -202,55 +202,35 @@ public class CameraController implements CameraView.StateCallback {
   }
 
   private void open() {
-    Size previewSize=null;
-    CameraDescriptor camera=cameras.get(currentCamera);
-    CameraView cv=getPreview(camera);
+    if (session==null) {
+      Size previewSize=null;
+      CameraDescriptor camera=cameras.get(currentCamera);
+      CameraView cv=getPreview(camera);
+      Size largest=Utils.getLargestPictureSize(camera);
 
-    if (camera!=null && cv.getWidth()>0 && cv.getHeight()>0) {
-      Size largest=null;
-      long currentLargestArea=0;
-      Size smallestBiggerThanPreview=null;
-      long currentSmallestArea=Integer.MAX_VALUE;
-
-      for (Size size : camera.getPreviewSizes()) {
-        long currentArea=size.getWidth()*size.getHeight();
-
-        if (largest==null || size.getWidth()*size.getHeight()>currentLargestArea) {
-          largest=size;
-          currentLargestArea=currentArea;
-        }
-
-        if (size.getWidth()>=cv.getWidth() && size.getHeight()>=cv.getHeight()) {
-          if (smallestBiggerThanPreview==null || currentArea<currentSmallestArea) {
-            smallestBiggerThanPreview=size;
-            currentSmallestArea=currentArea;
-          }
-        }
+      if (camera != null && cv.getWidth() > 0 && cv.getHeight() > 0) {
+        previewSize=Utils.chooseOptimalSize(camera.getPreviewSizes(),
+            cv.getWidth(), cv.getHeight(), largest);
+        cv.setPreviewSize(previewSize);
       }
 
-      previewSize=(smallestBiggerThanPreview == null
-          ? largest
-          : smallestBiggerThanPreview);
+      SurfaceTexture texture=cv.getSurfaceTexture();
 
-      cv.setPreviewSize(previewSize);
-    }
+      if (previewSize != null && texture != null) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+          texture.setDefaultBufferSize(previewSize.getWidth(),
+              previewSize.getHeight());
+        }
 
-    SurfaceTexture texture=cv.getSurfaceTexture();
+        session=engine
+            .buildSession(cv.getContext(), camera)
+            .addPlugin(new SizeAndFormatPlugin(previewSize,
+                largest, ImageFormat.JPEG))
+            .addPlugin(new OrientationPlugin(cv.getContext()))
+            .build();
 
-    if (previewSize!=null && texture!=null) {
-      if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN_MR1) {
-        texture.setDefaultBufferSize(cv.getWidth(), cv.getHeight());
+        engine.open(session, texture);
       }
-
-      session=engine
-          .buildSession(cv.getContext(), camera)
-          .addPlugin(new SizeAndFormatPlugin(previewSize,
-              Utils.getLargestPictureSize(camera),
-              ImageFormat.JPEG))
-          .addPlugin(new OrientationPlugin(cv.getContext()))
-          .build();
-
-      engine.open(session, texture);
     }
   }
 
