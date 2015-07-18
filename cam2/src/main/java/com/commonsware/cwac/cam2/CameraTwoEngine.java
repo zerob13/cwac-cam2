@@ -332,6 +332,15 @@ public class CameraTwoEngine extends CameraEngine {
       catch (CameraAccessException e) {
         getBus().post(new OpenedEvent(e));
       }
+      catch (IllegalStateException e) {
+        // TODO need to track our own "is-closed" state,
+        // so we skip work when not needed because the
+        // activity is going away
+
+        if (isDebug()) {
+          Log.w(getClass().getSimpleName(), "Exception resetting focus", e);
+        }
+      }
     }
 
     @Override
@@ -493,6 +502,15 @@ public class CameraTwoEngine extends CameraEngine {
 
         if (isDebug()) {
           Log.e(getClass().getSimpleName(), "Exception resetting focus", e);
+        }
+      }
+      catch (IllegalStateException e) {
+        // TODO don't send the real PictureTakenEvent until
+        // we have gone through unlockFocus(), as a quick
+        // shutdown of the activity results in this exception
+
+        if (isDebug()) {
+          Log.w(getClass().getSimpleName(), "Exception resetting focus", e);
         }
       }
     }
