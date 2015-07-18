@@ -104,7 +104,7 @@ public class ConfirmationFragment extends Fragment {
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     if (item.getItemId()==android.R.id.home) {
-      getContract().completeRequest(imageContext, true);
+      getContract().completeRequest(imageContext, false);
     }
     else if (item.getItemId()==R.id.cwac_cam2_ok) {
       getContract().completeRequest(imageContext, true);

@@ -187,6 +187,7 @@ public class CameraActivity extends Activity
   public void completeRequest(ImageContext imageContext, boolean isOK) {
     if (!isOK) {
       setResult(RESULT_CANCELED);
+      finish();
     }
     else {
       if (needsThumbnail) {
