@@ -41,6 +41,7 @@ public class CameraFragment extends Fragment {
   private static final String ARG_OUTPUT="output";
   private CameraController ctlr;
   private ViewGroup previewStack;
+  private FloatingActionButton fabPicture;
   private FloatingActionButton fabSwitch;
   private View progress;
 
@@ -99,6 +100,11 @@ public class CameraFragment extends Fragment {
         ab.setDisplayShowHomeEnabled(false);
         ab.setHomeButtonEnabled(false);
       }
+
+      if (fabPicture!=null) {
+        fabPicture.setEnabled(true);
+        fabSwitch.setEnabled(true);
+      }
     }
   }
 
@@ -147,9 +153,9 @@ public class CameraFragment extends Fragment {
     previewStack=(ViewGroup)v.findViewById(R.id.cwac_cam2_preview_stack);
     progress=v.findViewById(R.id.cwac_cam2_progress);
 
-    FloatingActionButton fab=(FloatingActionButton)v.findViewById(R.id.cwac_cam2_picture);
+    fabPicture=(FloatingActionButton)v.findViewById(R.id.cwac_cam2_picture);
 
-    fab.setOnClickListener(new View.OnClickListener() {
+    fabPicture.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         Uri output=getArguments().getParcelable(ARG_OUTPUT);
@@ -160,6 +166,8 @@ public class CameraFragment extends Fragment {
           b.toUri(getActivity(), output);
         }
 
+        fabPicture.setEnabled(false);
+        fabSwitch.setEnabled(false);
         ctlr.takePicture(b.build());
       }
     });
