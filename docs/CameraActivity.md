@@ -70,3 +70,12 @@ For example, the following manifest entry sets the theme:
 Note that `CameraActivity` does not support being exported. Do not add
 an `<intent-filter>` to this activity or otherwise mark it as being
 exported.
+
+`CameraActivity` supports running in a separate process, via
+the `android:process` attribute. This ensures that the heap space
+consumed in all the camera processing will not affect your main
+process' heap space. It does mean that you will consume more system
+RAM while the user is taking a picture, and it does incrementally
+slow down the launching of the `CameraActivity`. You can see this
+use of `android:process` demonstrated in the `demo-playground/`
+sample project.
