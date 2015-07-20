@@ -80,18 +80,24 @@ public class ConfirmationFragment extends Fragment {
     if (!isHidden) {
       ActionBar ab=getActivity().getActionBar();
 
-      ab.setBackgroundDrawable(getActivity()
-          .getResources()
-          .getDrawable(R.drawable.cwac_cam2_action_bar_bg_translucent));
-      ab.setTitle("");
+      if (ab==null) {
+        throw new IllegalStateException("CameraActivity confirmation requires an action bar!");
+      }
+      else {
+        ab.setBackgroundDrawable(getActivity()
+            .getResources()
+            .getDrawable(R.drawable.cwac_cam2_action_bar_bg_translucent));
+        ab.setTitle("");
 
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        ab.setDisplayHomeAsUpEnabled(true);
-        ab.setHomeAsUpIndicator(R.drawable.cwac_cam2_ic_close_white);
-      } else {
-        ab.setIcon(R.drawable.cwac_cam2_ic_close_white);
-        ab.setDisplayShowHomeEnabled(true);
-        ab.setHomeButtonEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+          ab.setDisplayHomeAsUpEnabled(true);
+          ab.setHomeAsUpIndicator(R.drawable.cwac_cam2_ic_close_white);
+        }
+        else {
+          ab.setIcon(R.drawable.cwac_cam2_ic_close_white);
+          ab.setDisplayShowHomeEnabled(true);
+          ab.setHomeButtonEnabled(true);
+        }
       }
     }
   }

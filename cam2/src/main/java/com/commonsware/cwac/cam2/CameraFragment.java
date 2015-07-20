@@ -88,17 +88,19 @@ public class CameraFragment extends Fragment {
     if (!isHidden) {
       ActionBar ab=getActivity().getActionBar();
 
-      ab.setBackgroundDrawable(getActivity()
-          .getResources()
-          .getDrawable(R.drawable.cwac_cam2_action_bar_bg_transparent));
-      ab.setTitle("");
+      if (ab!=null) {
+        ab.setBackgroundDrawable(getActivity()
+            .getResources()
+            .getDrawable(R.drawable.cwac_cam2_action_bar_bg_transparent));
+        ab.setTitle("");
 
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        ab.setDisplayHomeAsUpEnabled(false);
-      }
-      else {
-        ab.setDisplayShowHomeEnabled(false);
-        ab.setHomeButtonEnabled(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+          ab.setDisplayHomeAsUpEnabled(false);
+        }
+        else {
+          ab.setDisplayShowHomeEnabled(false);
+          ab.setHomeButtonEnabled(false);
+        }
       }
 
       if (fabPicture!=null) {
