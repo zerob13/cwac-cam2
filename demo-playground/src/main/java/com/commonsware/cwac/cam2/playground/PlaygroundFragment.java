@@ -88,6 +88,10 @@ public class PlaygroundFragment extends PreferenceFragment {
       b.to(new File(getActivity().getExternalFilesDir(null), "test.jpg"));
     }
 
+    if (prefs.getBoolean("updateMediaStore", false)) {
+      b.updateMediaStore();
+    }
+
     ((Contract)getActivity()).takePicture(b.build());
   }
 }

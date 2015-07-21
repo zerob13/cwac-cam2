@@ -39,17 +39,20 @@ import de.greenrobot.event.EventBus;
  */
 public class CameraFragment extends Fragment {
   private static final String ARG_OUTPUT="output";
+  private static final String ARG_UPDATE_MEDIA_STORE="updateMediaStore";
   private CameraController ctlr;
   private ViewGroup previewStack;
   private FloatingActionButton fabPicture;
   private FloatingActionButton fabSwitch;
   private View progress;
 
-  public static CameraFragment newInstance(Uri output) {
+  public static CameraFragment newInstance(Uri output, boolean
+                                           updateMediaStore) {
     CameraFragment f=new CameraFragment();
     Bundle args=new Bundle();
 
     args.putParcelable(ARG_OUTPUT, output);
+    args.putBoolean(ARG_UPDATE_MEDIA_STORE, updateMediaStore);
     f.setArguments(args);
 
     return(f);
@@ -165,7 +168,8 @@ public class CameraFragment extends Fragment {
         PictureTransaction.Builder b=new PictureTransaction.Builder();
 
         if (output!=null) {
-          b.toUri(getActivity(), output);
+          b.toUri(getActivity(), output,
+              getArguments().getBoolean(ARG_UPDATE_MEDIA_STORE, false));
         }
 
         fabPicture.setEnabled(false);

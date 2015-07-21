@@ -126,6 +126,7 @@ public class MainActivity extends Activity {
             .to(new File(testRoot, "portrait-front.jpg"))
             .skipConfirm()
             .debug()
+            .updateMediaStore()
             .build();
 
         startActivityForResult(i, REQUEST_PORTRAIT_FFC);
@@ -141,6 +142,7 @@ public class MainActivity extends Activity {
             .facing(CameraSelectionCriteria.Facing.FRONT)
             .to(new File(testRoot, "landscape-front.jpg"))
             .skipConfirm()
+            .updateMediaStore()
             .debug()
             .build();
 
@@ -186,6 +188,7 @@ public class MainActivity extends Activity {
         .facing(CameraSelectionCriteria.Facing.BACK)
         .to(new File(testRoot, "portrait-rear.jpg"))
         .skipConfirm()
+        .updateMediaStore()
         .debug()
         .build();
 
@@ -260,6 +263,7 @@ public class MainActivity extends Activity {
         .facing(CameraSelectionCriteria.Facing.BACK)
         .to(new File(testRoot, "landscape-rear.jpg"))
         .skipConfirm()
+        .updateMediaStore()
         .debug()
         .build();
 

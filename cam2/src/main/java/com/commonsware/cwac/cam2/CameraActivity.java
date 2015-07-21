@@ -57,6 +57,14 @@ public class CameraActivity extends Activity
    */
   public static final String EXTRA_CONFIRM="cwac_cam2_confirm";
 
+  /**
+   * Extra name for indicating if MediaStore should be updated
+   * to reflect a newly-taken picture. Only relevant if
+   * a file:// Uri is used. Default to false.
+   */
+  public static final String EXTRA_UPDATE_MEDIA_STORE=
+      "cwac_cam2_update_media_store";
+
   private static final String TAG_CAMERA=CameraFragment.class.getCanonicalName();
   private static final String TAG_CONFIRM=ConfirmationFragment.class.getCanonicalName();
   private CameraFragment cameraFrag;
@@ -85,7 +93,8 @@ public class CameraActivity extends Activity
     needsThumbnail=(output==null);
 
     if (cameraFrag==null) {
-      cameraFrag=CameraFragment.newInstance(output);
+      cameraFrag=CameraFragment.newInstance(output,
+          getIntent().getBooleanExtra(EXTRA_UPDATE_MEDIA_STORE, false));
 
       CameraController ctrl=new CameraController();
 
@@ -331,6 +340,22 @@ public class CameraActivity extends Activity
      */
     public IntentBuilder to(Uri output) {
       result.putExtra(MediaStore.EXTRA_OUTPUT, output);
+
+      return(this);
+    }
+
+    /**
+     * Indicates that the picture that is taken should be
+     * passed over to MediaStore for indexing. By default,
+     * this does not happen automatically and is the responsibility
+     * of your app, should the image be reachable by MediaStore
+     * in the first place. This setting is only relevant for file://
+     * Uri values.
+     *
+     * @return the builder, for further configuration
+     */
+    public IntentBuilder updateMediaStore() {
+      result.putExtra(EXTRA_UPDATE_MEDIA_STORE, true);
 
       return(this);
     }

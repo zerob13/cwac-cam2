@@ -9,6 +9,10 @@
     android:title="@string/title_file"
     android:summary="@string/summary_file"/>
   <SwitchPreference
+    android:key="updateMediaStore"
+    android:dependency="file"
+    android:title="@string/title_update_media_store"/>
+  <SwitchPreference
     android:key="confirm"
     android:title="@string/title_confirm"/>
   <SwitchPreference

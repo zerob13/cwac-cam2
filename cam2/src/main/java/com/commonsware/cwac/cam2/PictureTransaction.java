@@ -91,69 +91,32 @@ public class PictureTransaction {
 
     /**
      * Indicates that the picture should be written to the
-     * designated filesystem path. Use the two-parameter
-     * version for pictures to be written to external or
-     * removable storage, where you want the picture to
-     * be indexed by the MediaStore.
+     * designated Uri.
      *
-     * @param ctxt any Context will do
+     * @param ctxt   any Context will do
      * @param output Uri to which you have write
-     *             access, where the photo should be taken
+     *               access, where the photo should be taken
+     * @param updateMediaStore true if MediaStore should be updated,
+     *                         false otherwise
      * @return the Builder, for more API calls
      */
-    public Builder toUri(Context ctxt, Uri output) {
+    public Builder toUri(Context ctxt, Uri output,
+                         boolean updateMediaStore) {
       JPEGWriter jpeg=(JPEGWriter)result.findProcessorByTag(JPEGWriter.class.getCanonicalName());
 
-      if (jpeg==null) {
+      if (jpeg == null) {
         jpeg=new JPEGWriter(ctxt);
         append(jpeg);
       }
 
-      result.getProperties().putParcelable(JPEGWriter.PROP_OUTPUT, output);
-      result.getProperties().putBoolean(JPEGWriter.PROP_UPDATE_MEDIA_STORE, false);
+      result.getProperties().putParcelable(JPEGWriter.PROP_OUTPUT,
+          output);
+      result
+          .getProperties()
+          .putBoolean(JPEGWriter.PROP_UPDATE_MEDIA_STORE,
+              updateMediaStore);
 
-      return(this);
-    }
-
-    /**
-     * Indicates that the picture should be written to the
-     * designated filesystem path. Use the two-parameter
-     * version for pictures to be written to external or
-     * removable storage, where you want the picture to
-     * be indexed by the MediaStore.
-     *
-     * @param path filesystem path, to which you have write
-     *             access, where the photo should be taken
-     * @return the Builder, for more API calls
-     */
-    public Builder toFile(String path) {
-      return(toFile(path, false));
-    }
-
-    /**
-     * Indicates that the picture should be written to the
-     * designated filesystem path. This should be a full path
-     * including filename.
-     *
-     * @param path filesystem path, to which you have write
-     *             access, where the photo should be taken
-     * @param updateMediaStore true if MediaStore should be
-     *                         notified about the file, false
-     *                         otherwise
-     * @return the Builder, for more API calls
-     */
-    public Builder toFile(String path, boolean updateMediaStore) {
-      JPEGWriter jpeg=(JPEGWriter)result.findProcessorByTag(JPEGWriter.class.getCanonicalName());
-
-      if (jpeg==null) {
-        jpeg=new JPEGWriter(null);
-        append(jpeg);
-      }
-
-      result.getProperties().putParcelable(JPEGWriter.PROP_OUTPUT, Uri.fromFile(new File(path)));
-      result.getProperties().putBoolean(JPEGWriter.PROP_UPDATE_MEDIA_STORE, updateMediaStore);
-
-      return(this);
+      return (this);
     }
   }
 }
