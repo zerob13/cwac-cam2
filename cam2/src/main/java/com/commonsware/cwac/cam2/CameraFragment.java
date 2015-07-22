@@ -192,6 +192,9 @@ public class CameraFragment extends Fragment {
 
     onHiddenChanged(false); // hack, since this does not get
                             // called on initial display
+    
+    fabPicture.setEnabled(false);
+    fabSwitch.setEnabled(false);
 
     if (ctlr!=null && ctlr.getNumberOfCameras()>0) {
       prepController();
@@ -227,6 +230,7 @@ public class CameraFragment extends Fragment {
   public void onEventMainThread(CameraEngine.OpenedEvent event) {
     progress.setVisibility(View.GONE);
     fabSwitch.setEnabled(true);
+    fabPicture.setEnabled(true);
   }
 
   private void prepController() {
