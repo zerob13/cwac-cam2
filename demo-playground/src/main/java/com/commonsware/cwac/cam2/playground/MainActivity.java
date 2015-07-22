@@ -51,6 +51,14 @@ public class MainActivity extends Activity
           .hide(result)
           .commit();
     }
+
+    if (!playground.isVisible() && !result.isVisible()) {
+      getFragmentManager()
+          .beginTransaction()
+          .hide(result)
+          .show(playground)
+          .commit();
+    }
   }
 
   public void takePicture(Intent i) {
@@ -59,11 +67,11 @@ public class MainActivity extends Activity
 
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (requestCode==REQUEST_CAMERA)
-      if (resultCode==Activity.RESULT_OK) {
+    if (requestCode==REQUEST_CAMERA) {
+      if (resultCode == Activity.RESULT_OK) {
         Bitmap bitmap=data.getParcelableExtra("data");
 
-        if (bitmap==null) {
+        if (bitmap == null) {
           result.setImage(data.getData());
         }
         else {
@@ -77,6 +85,7 @@ public class MainActivity extends Activity
             .addToBackStack(null)
             .commit();
       }
+    }
 
     super.onActivityResult(requestCode, resultCode, data);
   }
