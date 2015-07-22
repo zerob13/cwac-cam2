@@ -93,8 +93,6 @@ public class CameraView extends AutoFitTextureView implements TextureView.Surfac
   public void setPreviewSize(Size previewSize) {
     this.previewSize=previewSize;
 
-android.util.Log.e(getClass().getSimpleName(), previewSize.toString());
-
     int orientation=getResources().getConfiguration().orientation;
 
     if (orientation==Configuration.ORIENTATION_LANDSCAPE) {
@@ -206,8 +204,6 @@ android.util.Log.e(getClass().getSimpleName(), previewSize.toString());
     else if (Surface.ROTATION_180==rotation) {
       matrix.postRotate(180, centerX, centerY);
     }
-
-android.util.Log.e(getClass().getSimpleName(), matrix.toString());
 
     setTransform(matrix);
   }
