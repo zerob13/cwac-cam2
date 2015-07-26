@@ -18,5 +18,8 @@
   <SwitchPreference
     android:key="debug"
     android:title="@string/title_debug"/>
+  <SwitchPreference
+    android:key="forceClassic"
+    android:title="@string/title_force_classic"/>
 
 </PreferenceScreen>

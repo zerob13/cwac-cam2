@@ -15,7 +15,6 @@
 package com.commonsware.cwac.cam2;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +25,7 @@ import android.provider.MediaStore;
 import android.view.Window;
 import com.commonsware.cwac.cam2.util.Utils;
 import java.io.File;
+import java.util.ArrayList;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -64,6 +64,13 @@ public class CameraActivity extends Activity
    */
   public static final String EXTRA_UPDATE_MEDIA_STORE=
       "cwac_cam2_update_media_store";
+
+  /**
+   * If set to true, forces the use of the ClassicCameraEngine
+   * on Android 5.0+ devices. Has no net effect on Android 4.x
+   * devices. Defaults to false.
+   */
+  public static final String EXTRA_FORCE_CLASSIC="cwac_cam2_force_classic";
 
   private static final String TAG_CAMERA=CameraFragment.class.getCanonicalName();
   private static final String TAG_CONFIRM=ConfirmationFragment.class.getCanonicalName();
@@ -109,8 +116,9 @@ public class CameraActivity extends Activity
 
       CameraSelectionCriteria criteria=
           new CameraSelectionCriteria.Builder().facing(facing).build();
+      boolean forceClassic=getIntent().getBooleanExtra(EXTRA_FORCE_CLASSIC, false);
 
-      ctrl.setEngine(CameraEngine.buildInstance(this), criteria);
+      ctrl.setEngine(CameraEngine.buildInstance(this, forceClassic), criteria);
       ctrl.getEngine().setDebug(getIntent().getBooleanExtra(EXTRA_DEBUG_ENABLED, false));
       getFragmentManager()
           .beginTransaction()
@@ -356,6 +364,17 @@ public class CameraActivity extends Activity
      */
     public IntentBuilder updateMediaStore() {
       result.putExtra(EXTRA_UPDATE_MEDIA_STORE, true);
+
+      return(this);
+    }
+
+    /**
+     * Forces the use of ClassicCameraEngine on Android 5.0+ devices.
+     *
+     * @return the builder, for further configuration
+     */
+    public IntentBuilder forceClassic() {
+      result.putExtra(EXTRA_FORCE_CLASSIC, true);
 
       return(this);
     }

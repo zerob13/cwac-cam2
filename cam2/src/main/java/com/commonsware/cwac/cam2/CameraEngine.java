@@ -205,11 +205,14 @@ abstract public class CameraEngine {
    * API level.
    *
    * @param ctxt any Context will do
+   * @param forceClassic if true, always use ClassicCameraEngine
    * @return a new CameraEngine instance
    */
-  synchronized public static CameraEngine buildInstance(Context ctxt) {
+  synchronized public static CameraEngine buildInstance(Context ctxt,
+                                                        boolean forceClassic) {
     if (singleton==null) {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      if (!forceClassic &&
+          Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
         singleton=new CameraTwoEngine(ctxt);
       }
       else {

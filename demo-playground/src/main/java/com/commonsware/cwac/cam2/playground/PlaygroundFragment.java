@@ -92,6 +92,10 @@ public class PlaygroundFragment extends PreferenceFragment {
       b.updateMediaStore();
     }
 
+    if (prefs.getBoolean("forceClassic", false)) {
+      b.forceClassic();
+    }
+
     ((Contract)getActivity()).takePicture(b.build());
   }
 }

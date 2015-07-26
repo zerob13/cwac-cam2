@@ -9,5 +9,6 @@
 	<string name="title_debug">Enable debug mode</string>
 	<string name="take_picture">Take picture</string>
 	<string name="title_update_media_store">Update MediaStore</string>
+	<string name="title_force_classic">Force classic API</string>
 
 </resources>
