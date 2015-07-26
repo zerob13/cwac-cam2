@@ -24,8 +24,10 @@ and what their behavior is:
 |:----------------------:|:-------------------------:|:-----------------------------------------:|---------|
 | `debug()`              | `EXTRA_DEBUG_ENABLED`     | `boolean`                                 | Indicate if extra debugging information should be dumped to LogCat (default is `false`) |
 | `facing()`             | `EXTRA_FACING`            | `CameraSelectionCriteria.Facing`          | Indicate the preferred camera to start with (`BACK` or `FRONT`, default is `BACK`) |
+| `forceClassic()`       | `EXTRA_FORCE_CLASSIC`     | `boolean`                                 | Indicate if the `Camera` API should be used on Android 5.0+ devices instead of `camera2` (default is `false`) |
 | `skipConfirm()`        | `EXTRA_CONFIRM`           | `boolean`                                 | Indicate if the user should be presented with a preview of the image and needs to accept it before proceeding (default is to show the confirmirmation screen) |
 | `to()`                 | `MediaStore.EXTRA_OUTPUT` | `Uri` (though `to()` also accepts `File`) | Destination for picture to be written, where `null` means to return a thumbnail via the `data` extra (default is `null`) |
+| `updateMediaStore()`   | `EXTRA_UPDATE_MEDIA_STORE`| `boolean`                                 | Indicate if `MediaStore` should be notified about newly-captured photo (default is `false`)|
 
 ## Example Use of `IntentBuilder`
 
@@ -35,6 +37,7 @@ and what their behavior is:
       .to(new File(testRoot, "portrait-front.jpg"))
       .skipConfirm()
       .debug()
+      .updateMediaStore()
       .build();
 
   startActivityForResult(i, REQUEST_PORTRAIT_FFC);
@@ -70,6 +73,10 @@ For example, the following manifest entry sets the theme:
 Note that `CameraActivity` does not support being exported. Do not add
 an `<intent-filter>` to this activity or otherwise mark it as being
 exported.
+
+Also note that `CameraActivity` needs a theme with the native action
+bar, unless you use `skipConfirm()`, in which case `CameraActivity`
+should be able to work without an action bar.
 
 `CameraActivity` supports running in a separate process, via
 the `android:process` attribute. This ensures that the heap space

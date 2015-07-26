@@ -78,7 +78,7 @@ and should be added to your project automatically.
 
 Version
 -------
-This is version v0.1.0 of this library, which means it is brand new.
+This is version v0.1.1 of this library, which means it is brand new.
 
 Demo
 ----
@@ -117,6 +117,7 @@ Do not ask for help via social media.
 
 Release Notes
 -------------
+- v0.1.1: added `forceClassic()` and `updateMediaStore()`, fixed numerous issues
 - v0.1.0: initial release
 
 Who Made This?
