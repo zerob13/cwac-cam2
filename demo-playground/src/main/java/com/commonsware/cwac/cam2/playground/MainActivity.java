@@ -23,6 +23,7 @@ import android.os.Bundle;
 public class MainActivity extends Activity
     implements PlaygroundFragment.Contract {
   private static final int REQUEST_CAMERA=1337;
+  private static final int REQUEST_VIDEO=REQUEST_CAMERA+1;
   private static final String TAG_PLAYGROUND=PlaygroundFragment.class.getCanonicalName();
   private static final String TAG_RESULT=ResultFragment.class.getCanonicalName();
   private PlaygroundFragment playground=null;
@@ -61,8 +62,14 @@ public class MainActivity extends Activity
     }
   }
 
+  @Override
   public void takePicture(Intent i) {
     startActivityForResult(i, REQUEST_CAMERA);
+  }
+
+  @Override
+  public void takeVideo(Intent i) {
+    startActivityForResult(i, REQUEST_VIDEO);
   }
 
   @Override
@@ -86,7 +93,10 @@ public class MainActivity extends Activity
             .commit();
       }
     }
-
-    super.onActivityResult(requestCode, resultCode, data);
+    else if (requestCode==REQUEST_VIDEO) {
+      if (resultCode == Activity.RESULT_OK) {
+        // TODO
+      }
+    }
   }
 }

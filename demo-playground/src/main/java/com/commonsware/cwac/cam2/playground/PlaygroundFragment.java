@@ -22,14 +22,16 @@ import android.preference.PreferenceFragment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import com.commonsware.cwac.cam2.AbstractCameraActivity;
 import com.commonsware.cwac.cam2.CameraActivity;
 import com.commonsware.cwac.cam2.CameraSelectionCriteria;
+import com.commonsware.cwac.cam2.VideoRecorderActivity;
 import java.io.File;
 
 public class PlaygroundFragment extends PreferenceFragment {
-
   interface Contract {
     void takePicture(Intent i);
+    void takeVideo(Intent i);
   }
 
   @Override
@@ -67,17 +69,21 @@ public class PlaygroundFragment extends PreferenceFragment {
 
   private void takePicture() {
     SharedPreferences prefs=getPreferenceManager().getSharedPreferences();
-    CameraActivity.IntentBuilder b=new CameraActivity.IntentBuilder(getActivity());
+    AbstractCameraActivity.IntentBuilder b;
+    boolean isVideo=prefs.getBoolean("video", false);
+
+    if (isVideo) {
+      b=buildVideoIntent(prefs);
+    }
+    else {
+      b=buildPictureIntent(prefs);
+    }
 
     if (prefs.getBoolean("ffc", false)) {
       b.facing(CameraSelectionCriteria.Facing.FRONT);
     }
     else {
       b.facing(CameraSelectionCriteria.Facing.BACK);
-    }
-
-    if (!prefs.getBoolean("confirm", false)) {
-      b.skipConfirm();
     }
 
     if (prefs.getBoolean("debug", false)) {
@@ -96,6 +102,27 @@ public class PlaygroundFragment extends PreferenceFragment {
       b.forceClassic();
     }
 
-    ((Contract)getActivity()).takePicture(b.build());
+    if (isVideo) {
+      ((Contract)getActivity()).takeVideo(b.build());
+    }
+    else {
+      ((Contract)getActivity()).takePicture(b.build());
+    }
+  }
+
+  private AbstractCameraActivity.IntentBuilder buildPictureIntent(SharedPreferences prefs) {
+    CameraActivity.IntentBuilder b=new CameraActivity.IntentBuilder(getActivity());
+
+    if (!prefs.getBoolean("confirm", false)) {
+      b.skipConfirm();
+    }
+
+    return(b);
+  }
+
+  private AbstractCameraActivity.IntentBuilder buildVideoIntent(SharedPreferences prefs) {
+    VideoRecorderActivity.IntentBuilder b=new VideoRecorderActivity.IntentBuilder(getActivity());
+
+    return(b);
   }
 }

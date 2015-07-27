@@ -15,11 +15,8 @@
 package com.commonsware.cwac.cam2.demo;
 
 import android.app.Activity;
-import android.app.usage.UsageEvents;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;

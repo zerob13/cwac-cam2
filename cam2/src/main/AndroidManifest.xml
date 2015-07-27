@@ -19,6 +19,7 @@
 
 	<application>
     <activity android:name="CameraActivity" />
+    <activity android:name="VideoRecorderActivity" />
   </application>
 
 </manifest>

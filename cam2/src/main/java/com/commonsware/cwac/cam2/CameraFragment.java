@@ -40,19 +40,23 @@ import de.greenrobot.event.EventBus;
 public class CameraFragment extends Fragment {
   private static final String ARG_OUTPUT="output";
   private static final String ARG_UPDATE_MEDIA_STORE="updateMediaStore";
+  private static final String ARG_IS_VIDEO="isVideo";
   private CameraController ctlr;
   private ViewGroup previewStack;
   private FloatingActionButton fabPicture;
   private FloatingActionButton fabSwitch;
   private View progress;
+  private boolean isVideoRecording=false;
 
-  public static CameraFragment newInstance(Uri output, boolean
-                                           updateMediaStore) {
+  public static CameraFragment newInstance(Uri output,
+                                           boolean updateMediaStore,
+                                           boolean isVideo) {
     CameraFragment f=new CameraFragment();
     Bundle args=new Bundle();
 
     args.putParcelable(ARG_OUTPUT, output);
     args.putBoolean(ARG_UPDATE_MEDIA_STORE, updateMediaStore);
+    args.putBoolean(ARG_IS_VIDEO, isVideo);
     f.setArguments(args);
 
     return(f);
@@ -160,21 +164,19 @@ public class CameraFragment extends Fragment {
 
     fabPicture=(FloatingActionButton)v.findViewById(R.id.cwac_cam2_picture);
 
+    if (isVideo()) {
+      fabPicture.setImageResource(R.drawable.cwac_cam2_ic_videocam);
+    }
+
     fabPicture.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Uri output=getArguments().getParcelable(ARG_OUTPUT);
-
-        PictureTransaction.Builder b=new PictureTransaction.Builder();
-
-        if (output!=null) {
-          b.toUri(getActivity(), output,
-              getArguments().getBoolean(ARG_UPDATE_MEDIA_STORE, false));
+        if (isVideo()) {
+          recordVideo();
         }
-
-        fabPicture.setEnabled(false);
-        fabSwitch.setEnabled(false);
-        ctlr.takePicture(b.build());
+        else {
+          takePicture();
+        }
       }
     });
 
@@ -231,6 +233,40 @@ public class CameraFragment extends Fragment {
     progress.setVisibility(View.GONE);
     fabSwitch.setEnabled(true);
     fabPicture.setEnabled(true);
+  }
+
+  private void takePicture() {
+    Uri output=getArguments().getParcelable(ARG_OUTPUT);
+
+    PictureTransaction.Builder b=new PictureTransaction.Builder();
+
+    if (output!=null) {
+      b.toUri(getActivity(), output,
+          getArguments().getBoolean(ARG_UPDATE_MEDIA_STORE, false));
+    }
+
+    fabPicture.setEnabled(false);
+    fabSwitch.setEnabled(false);
+    ctlr.takePicture(b.build());
+  }
+
+  private void recordVideo() {
+    if (isVideoRecording) {
+      isVideoRecording=false;
+      fabPicture.setImageResource(R.drawable.cwac_cam2_ic_videocam);
+      fabPicture.setColorNormalResId(R.color.cwac_cam2_picture_fab);
+      fabPicture.setColorPressedResId(R.color.cwac_cam2_picture_fab_pressed);
+    }
+    else {
+      isVideoRecording=true;
+      fabPicture.setImageResource(R.drawable.cwac_cam2_ic_stop);
+      fabPicture.setColorNormalResId(R.color.cwac_cam2_recording_fab);
+      fabPicture.setColorPressedResId(R.color.cwac_cam2_recording_fab_pressed);
+    }
+  }
+
+  private boolean isVideo() {
+    return(getArguments().getBoolean(ARG_IS_VIDEO, false));
   }
 
   private void prepController() {

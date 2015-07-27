@@ -2,6 +2,9 @@
 <PreferenceScreen
   xmlns:android="http://schemas.android.com/apk/res/android">
   <SwitchPreference
+    android:key="video"
+    android:title="@string/title_video"/>
+  <SwitchPreference
     android:key="ffc"
     android:title="@string/title_ffc"/>
   <SwitchPreference

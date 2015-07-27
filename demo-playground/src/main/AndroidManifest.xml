@@ -25,6 +25,10 @@
       android:name="com.commonsware.cwac.cam2.CameraActivity"
       android:theme="@style/AppTheme"
       android:process=":cwac_cam2"/>
+    <activity
+      android:name="com.commonsware.cwac.cam2.VideoRecorderActivity"
+      android:theme="@style/AppTheme"
+      android:process=":cwac_cam2"/>
   </application>
 
 </manifest>
