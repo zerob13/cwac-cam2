@@ -14,6 +14,7 @@
 
 package com.commonsware.cwac.cam2;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
@@ -37,6 +38,12 @@ abstract public class AbstractCameraActivity extends Activity {
    * false otherwise
    */
   abstract boolean needsOverlay();
+
+  /**
+   * @return false if we should hide the action bar outright
+   * (ignored if needsOverlay() returns true)
+   */
+  abstract boolean needsActionBar();
 
   /**
    * @return true if we are recording a video, false if we are
@@ -85,6 +92,13 @@ abstract public class AbstractCameraActivity extends Activity {
 
     if (needsOverlay()) {
       getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+    }
+    else if (!needsActionBar()) {
+      ActionBar ab=getActionBar();
+
+      if (ab!=null) {
+        ab.hide();
+      }
     }
 
     cameraFrag=(CameraFragment)getFragmentManager().findFragmentByTag(TAG_CAMERA);

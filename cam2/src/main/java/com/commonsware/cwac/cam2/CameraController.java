@@ -23,6 +23,7 @@ import com.commonsware.cwac.cam2.plugin.OrientationPlugin;
 import com.commonsware.cwac.cam2.plugin.SizeAndFormatPlugin;
 import com.commonsware.cwac.cam2.util.Size;
 import com.commonsware.cwac.cam2.util.Utils;
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Queue;
@@ -41,7 +42,7 @@ public class CameraController implements CameraView.StateCallback {
       new HashMap<CameraDescriptor, CameraView>();
   private Queue<CameraView> availablePreviews=null;
   private boolean switchPending=false;
-  private boolean isAttached=false;
+  private boolean isVideoRecording=false;
 
   /**
    * @return the engine being used by this fragment to access
@@ -179,6 +180,24 @@ public class CameraController implements CameraView.StateCallback {
   public void takePicture(PictureTransaction xact) {
     if (session!=null) {
       engine.takePicture(session, xact);
+    }
+  }
+
+  public void recordVideo(VideoTransaction xact) throws Exception {
+    if (session!=null) {
+      engine.recordVideo(session, xact);
+      isVideoRecording=true;
+    }
+  }
+
+  public void stopVideoRecording() throws Exception {
+    if (session!=null && isVideoRecording) {
+      try {
+        engine.stopVideoRecording(session);
+      }
+      finally {
+        isVideoRecording=false;
+      }
     }
   }
 

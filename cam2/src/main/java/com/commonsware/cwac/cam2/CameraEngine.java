@@ -18,6 +18,7 @@ import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.os.Build;
 import android.util.Log;
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -144,6 +145,28 @@ abstract public class CameraEngine {
   }
 
   /**
+   * Event raised when picture is taken, as a result of a
+   * takePicture() call. May include an exception if there was
+   * an exception accessing the camera.
+   */
+  public static class VideoTakenEvent extends CrashableEvent {
+    private VideoTransaction xact;
+
+    public VideoTakenEvent(VideoTransaction xact) {
+      super();
+      this.xact=xact;
+    }
+
+    public VideoTakenEvent(Exception exception) {
+      super(exception);
+    }
+
+    public VideoTransaction getVideoTransaction() {
+      return(xact);
+    }
+  }
+
+  /**
    * Create a CameraSession.Builder to build a CameraSession
    * for a given CameraDescriptor. On the Builder is where you
    * indicate your desired preview size, picture size, and
@@ -199,6 +222,11 @@ abstract public class CameraEngine {
    */
   abstract public void takePicture(CameraSession session,
                                    PictureTransaction xact);
+
+  abstract public void recordVideo(CameraSession session,
+      VideoTransaction xact) throws Exception;
+
+  abstract public void stopVideoRecording(CameraSession session) throws Exception;
 
   /**
    * Builds a CameraEngine instance based on the device's

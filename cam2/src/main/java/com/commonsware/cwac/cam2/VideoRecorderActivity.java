@@ -15,6 +15,8 @@
 package com.commonsware.cwac.cam2;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 
 /**
  * Activity for recording video. Analogue of CameraActivity.
@@ -24,12 +26,35 @@ import android.content.Context;
 public class VideoRecorderActivity extends AbstractCameraActivity {
   @Override
   boolean needsOverlay() {
-    return(true);
+    return(false);
+  }
+
+  @Override
+  boolean needsActionBar() {
+    return(false);
   }
 
   @Override
   boolean isVideo() {
     return(true);
+  }
+
+  @SuppressWarnings("unused")
+  public void onEventMainThread(CameraEngine.VideoTakenEvent event) {
+    if (event.getVideoTransaction()==null) {
+      setResult(RESULT_CANCELED);
+      finish();
+      // TODO: something with the exception
+    }
+    else {
+      findViewById(android.R.id.content).post(new Runnable() {
+        @Override
+        public void run() {
+         setResult(RESULT_OK, new Intent().setData(getOutputUri()));
+         finish();
+        }
+      });
+    }
   }
 
   /**
@@ -47,6 +72,15 @@ public class VideoRecorderActivity extends AbstractCameraActivity {
      */
     public IntentBuilder(Context ctxt) {
       super(ctxt, VideoRecorderActivity.class);
+    }
+
+    @Override
+    public AbstractCameraActivity.IntentBuilder to(Uri output) {
+      if (!"file".equals(output.getScheme())) {
+        throw new IllegalArgumentException("must be a file:/// Uri");
+      }
+
+      return(super.to(output));
     }
   }
 }

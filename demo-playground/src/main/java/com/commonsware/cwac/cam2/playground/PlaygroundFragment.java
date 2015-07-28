@@ -74,6 +74,7 @@ public class PlaygroundFragment extends PreferenceFragment {
 
     if (isVideo) {
       b=buildVideoIntent(prefs);
+      b.to(new File(getActivity().getExternalFilesDir(null), "test.mp4"));
     }
     else {
       b=buildPictureIntent(prefs);
@@ -90,7 +91,7 @@ public class PlaygroundFragment extends PreferenceFragment {
       b.debug();
     }
 
-    if (prefs.getBoolean("file", false)) {
+    if (!isVideo && prefs.getBoolean("file", false)) {
       b.to(new File(getActivity().getExternalFilesDir(null), "test.jpg"));
     }
 

@@ -38,6 +38,7 @@ import android.os.HandlerThread;
 import android.util.Log;
 import android.view.Surface;
 import com.commonsware.cwac.cam2.util.Size;
+import java.io.File;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -247,6 +248,16 @@ public class CameraTwoEngine extends CameraEngine {
         }
       }
     });
+  }
+
+  @Override
+  public void recordVideo(CameraSession session, VideoTransaction xact) {
+    // TODO
+  }
+
+  @Override
+  public void stopVideoRecording(CameraSession session) {
+    // TODO
   }
 
   private class InitPreviewTransaction extends CameraDevice.StateCallback {

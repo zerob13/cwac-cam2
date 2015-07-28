@@ -137,6 +137,11 @@ public class CameraActivity extends AbstractCameraActivity
   }
 
   @Override
+  boolean needsActionBar() {
+    return(true);
+  }
+
+  @Override
   boolean isVideo() {
     return(false);
   }

@@ -23,6 +23,7 @@ import android.app.Fragment;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import java.io.File;
 import java.util.LinkedList;
 import de.greenrobot.event.EventBus;
 
@@ -252,16 +254,35 @@ public class CameraFragment extends Fragment {
 
   private void recordVideo() {
     if (isVideoRecording) {
+      try {
+        ctlr.stopVideoRecording();
+      }
+      catch (Exception e) {
+        Log.e(getClass().getSimpleName(), "Exception stopping recording of video", e);
+        // TODO: um, do something here
+      }
+
       isVideoRecording=false;
       fabPicture.setImageResource(R.drawable.cwac_cam2_ic_videocam);
       fabPicture.setColorNormalResId(R.color.cwac_cam2_picture_fab);
       fabPicture.setColorPressedResId(R.color.cwac_cam2_picture_fab_pressed);
     }
     else {
-      isVideoRecording=true;
-      fabPicture.setImageResource(R.drawable.cwac_cam2_ic_stop);
-      fabPicture.setColorNormalResId(R.color.cwac_cam2_recording_fab);
-      fabPicture.setColorPressedResId(R.color.cwac_cam2_recording_fab_pressed);
+      try {
+        VideoTransaction.Builder b=new VideoTransaction.Builder();
+        Uri output=getArguments().getParcelable(ARG_OUTPUT);
+
+        b.to(new File(output.getPath()));
+        ctlr.recordVideo(b.build());
+        isVideoRecording=true;
+        fabPicture.setImageResource(R.drawable.cwac_cam2_ic_stop);
+        fabPicture.setColorNormalResId(R.color.cwac_cam2_recording_fab);
+        fabPicture.setColorPressedResId(R.color.cwac_cam2_recording_fab_pressed);
+      }
+      catch (Exception e) {
+        Log.e(getClass().getSimpleName(), "Exception recording video", e);
+        // TODO: um, do something here
+      }
     }
   }
 

@@ -18,8 +18,12 @@ import android.content.Context;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
+import android.media.CamcorderProfile;
+import android.media.MediaRecorder;
 import android.util.Log;
 import com.commonsware.cwac.cam2.util.Size;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -32,6 +36,8 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 public class ClassicCameraEngine extends CameraEngine {
   private List<CameraDescriptor> descriptors=null;
+  private MediaRecorder recorder;
+  private VideoTransaction xact;
 
   /**
    * {@inheritDoc}
@@ -97,7 +103,7 @@ public class ClassicCameraEngine extends CameraEngine {
 
             // from Integer.compare(), which is new to API Level 19
 
-            return(lhScore < rhScore ? -1 : (lhScore == rhScore ? 0 : 1));
+            return (lhScore < rhScore ? -1 : (lhScore == rhScore ? 0 : 1));
           }
         });
 
@@ -188,6 +194,72 @@ public class ClassicCameraEngine extends CameraEngine {
         }
       }
     });
+  }
+
+  @Override
+  public void recordVideo(CameraSession session,
+                          VideoTransaction xact) throws Exception {
+    Descriptor descriptor=(Descriptor)session.getDescriptor();
+    Camera camera=descriptor.getCamera();
+
+    if (camera!=null) {
+      camera.stopPreview();
+      camera.unlock();
+
+      try {
+        recorder=new MediaRecorder();
+        recorder.setCamera(camera);
+        recorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
+        recorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+
+        int cameraId=descriptor.getCameraId();
+
+        if (CamcorderProfile.hasProfile(cameraId,
+            CamcorderProfile.QUALITY_HIGH)) {
+          recorder.setProfile(CamcorderProfile.get(cameraId,
+              CamcorderProfile.QUALITY_HIGH));
+        }
+        else if (CamcorderProfile.hasProfile(cameraId,
+            CamcorderProfile.QUALITY_LOW)) {
+          recorder.setProfile(CamcorderProfile.get(cameraId,
+              CamcorderProfile.QUALITY_LOW));
+        }
+        else {
+          throw new IllegalStateException(
+              "cannot find valid CamcorderProfile");
+        }
+
+        recorder.setOutputFile(xact.getOutputPath().getAbsolutePath());
+        // recorder.setOrientationHint(...);
+        recorder.prepare();
+        recorder.start();
+        this.xact=xact;
+      }
+      catch (IOException e) {
+        recorder.release();
+        recorder=null;
+        throw e;
+      }
+    }
+  }
+
+  @Override
+  public void stopVideoRecording(CameraSession session) throws Exception {
+    Descriptor descriptor=(Descriptor)session.getDescriptor();
+    Camera camera=descriptor.getCamera();
+
+    if (camera!=null) {
+      MediaRecorder tempRecorder=recorder;
+
+      recorder=null;
+      tempRecorder.stop();
+      tempRecorder.release();
+      camera.reconnect();
+      camera.startPreview();
+    }
+
+    getBus().post(new VideoTakenEvent(xact));
+    xact=null;
   }
 
   private class TakePictureTransaction implements Camera.PictureCallback {
