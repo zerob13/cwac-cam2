@@ -17,6 +17,7 @@ package com.commonsware.cwac.cam2;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.provider.MediaStore;
 
 /**
  * Activity for recording video. Analogue of CameraActivity.
@@ -25,18 +26,27 @@ import android.net.Uri;
  */
 public class VideoRecorderActivity extends AbstractCameraActivity {
   @Override
-  boolean needsOverlay() {
+  protected boolean needsOverlay() {
     return(false);
   }
 
   @Override
-  boolean needsActionBar() {
+  protected boolean needsActionBar() {
     return(false);
   }
 
   @Override
-  boolean isVideo() {
+  protected boolean isVideo() {
     return(true);
+  }
+
+  @Override
+  protected CameraFragment buildFragment() {
+    return(CameraFragment.newVideoInstance(getOutputUri(),
+        getIntent().getBooleanExtra(EXTRA_UPDATE_MEDIA_STORE, false),
+        getIntent().getIntExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1),
+        getIntent().getIntExtra(MediaStore.EXTRA_SIZE_LIMIT, 0),
+        getIntent().getIntExtra(MediaStore.EXTRA_DURATION_LIMIT, 0)));
   }
 
   @SuppressWarnings("unused")
@@ -81,6 +91,60 @@ public class VideoRecorderActivity extends AbstractCameraActivity {
       }
 
       return(super.to(output));
+    }
+
+    /**
+     * Indicates the video quality to use for recording this
+     * video. Matches EXTRA_VIDEO_QUALITY, except uses an enum
+     * for type safety.
+     *
+     * @param q LOW or HIGH
+     * @return the builder, for further configuration
+     */
+    public IntentBuilder quality(Quality q) {
+      result.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, q.getValue());
+
+      return(this);
+    }
+
+    /**
+     * Sets the maximum size of the video file in bytes. Maps
+     * to EXTRA_SIZE_LIMIT.
+     *
+     * @param limit maximum video size in bytes
+     * @return
+     */
+    public IntentBuilder sizeLimit(int limit) {
+      result.putExtra(MediaStore.EXTRA_SIZE_LIMIT, limit);
+
+      return(this);
+    }
+
+    /**
+     * Sets the maximum duration of the video file in milliseconds. Maps
+     * to EXTRA_DURATION_LIMIT.
+     *
+     * @param limit maximum video length in milliseconds
+     * @return
+     */
+    public IntentBuilder durationLimit(int limit) {
+      result.putExtra(MediaStore.EXTRA_DURATION_LIMIT, limit);
+
+      return(this);
+    }
+  }
+
+  public enum Quality {
+    LOW(0), HIGH(1);
+
+    private final int value;
+
+    private Quality(int value) {
+      this.value=value;
+    }
+
+    int getValue() {
+      return(value);
     }
   }
 }

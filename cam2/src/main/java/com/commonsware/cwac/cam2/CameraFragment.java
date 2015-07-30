@@ -20,9 +20,12 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Context;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +46,9 @@ public class CameraFragment extends Fragment {
   private static final String ARG_OUTPUT="output";
   private static final String ARG_UPDATE_MEDIA_STORE="updateMediaStore";
   private static final String ARG_IS_VIDEO="isVideo";
+  private static final String ARG_VIDEO_QUALITY="quality";
+  private static final String ARG_SIZE_LIMIT="sizeLimit";
+  private static final String ARG_DURATION_LIMIT="durationLimit";
   private CameraController ctlr;
   private ViewGroup previewStack;
   private FloatingActionButton fabPicture;
@@ -50,15 +56,32 @@ public class CameraFragment extends Fragment {
   private View progress;
   private boolean isVideoRecording=false;
 
-  public static CameraFragment newInstance(Uri output,
-                                           boolean updateMediaStore,
-                                           boolean isVideo) {
+  public static CameraFragment newPictureInstance(Uri output,
+                                                  boolean updateMediaStore) {
     CameraFragment f=new CameraFragment();
     Bundle args=new Bundle();
 
     args.putParcelable(ARG_OUTPUT, output);
     args.putBoolean(ARG_UPDATE_MEDIA_STORE, updateMediaStore);
-    args.putBoolean(ARG_IS_VIDEO, isVideo);
+    args.putBoolean(ARG_IS_VIDEO, false);
+    f.setArguments(args);
+
+    return(f);
+  }
+
+  public static CameraFragment newVideoInstance(Uri output,
+                                                boolean updateMediaStore,
+                                                int quality, int sizeLimit,
+                                                int durationLimit) {
+    CameraFragment f=new CameraFragment();
+    Bundle args=new Bundle();
+
+    args.putParcelable(ARG_OUTPUT, output);
+    args.putBoolean(ARG_UPDATE_MEDIA_STORE, updateMediaStore);
+    args.putBoolean(ARG_IS_VIDEO, true);
+    args.putInt(ARG_VIDEO_QUALITY, quality);
+    args.putInt(ARG_SIZE_LIMIT, sizeLimit);
+    args.putInt(ARG_DURATION_LIMIT, durationLimit);
     f.setArguments(args);
 
     return(f);
@@ -237,6 +260,30 @@ public class CameraFragment extends Fragment {
     fabPicture.setEnabled(true);
   }
 
+  @SuppressWarnings("unused")
+  public void onEventMainThread(CameraEngine.VideoTakenEvent event) {
+    if (getArguments().getBoolean(ARG_UPDATE_MEDIA_STORE, false)) {
+      final Context app=getActivity().getApplicationContext();
+      Uri output=getArguments().getParcelable(ARG_OUTPUT);
+      final String path=output.getPath();
+
+      new Thread() {
+        @Override
+        public void run() {
+          SystemClock.sleep(2000);
+          MediaScannerConnection.scanFile(app,
+              new String[]{path}, new String[]{"video/mp4"},
+              null);
+        }
+      }.start();
+    }
+
+    isVideoRecording=false;
+    fabPicture.setImageResource(R.drawable.cwac_cam2_ic_videocam);
+    fabPicture.setColorNormalResId(R.color.cwac_cam2_picture_fab);
+    fabPicture.setColorPressedResId(R.color.cwac_cam2_picture_fab_pressed);
+  }
+
   private void takePicture() {
     Uri output=getArguments().getParcelable(ARG_OUTPUT);
 
@@ -261,18 +308,17 @@ public class CameraFragment extends Fragment {
         Log.e(getClass().getSimpleName(), "Exception stopping recording of video", e);
         // TODO: um, do something here
       }
-
-      isVideoRecording=false;
-      fabPicture.setImageResource(R.drawable.cwac_cam2_ic_videocam);
-      fabPicture.setColorNormalResId(R.color.cwac_cam2_picture_fab);
-      fabPicture.setColorPressedResId(R.color.cwac_cam2_picture_fab_pressed);
     }
     else {
       try {
         VideoTransaction.Builder b=new VideoTransaction.Builder();
         Uri output=getArguments().getParcelable(ARG_OUTPUT);
 
-        b.to(new File(output.getPath()));
+        b.to(new File(output.getPath()))
+         .quality(getArguments().getInt(ARG_VIDEO_QUALITY, 1))
+         .sizeLimit(getArguments().getInt(ARG_SIZE_LIMIT, 0))
+         .durationLimit(getArguments().getInt(ARG_DURATION_LIMIT, 0));
+
         ctlr.recordVideo(b.build());
         isVideoRecording=true;
         fabPicture.setImageResource(R.drawable.cwac_cam2_ic_stop);

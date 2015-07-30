@@ -28,9 +28,8 @@ import com.commonsware.cwac.cam2.CameraSelectionCriteria;
 import com.commonsware.cwac.cam2.VideoRecorderActivity;
 import java.io.File;
 
-public class PlaygroundFragment extends PreferenceFragment {
+public class VideoFragment extends PreferenceFragment {
   interface Contract {
-    void takePicture(Intent i);
     void takeVideo(Intent i);
   }
 
@@ -38,7 +37,7 @@ public class PlaygroundFragment extends PreferenceFragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    addPreferencesFromResource(R.xml.prefs);
+    addPreferencesFromResource(R.xml.prefs_video);
     setHasOptionsMenu(true);
   }
 
@@ -69,15 +68,15 @@ public class PlaygroundFragment extends PreferenceFragment {
 
   private void takePicture() {
     SharedPreferences prefs=getPreferenceManager().getSharedPreferences();
-    AbstractCameraActivity.IntentBuilder b;
-    boolean isVideo=prefs.getBoolean("video", false);
+    VideoRecorderActivity.IntentBuilder b=new VideoRecorderActivity.IntentBuilder(getActivity());
 
-    if (isVideo) {
-      b=buildVideoIntent(prefs);
-      b.to(new File(getActivity().getExternalFilesDir(null), "test.mp4"));
+    b.to(new File(getActivity().getExternalFilesDir(null), "test.mp4"));
+
+    if (prefs.getBoolean("highQuality", false)) {
+      b.quality(VideoRecorderActivity.Quality.HIGH);
     }
     else {
-      b=buildPictureIntent(prefs);
+      b.quality(VideoRecorderActivity.Quality.LOW);
     }
 
     if (prefs.getBoolean("ffc", false)) {
@@ -91,10 +90,6 @@ public class PlaygroundFragment extends PreferenceFragment {
       b.debug();
     }
 
-    if (!isVideo && prefs.getBoolean("file", false)) {
-      b.to(new File(getActivity().getExternalFilesDir(null), "test.jpg"));
-    }
-
     if (prefs.getBoolean("updateMediaStore", false)) {
       b.updateMediaStore();
     }
@@ -103,27 +98,18 @@ public class PlaygroundFragment extends PreferenceFragment {
       b.forceClassic();
     }
 
-    if (isVideo) {
-      ((Contract)getActivity()).takeVideo(b.build());
-    }
-    else {
-      ((Contract)getActivity()).takePicture(b.build());
-    }
-  }
+    String durationLimit=prefs.getString("durationLimit", null);
 
-  private AbstractCameraActivity.IntentBuilder buildPictureIntent(SharedPreferences prefs) {
-    CameraActivity.IntentBuilder b=new CameraActivity.IntentBuilder(getActivity());
-
-    if (!prefs.getBoolean("confirm", false)) {
-      b.skipConfirm();
+    if (durationLimit!=null) {
+      b.durationLimit(Integer.parseInt(durationLimit));
     }
 
-    return(b);
-  }
+    String sizeLimit=prefs.getString("sizeLimit", null);
 
-  private AbstractCameraActivity.IntentBuilder buildVideoIntent(SharedPreferences prefs) {
-    VideoRecorderActivity.IntentBuilder b=new VideoRecorderActivity.IntentBuilder(getActivity());
+    if (sizeLimit!=null) {
+      b.sizeLimit(Integer.parseInt(sizeLimit));
+    }
 
-    return(b);
+    ((Contract)getActivity()).takeVideo(b.build());
   }
 }

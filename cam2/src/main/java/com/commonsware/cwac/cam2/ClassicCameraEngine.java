@@ -34,7 +34,7 @@ import java.util.List;
  * original android.hardware.Camera API.
  */
 @SuppressWarnings("deprecation")
-public class ClassicCameraEngine extends CameraEngine {
+public class ClassicCameraEngine extends CameraEngine implements MediaRecorder.OnInfoListener {
   private List<CameraDescriptor> descriptors=null;
   private MediaRecorder recorder;
   private VideoTransaction xact;
@@ -213,14 +213,16 @@ public class ClassicCameraEngine extends CameraEngine {
         recorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
 
         int cameraId=descriptor.getCameraId();
+        boolean canGoHigh=CamcorderProfile.hasProfile(cameraId,
+            CamcorderProfile.QUALITY_HIGH);
+        boolean canGoLow=CamcorderProfile.hasProfile(cameraId,
+            CamcorderProfile.QUALITY_LOW);
 
-        if (CamcorderProfile.hasProfile(cameraId,
-            CamcorderProfile.QUALITY_HIGH)) {
+        if (canGoHigh && (xact.getQuality()==1 || !canGoLow)) {
           recorder.setProfile(CamcorderProfile.get(cameraId,
               CamcorderProfile.QUALITY_HIGH));
         }
-        else if (CamcorderProfile.hasProfile(cameraId,
-            CamcorderProfile.QUALITY_LOW)) {
+        else if (canGoLow) {
           recorder.setProfile(CamcorderProfile.get(cameraId,
               CamcorderProfile.QUALITY_LOW));
         }
@@ -230,6 +232,9 @@ public class ClassicCameraEngine extends CameraEngine {
         }
 
         recorder.setOutputFile(xact.getOutputPath().getAbsolutePath());
+        recorder.setMaxFileSize(xact.getSizeLimit());
+        recorder.setMaxDuration(xact.getDurationLimit());
+        recorder.setOnInfoListener(this);
         // recorder.setOrientationHint(...);
         recorder.prepare();
         recorder.start();
@@ -260,6 +265,20 @@ public class ClassicCameraEngine extends CameraEngine {
 
     getBus().post(new VideoTakenEvent(xact));
     xact=null;
+  }
+
+  @Override
+  public void onInfo(MediaRecorder mediaRecorder, int i, int i1) {
+    MediaRecorder tempRecorder=recorder;
+
+    recorder=null;
+
+    if (tempRecorder!=null) {
+      tempRecorder.stop();
+      tempRecorder.release();
+    }
+
+    getBus().post(new VideoTakenEvent(xact));
   }
 
   private class TakePictureTransaction implements Camera.PictureCallback {

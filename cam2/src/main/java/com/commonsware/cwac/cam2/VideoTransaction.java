@@ -18,6 +18,9 @@ import java.io.File;
 
 public class VideoTransaction {
   File outputPath;
+  int quality=1;
+  int sizeLimit=0;
+  int durationLimit=0;
 
   private VideoTransaction() {
     // please use the Builder
@@ -25,6 +28,18 @@ public class VideoTransaction {
 
   public File getOutputPath() {
     return(outputPath);
+  }
+
+  public int getQuality() {
+    return(quality);
+  }
+
+  public int getSizeLimit() {
+    return(sizeLimit);
+  }
+
+  public int getDurationLimit() {
+    return(durationLimit);
   }
 
   public static class Builder {
@@ -36,6 +51,24 @@ public class VideoTransaction {
 
     Builder to(File outputPath) {
       result.outputPath=outputPath;
+
+      return(this);
+    }
+
+    Builder quality(int quality) {
+      result.quality=quality;
+
+      return(this);
+    }
+
+    Builder sizeLimit(int sizeLimit) {
+      result.sizeLimit=sizeLimit;
+
+      return(this);
+    }
+
+    Builder durationLimit(int durationLimit) {
+      result.durationLimit=durationLimit;
 
       return(this);
     }

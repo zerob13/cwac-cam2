@@ -37,19 +37,24 @@ abstract public class AbstractCameraActivity extends Activity {
    * @return true if the activity wants FEATURE_ACTION_BAR_OVERLAY,
    * false otherwise
    */
-  abstract boolean needsOverlay();
+  abstract protected boolean needsOverlay();
 
   /**
    * @return false if we should hide the action bar outright
    * (ignored if needsOverlay() returns true)
    */
-  abstract boolean needsActionBar();
+  abstract protected boolean needsActionBar();
 
   /**
    * @return true if we are recording a video, false if we are
    * taking a still picture
    */
-  abstract boolean isVideo();
+  abstract protected boolean isVideo();
+
+  /**
+   * @return a CameraFragment for the given circumstances
+   */
+  abstract protected CameraFragment buildFragment();
 
   /**
    * Extra name for indicating what facing rule for the
@@ -104,11 +109,7 @@ abstract public class AbstractCameraActivity extends Activity {
     cameraFrag=(CameraFragment)getFragmentManager().findFragmentByTag(TAG_CAMERA);
 
     if (cameraFrag==null) {
-      Uri output=getOutputUri();
-
-      cameraFrag=CameraFragment.newInstance(output,
-          getIntent().getBooleanExtra(EXTRA_UPDATE_MEDIA_STORE, false),
-          isVideo());
+      cameraFrag=buildFragment();
 
       CameraController ctrl=new CameraController();
 

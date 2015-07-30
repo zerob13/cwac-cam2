@@ -15,29 +15,27 @@
 package com.commonsware.cwac.cam2.playground;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
-public class MainActivity extends Activity
-    implements PlaygroundFragment.Contract {
+public class PictureActivity extends Activity
+    implements PictureFragment.Contract {
   private static final int REQUEST_CAMERA=1337;
-  private static final int REQUEST_VIDEO=REQUEST_CAMERA+1;
-  private static final String TAG_PLAYGROUND=PlaygroundFragment.class.getCanonicalName();
+  private static final String TAG_PLAYGROUND=PictureFragment.class.getCanonicalName();
   private static final String TAG_RESULT=ResultFragment.class.getCanonicalName();
-  private PlaygroundFragment playground=null;
+  private PictureFragment playground=null;
   private ResultFragment result=null;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    playground=(PlaygroundFragment)getFragmentManager().findFragmentByTag(TAG_PLAYGROUND);
+    playground=(PictureFragment)getFragmentManager().findFragmentByTag(TAG_PLAYGROUND);
     result=(ResultFragment)getFragmentManager().findFragmentByTag(TAG_RESULT);
 
     if (playground==null) {
-      playground=new PlaygroundFragment();
+      playground=new PictureFragment();
       getFragmentManager()
           .beginTransaction()
           .add(android.R.id.content, playground, TAG_PLAYGROUND)
@@ -68,11 +66,6 @@ public class MainActivity extends Activity
   }
 
   @Override
-  public void takeVideo(Intent i) {
-    startActivityForResult(i, REQUEST_VIDEO);
-  }
-
-  @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     if (requestCode==REQUEST_CAMERA) {
       if (resultCode == Activity.RESULT_OK) {
@@ -91,11 +84,6 @@ public class MainActivity extends Activity
             .show(result)
             .addToBackStack(null)
             .commit();
-      }
-    }
-    else if (requestCode==REQUEST_VIDEO) {
-      if (resultCode == Activity.RESULT_OK) {
-        // TODO
       }
     }
   }

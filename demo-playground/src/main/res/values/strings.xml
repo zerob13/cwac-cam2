@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<string name="app_name">CWAC-Cam2 Playground</string>
+	<string name="app_name">Cam2 Picture Playground</string>
+	<string name="app_name_video">Cam2 Video Playground</string>
 	<string name="title_ffc">Use front-facing camera</string>
 	<string name="title_file">Save full image to file</string>
 	<string name="summary_file">If off, captures a thumbnail instead</string>
@@ -11,5 +12,8 @@
 	<string name="title_update_media_store">Update MediaStore</string>
 	<string name="title_force_classic">Force classic API</string>
 	<string name="title_video">Capture video</string>
+	<string name="title_quality">Record high-quality video</string>
+	<string name="title_duration">Set duration limit</string>
+	<string name="title_size">Set size limit</string>
 
 </resources>

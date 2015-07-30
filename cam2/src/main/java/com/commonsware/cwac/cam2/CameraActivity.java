@@ -18,8 +18,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Window;
-import com.commonsware.cwac.cam2.util.Utils;
 
 /**
  * Stock activity for taking pictures. Supports the same
@@ -132,18 +130,24 @@ public class CameraActivity extends AbstractCameraActivity
   }
 
   @Override
-  boolean needsOverlay() {
+  protected boolean needsOverlay() {
     return(true);
   }
 
   @Override
-  boolean needsActionBar() {
+  protected boolean needsActionBar() {
     return(true);
   }
 
   @Override
-  boolean isVideo() {
+  protected boolean isVideo() {
     return(false);
+  }
+
+  @Override
+  protected CameraFragment buildFragment() {
+    return(CameraFragment.newPictureInstance(getOutputUri(),
+        getIntent().getBooleanExtra(EXTRA_UPDATE_MEDIA_STORE, false)));
   }
 
   private void removeFragments() {

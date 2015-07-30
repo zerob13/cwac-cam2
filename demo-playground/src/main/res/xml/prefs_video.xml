@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+  <SwitchPreference
+    android:key="ffc"
+    android:title="@string/title_ffc"/>
+  <SwitchPreference
+    android:key="updateMediaStore"
+    android:title="@string/title_update_media_store"/>
+  <SwitchPreference
+    android:key="debug"
+    android:title="@string/title_debug"/>
+  <SwitchPreference
+    android:key="forceClassic"
+    android:title="@string/title_force_classic"/>
+  <SwitchPreference
+    android:key="highQuality"
+    android:title="@string/title_quality"/>
+  <ListPreference
+    android:key="durationLimit"
+    android:entries="@array/durations"
+    android:entryValues="@array/durationValues"
+    android:title="@string/title_duration" />
+  <ListPreference
+    android:key="sizeLimit"
+    android:entries="@array/sizes"
+    android:entryValues="@array/sizeValues"
+    android:title="@string/title_size" />
+
+</PreferenceScreen>
