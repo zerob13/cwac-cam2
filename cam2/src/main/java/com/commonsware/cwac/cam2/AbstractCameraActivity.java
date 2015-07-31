@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.KeyEvent;
 import android.view.Window;
 import com.commonsware.cwac.cam2.util.Utils;
 import java.io.File;
@@ -155,6 +156,17 @@ abstract public class AbstractCameraActivity extends Activity {
     EventBus.getDefault().unregister(this);
 
     super.onStop();
+  }
+
+  @Override
+  public boolean onKeyUp(int keyCode, KeyEvent event) {
+    if (keyCode==KeyEvent.KEYCODE_CAMERA) {
+      cameraFrag.performCameraAction();
+
+      return(true);
+    }
+
+    return(super.onKeyUp(keyCode, event));
   }
 
   @SuppressWarnings("unused")

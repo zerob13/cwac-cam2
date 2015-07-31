@@ -196,12 +196,7 @@ public class CameraFragment extends Fragment {
     fabPicture.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        if (isVideo()) {
-          recordVideo();
-        }
-        else {
-          takePicture();
-        }
+        performCameraAction();
       }
     });
 
@@ -282,6 +277,15 @@ public class CameraFragment extends Fragment {
     fabPicture.setImageResource(R.drawable.cwac_cam2_ic_videocam);
     fabPicture.setColorNormalResId(R.color.cwac_cam2_picture_fab);
     fabPicture.setColorPressedResId(R.color.cwac_cam2_picture_fab_pressed);
+  }
+
+  protected void performCameraAction() {
+    if (isVideo()) {
+      recordVideo();
+    }
+    else {
+      takePicture();
+    }
   }
 
   private void takePicture() {
