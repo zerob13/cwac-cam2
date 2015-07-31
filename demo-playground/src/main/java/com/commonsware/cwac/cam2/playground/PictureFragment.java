@@ -24,8 +24,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import com.commonsware.cwac.cam2.AbstractCameraActivity;
 import com.commonsware.cwac.cam2.CameraActivity;
-import com.commonsware.cwac.cam2.CameraSelectionCriteria;
-import com.commonsware.cwac.cam2.VideoRecorderActivity;
 import java.io.File;
 
 public class PictureFragment extends PreferenceFragment {
@@ -75,10 +73,10 @@ public class PictureFragment extends PreferenceFragment {
     }
 
     if (prefs.getBoolean("ffc", false)) {
-      b.facing(CameraSelectionCriteria.Facing.FRONT);
+      b.facing(AbstractCameraActivity.Facing.FRONT);
     }
     else {
-      b.facing(CameraSelectionCriteria.Facing.BACK);
+      b.facing(AbstractCameraActivity.Facing.BACK);
     }
 
     if (prefs.getBoolean("debug", false)) {

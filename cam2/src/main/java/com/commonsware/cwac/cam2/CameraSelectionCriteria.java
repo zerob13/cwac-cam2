@@ -20,7 +20,7 @@ package com.commonsware.cwac.cam2;
  * for finding a subset of interesting cameras.
  */
 public class CameraSelectionCriteria {
-  private Facing facing;
+  private AbstractCameraActivity.Facing facing;
 
   /**
    * Getter method for the facing value, indicating if we
@@ -29,7 +29,7 @@ public class CameraSelectionCriteria {
    *
    * @return the facing value
    */
-  public Facing getFacing() {
+  public AbstractCameraActivity.Facing getFacing() {
     return(facing);
   }
 
@@ -48,7 +48,7 @@ public class CameraSelectionCriteria {
      * @param facing the facing value
      * @return the builder, for chained calls
      */
-    public Builder facing(Facing facing) {
+    public Builder facing(AbstractCameraActivity.Facing facing) {
       criteria.facing=facing;
 
       return(this);
@@ -64,14 +64,4 @@ public class CameraSelectionCriteria {
     }
   }
 
-  /**
-   * Possible values for the facing property
-   */
-  public enum Facing {
-    FRONT, BACK;
-
-    boolean isFront() {
-      return(this==FRONT);
-    }
-  }
 }

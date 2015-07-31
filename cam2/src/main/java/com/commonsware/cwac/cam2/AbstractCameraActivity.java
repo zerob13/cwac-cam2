@@ -116,11 +116,11 @@ abstract public class AbstractCameraActivity extends Activity {
 
       cameraFrag.setController(ctrl);
 
-      CameraSelectionCriteria.Facing facing=
-          (CameraSelectionCriteria.Facing)getIntent().getSerializableExtra(EXTRA_FACING);
+      Facing facing=
+          (Facing)getIntent().getSerializableExtra(EXTRA_FACING);
 
       if (facing==null) {
-        facing=CameraSelectionCriteria.Facing.BACK;
+        facing=Facing.BACK;
       }
 
       CameraSelectionCriteria criteria=
@@ -197,6 +197,17 @@ abstract public class AbstractCameraActivity extends Activity {
     return(output);
   }
 
+  /**
+   * Possible values for the facing property
+   */
+  public enum Facing {
+    FRONT, BACK;
+
+    boolean isFront() {
+      return(this==FRONT);
+    }
+  }
+
   public static class IntentBuilder {
     protected final Intent result;
 
@@ -228,7 +239,7 @@ abstract public class AbstractCameraActivity extends Activity {
      * @param facing which camera to use
      * @return the builder, for further configuration
      */
-    public IntentBuilder facing(CameraSelectionCriteria.Facing facing) {
+    public IntentBuilder facing(Facing facing) {
       result.putExtra(EXTRA_FACING, facing);
 
       return(this);

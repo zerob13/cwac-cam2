@@ -25,8 +25,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+import com.commonsware.cwac.cam2.AbstractCameraActivity;
 import com.commonsware.cwac.cam2.CameraActivity;
-import com.commonsware.cwac.cam2.CameraSelectionCriteria;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import java.io.BufferedWriter;
@@ -119,7 +119,7 @@ public class MainActivity extends Activity {
     switch(requestCode) {
       case REQUEST_PORTRAIT_RFC:
         Intent i=new CameraActivity.IntentBuilder(MainActivity.this)
-            .facing(CameraSelectionCriteria.Facing.FRONT)
+            .facing(AbstractCameraActivity.Facing.FRONT)
             .to(new File(testRoot, "portrait-front.jpg"))
             .skipConfirm()
             .debug()
@@ -136,7 +136,7 @@ public class MainActivity extends Activity {
 
       case REQUEST_LANDSCAPE_RFC:
         i=new CameraActivity.IntentBuilder(MainActivity.this)
-            .facing(CameraSelectionCriteria.Facing.FRONT)
+            .facing(AbstractCameraActivity.Facing.FRONT)
             .to(new File(testRoot, "landscape-front.jpg"))
             .skipConfirm()
             .updateMediaStore()
@@ -182,7 +182,7 @@ public class MainActivity extends Activity {
 
   public void onEventMainThread(InitCaptureCompletedEvent event) {
     Intent i=new CameraActivity.IntentBuilder(this)
-        .facing(CameraSelectionCriteria.Facing.BACK)
+        .facing(AbstractCameraActivity.Facing.BACK)
         .to(new File(testRoot, "portrait-rear.jpg"))
         .skipConfirm()
         .updateMediaStore()
@@ -257,7 +257,7 @@ public class MainActivity extends Activity {
     next.setEnabled(false);
 
     Intent i=new CameraActivity.IntentBuilder(this)
-        .facing(CameraSelectionCriteria.Facing.BACK)
+        .facing(AbstractCameraActivity.Facing.BACK)
         .to(new File(testRoot, "landscape-rear.jpg"))
         .skipConfirm()
         .updateMediaStore()
