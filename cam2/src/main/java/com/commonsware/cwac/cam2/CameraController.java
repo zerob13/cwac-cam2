@@ -96,9 +96,11 @@ public class CameraController implements CameraView.StateCallback {
    */
   public void stop() {
     if (session!=null) {
-      engine.close(session);
-      session.destroy();
+      CameraSession temp=session;
+
       session=null;
+      engine.close(temp);
+      // session.destroy(); -- moved into engines
     }
   }
 

@@ -208,6 +208,7 @@ public class CameraTwoEngine extends CameraEngine {
       Descriptor camera=(Descriptor)session.getDescriptor();
 
       camera.setDevice(null);
+      session.destroy();
       getBus().post(new ClosedEvent());
     }
     catch (Exception e) {

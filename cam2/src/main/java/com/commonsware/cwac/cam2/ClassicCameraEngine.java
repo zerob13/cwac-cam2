@@ -117,16 +117,17 @@ public class ClassicCameraEngine extends CameraEngine implements MediaRecorder.O
    */
   @Override
   public void close(final CameraSession session) {
-      Descriptor descriptor=(Descriptor)session.getDescriptor();
-      Camera camera=descriptor.getCamera();
+    Descriptor descriptor=(Descriptor)session.getDescriptor();
+    Camera camera=descriptor.getCamera();
 
-      if (camera != null) {
-        camera.stopPreview();
-        camera.release();
-        descriptor.setCamera(null);
-      }
+    if (camera != null) {
+      camera.stopPreview();
+      camera.release();
+      descriptor.setCamera(null);
+    }
 
-      getBus().post(new ClosedEvent());
+    session.destroy();
+    getBus().post(new ClosedEvent());
   }
 
   /**
