@@ -30,7 +30,7 @@ import com.commonsware.cwac.cam2.util.Size;
  * as a View for the user to see and interact with. Also handles
  * maintaining aspect ratios and dealing with full-bleed previews.
  */
-public class CameraView extends AutoFitTextureView implements TextureView.SurfaceTextureListener {
+public class CameraView extends TextureView implements TextureView.SurfaceTextureListener {
   interface StateCallback {
     void onReady(CameraView cv);
     void onDestroyed(CameraView cv);
@@ -93,15 +93,6 @@ public class CameraView extends AutoFitTextureView implements TextureView.Surfac
   public void setPreviewSize(Size previewSize) {
     this.previewSize=previewSize;
 
-    int orientation=getResources().getConfiguration().orientation;
-
-    if (orientation==Configuration.ORIENTATION_LANDSCAPE) {
-      setAspectRatio(previewSize.getWidth(), previewSize.getHeight());
-    }
-    else {
-      setAspectRatio(previewSize.getHeight(), previewSize.getWidth());
-    }
-
     enterTheMatrix();
   }
 
@@ -109,46 +100,6 @@ public class CameraView extends AutoFitTextureView implements TextureView.Surfac
     stateCallback=cb;
   }
 
-/*
-  @Override
-  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-    final int width=
-        resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
-    final int height=
-        resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
-
-    int previewWidth=width;
-    int previewHeight=height;
-
-    int rotation=((Activity)getContext()).getWindowManager().getDefaultDisplay().getRotation();
-
-    if (previewSize != null) {
-      if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
-        previewWidth=previewSize.getHeight();
-        previewHeight=previewSize.getWidth();
-      }
-      else {
-        previewWidth=previewSize.getWidth();
-        previewHeight=previewSize.getHeight();
-      }
-    }
-
-    boolean useFirstStrategy=
-        (width * previewHeight > height * previewWidth);
-    boolean fullBleed=true;
-
-    if ((useFirstStrategy && !fullBleed)
-        || (!useFirstStrategy && fullBleed)) {
-      setMeasuredDimension(previewWidth * height / previewHeight, height);
-    }
-    else {
-      setMeasuredDimension(width, previewHeight * width / previewWidth);
-    }
-  }
-
-*/
   private void initListener() {
     setSurfaceTextureListener(this);
   }
@@ -179,32 +130,81 @@ public class CameraView extends AutoFitTextureView implements TextureView.Surfac
 
   }
 
-  // inspired by https://github.com/googlesamples/android-Camera2Basic/blob/master/Application/src/main/java/com/example/android/camera2basic/Camera2BasicFragment.java
-
   private void enterTheMatrix() {
-    int rotation=((Activity)getContext()).getWindowManager().getDefaultDisplay().getRotation();
-
-    Matrix matrix=new Matrix();
-    RectF viewRect=new RectF(0, 0, getWidth(), getHeight());
-    RectF bufferRect=new RectF(0, 0, previewSize.getHeight(), previewSize.getWidth());
-    float centerX=viewRect.centerX();
-    float centerY=viewRect.centerY();
-
-    if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation) {
-      bufferRect.offset(centerX-bufferRect.centerX(), centerY-bufferRect.centerY());
-      matrix.setRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.FILL);
-
-      float scale=Math.max(
-          (float)getHeight()/previewSize.getHeight(),
-          (float)getWidth()/previewSize.getWidth());
-
-      matrix.postScale(scale, scale, centerX, centerY);
-      matrix.postRotate(90*(rotation-2), centerX, centerY);
+    if (previewSize!=null) {
+      adjustAspectRatio(previewSize.getWidth(),
+          previewSize.getHeight(),
+          ((Activity)getContext()).getWindowManager().getDefaultDisplay().getRotation());
     }
-    else if (Surface.ROTATION_180==rotation) {
-      matrix.postRotate(180, centerX, centerY);
+  }
+
+  // inspired by https://github.com/google/grafika/blob/master/src/com/android/grafika/PlayMovieActivity.java
+
+  private void adjustAspectRatio(int videoWidth, int videoHeight,
+                                 int rotation) {
+    int viewWidth = getWidth();
+    int viewHeight = getHeight();
+
+    // if (rotation==Surface.ROTATION_90 || rotation==Surface.ROTATION_270) {
+      int temp=videoWidth;
+      videoWidth=videoHeight;
+      videoHeight=temp;
+    // }
+
+    // why do we need to swap width and height for all rotations?
+    // damfino. but, it seems to work.
+
+    double aspectRatio=(double)videoHeight/videoWidth;
+
+    int newWidth, newHeight;
+
+    if (viewHeight>(int)(viewWidth*aspectRatio)) {
+      newWidth=(int)(viewHeight/aspectRatio);
+      newHeight=viewHeight;
+    }
+    else {
+      newWidth=viewWidth;
+      newHeight=(int)(viewWidth*aspectRatio);
     }
 
-    setTransform(matrix);
+    int xoff=(viewWidth-newWidth)/2;
+    int yoff=(viewHeight-newHeight)/2;
+
+    Matrix txform=new Matrix();
+
+    getTransform(txform);
+
+    int degrees=0;
+
+    switch(rotation) {
+      case Surface.ROTATION_90:
+        degrees=270;
+        break;
+
+      case Surface.ROTATION_270:
+        degrees=90;
+        break;
+    }
+
+    txform.setScale((float)newWidth/viewWidth, (float)newHeight/viewHeight);
+    txform.postRotate(degrees, newWidth/2, newHeight/2);
+    txform.postTranslate(xoff, yoff);
+    setTransform(txform);
   }
 }
+
+/*
+
+Notes about all of this TextureView matrix crap, to help me
+remember in the future.
+
+postTranslate() is setting the X/Y coordinates of the
+upper-left corner of the frames drawn within the TextureView.
+
+postRotate(), with one parameter, rotates how the frames are
+drawn within the TextureView around the upper-left corner
+of where the frames are drawn. Hence, most rotations should
+probably be using the three-parameter form, that specify
+the center around which to rotate.
+
+ */
