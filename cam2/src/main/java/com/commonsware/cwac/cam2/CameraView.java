@@ -18,11 +18,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Matrix;
-import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
 import android.util.AttributeSet;
 import android.view.Surface;
 import android.view.TextureView;
+import android.view.WindowManager;
 import com.commonsware.cwac.cam2.util.Size;
 
 /**
@@ -142,23 +142,21 @@ public class CameraView extends TextureView implements TextureView.SurfaceTextur
 
   private void adjustAspectRatio(int videoWidth, int videoHeight,
                                  int rotation) {
-    int viewWidth = getWidth();
-    int viewHeight = getHeight();
+    // android.util.Log.e("CameraView", String.format("video=%d x %d", videoWidth, videoHeight));
 
-    // if (rotation==Surface.ROTATION_90 || rotation==Surface.ROTATION_270) {
+    if (!isDeviceDefaultOrientationLandscape(getContext())) {
       int temp=videoWidth;
       videoWidth=videoHeight;
       videoHeight=temp;
-    // }
+      // android.util.Log.e("CameraView", String.format("video after flip=%d x %d", videoWidth, videoHeight));
+    }
 
-    // why do we need to swap width and height for all rotations?
-    // damfino. but, it seems to work.
-
-    double aspectRatio=(double)videoHeight/videoWidth;
-
+    int viewWidth=getWidth();
+    int viewHeight=getHeight();
+    double aspectRatio=(double)videoHeight/(double)videoWidth;
     int newWidth, newHeight;
 
-    if (viewHeight>(int)(viewWidth*aspectRatio)) {
+    if (getHeight()>(int)(viewWidth*aspectRatio)) {
       newWidth=(int)(viewHeight/aspectRatio);
       newHeight=viewHeight;
     }
@@ -167,6 +165,9 @@ public class CameraView extends TextureView implements TextureView.SurfaceTextur
       newHeight=(int)(viewWidth*aspectRatio);
     }
 
+    // android.util.Log.e("CameraView", String.format("view=%d x %d", viewWidth, viewHeight));
+    // android.util.Log.e("CameraView", String.format("new=%d x %d", newWidth, newHeight));
+
     int xoff=(viewWidth-newWidth)/2;
     int yoff=(viewHeight-newHeight)/2;
 
@@ -174,22 +175,44 @@ public class CameraView extends TextureView implements TextureView.SurfaceTextur
 
     getTransform(txform);
 
-    int degrees=0;
+    float xscale=(float)newWidth/(float)viewWidth;
+    float yscale=(float)newHeight/(float)viewHeight;
+
+    // android.util.Log.e("CameraView", String.format("scale=%f x %f", xscale, yscale));
+    txform.setScale(xscale, yscale);
 
     switch(rotation) {
       case Surface.ROTATION_90:
-        degrees=270;
+        txform.postRotate(270, newWidth/2, newHeight/2);
         break;
 
       case Surface.ROTATION_270:
-        degrees=90;
+        txform.postRotate(90, newWidth/2, newHeight/2);
         break;
     }
 
-    txform.setScale((float)newWidth/viewWidth, (float)newHeight/viewHeight);
-    txform.postRotate(degrees, newWidth/2, newHeight/2);
     txform.postTranslate(xoff, yoff);
+    // android.util.Log.e("CameraView", String.format("translate=%d x %d", xoff, yoff));
+
     setTransform(txform);
+  }
+
+  // based on http://stackoverflow.com/a/31806201/115145
+
+  public static boolean isDeviceDefaultOrientationLandscape(Context ctxt) {
+    WindowManager windowManager=(WindowManager)ctxt.getSystemService(Context.WINDOW_SERVICE);
+    Configuration config=ctxt.getResources().getConfiguration();
+    int rotation=windowManager.getDefaultDisplay().getRotation();
+
+    boolean defaultLandsacpeAndIsInLandscape = (rotation == Surface.ROTATION_0 ||
+        rotation == Surface.ROTATION_180) &&
+        config.orientation == Configuration.ORIENTATION_LANDSCAPE;
+
+    boolean defaultLandscapeAndIsInPortrait = (rotation == Surface.ROTATION_90 ||
+        rotation == Surface.ROTATION_270) &&
+        config.orientation == Configuration.ORIENTATION_PORTRAIT;
+
+    return(defaultLandsacpeAndIsInLandscape || defaultLandscapeAndIsInPortrait);
   }
 }
 
