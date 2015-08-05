@@ -146,7 +146,7 @@ public class Utils {
       return Collections.min(bigEnough, new CompareSizesByArea());
     } else {
 //      Log.e(TAG, "Couldn't find any suitable preview size");
-      return choices.get(0);
+      return Collections.max(choices, new CompareSizesByArea());
     }
   }
 
