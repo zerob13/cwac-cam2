@@ -327,30 +327,28 @@ public class CameraTwoEngine extends CameraEngine {
     @Override
     public void onConfigured(CameraCaptureSession session) {
       try {
-        s.captureSession=session;
+        if (!s.isClosed()) {
+          s.captureSession=session;
 
-        s.previewRequestBuilder=session.getDevice().createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-        s.previewRequestBuilder.addTarget(surface);
-        s.previewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
-            CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-        s.previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,
-            CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
-        // TODO: offer other flash support
+          s.previewRequestBuilder=session.getDevice().createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+          s.previewRequestBuilder.addTarget(surface);
+          s.previewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
+              CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+          s.previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,
+              CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
+          // TODO: offer other flash support
 
-        s.previewRequest=s.previewRequestBuilder.build();
+          s.previewRequest=s.previewRequestBuilder.build();
 
-        session.setRepeatingRequest(s.previewRequest, null, handler);
+          session.setRepeatingRequest(s.previewRequest, null, handler);
 
-        getBus().post(new OpenedEvent());
+          getBus().post(new OpenedEvent());
+        }
       }
       catch (CameraAccessException e) {
         getBus().post(new OpenedEvent(e));
       }
       catch (IllegalStateException e) {
-        // TODO need to track our own "is-closed" state,
-        // so we skip work when not needed because the
-        // activity is going away
-
         if (isDebug()) {
           Log.w(getClass().getSimpleName(), "Exception resetting focus", e);
         }
@@ -521,10 +519,6 @@ public class CameraTwoEngine extends CameraEngine {
         }
       }
       catch (IllegalStateException e) {
-        // TODO don't send the real PictureTakenEvent until
-        // we have gone through unlockFocus(), as a quick
-        // shutdown of the activity results in this exception
-
         if (isDebug()) {
           Log.w(getClass().getSimpleName(), "Exception resetting focus", e);
         }
