@@ -205,6 +205,8 @@ public class CameraTwoEngine extends CameraEngine {
         s.reader.close();
       }
 
+      s.setClosed(true);
+
       Descriptor camera=(Descriptor)session.getDescriptor();
 
       camera.setDevice(null);
@@ -501,13 +503,15 @@ public class CameraTwoEngine extends CameraEngine {
 
     private void unlockFocus() {
       try {
-        s.previewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
-            CameraMetadata.CONTROL_AF_TRIGGER_CANCEL);
-        s.previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,
-            CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
-        s.captureSession.capture(s.previewRequestBuilder.build(), null,
-            handler);
-        s.captureSession.setRepeatingRequest(s.previewRequest, null, handler);
+        if (!s.isClosed()) {
+          s.previewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
+              CameraMetadata.CONTROL_AF_TRIGGER_CANCEL);
+          s.previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,
+              CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
+          s.captureSession.capture(s.previewRequestBuilder.build(), null,
+              handler);
+          s.captureSession.setRepeatingRequest(s.previewRequest, null, handler);
+        }
       }
       catch (CameraAccessException e) {
         getBus().post(new PictureTakenEvent(e));
@@ -616,6 +620,7 @@ public class CameraTwoEngine extends CameraEngine {
     CaptureRequest.Builder previewRequestBuilder=null;
     CaptureRequest previewRequest;
     ImageReader reader;
+    boolean isClosed=false;
 
     private Session(Context ctxt, CameraDescriptor descriptor) {
       super(ctxt, descriptor);
@@ -647,6 +652,14 @@ public class CameraTwoEngine extends CameraEngine {
           configurator.addToCaptureRequest(cc, isFacingFront, captureBuilder);
         }
       }
+    }
+
+    boolean isClosed() {
+      return(isClosed);
+    }
+
+    void setClosed(boolean isClosed) {
+      this.isClosed=isClosed;
     }
   }
 
