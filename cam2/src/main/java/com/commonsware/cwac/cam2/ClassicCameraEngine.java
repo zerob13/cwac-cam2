@@ -22,7 +22,6 @@ import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.util.Log;
 import com.commonsware.cwac.cam2.util.Size;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -269,17 +268,21 @@ public class ClassicCameraEngine extends CameraEngine implements MediaRecorder.O
   }
 
   @Override
-  public void onInfo(MediaRecorder mediaRecorder, int i, int i1) {
-    MediaRecorder tempRecorder=recorder;
+  public void onInfo(MediaRecorder mediaRecorder, int what, int extra) {
+    if (what==MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED ||
+        what==MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED ||
+        what==MediaRecorder.MEDIA_RECORDER_INFO_UNKNOWN) {
+      MediaRecorder tempRecorder=recorder;
 
-    recorder=null;
+      recorder=null;
 
-    if (tempRecorder!=null) {
-      tempRecorder.stop();
-      tempRecorder.release();
+      if (tempRecorder != null) {
+        tempRecorder.stop();
+        tempRecorder.release();
+      }
+
+      getBus().post(new VideoTakenEvent(xact));
     }
-
-    getBus().post(new VideoTakenEvent(xact));
   }
 
   private class TakePictureTransaction implements Camera.PictureCallback {
