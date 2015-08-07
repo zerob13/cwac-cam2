@@ -119,9 +119,9 @@ public class MainActivity extends Activity {
     switch(requestCode) {
       case REQUEST_PORTRAIT_RFC:
         Intent i=new CameraActivity.IntentBuilder(MainActivity.this)
+            .skipConfirm()
             .facing(AbstractCameraActivity.Facing.FRONT)
             .to(new File(testRoot, "portrait-front.jpg"))
-            .skipConfirm()
             .debug()
             .updateMediaStore()
             .build();
@@ -136,9 +136,9 @@ public class MainActivity extends Activity {
 
       case REQUEST_LANDSCAPE_RFC:
         i=new CameraActivity.IntentBuilder(MainActivity.this)
+            .skipConfirm()
             .facing(AbstractCameraActivity.Facing.FRONT)
             .to(new File(testRoot, "landscape-front.jpg"))
-            .skipConfirm()
             .updateMediaStore()
             .debug()
             .build();
@@ -182,9 +182,9 @@ public class MainActivity extends Activity {
 
   public void onEventMainThread(InitCaptureCompletedEvent event) {
     Intent i=new CameraActivity.IntentBuilder(this)
+        .skipConfirm()
         .facing(AbstractCameraActivity.Facing.BACK)
         .to(new File(testRoot, "portrait-rear.jpg"))
-        .skipConfirm()
         .updateMediaStore()
         .debug()
         .build();
@@ -257,9 +257,9 @@ public class MainActivity extends Activity {
     next.setEnabled(false);
 
     Intent i=new CameraActivity.IntentBuilder(this)
+        .skipConfirm()
         .facing(AbstractCameraActivity.Facing.BACK)
         .to(new File(testRoot, "landscape-rear.jpg"))
-        .skipConfirm()
         .updateMediaStore()
         .debug()
         .build();
