@@ -7,6 +7,12 @@ If you have an interest in contributing to this project, here is some advice for
 Most likely the most common contribution to a library like this will be bug reports. These come in two varieties: stuff that
 probably pertains to camera hardware, and other sorts of bugs.
 
+**All bug reports need to include**:
+
+- the `Build.MANUFACTURER` and `Build.PRODUCT` values for the hardware on which you are experiencing the problem
+- the code necessary to reproduce the problem (this could be one of the demo apps, or it could be some demo project of yours that you publish)
+- the steps necessary, using that code and that hardware, to reproduce the problem
+
 ### Bug Reports about Camera Picture Output
 
 If pictures taken using this library are coming out incorrectly (garbled, incorrect colors, too-small sizes, etc.), the
@@ -30,14 +36,6 @@ If you cannot reproduce the problem with the `demo/` app, but you can reproduce 
 `CameraActivity.IntentBuilder` configuration code that you are using, along with any other code snippets that you think
 might pertain to the problem, and your screenshot illustrating the preview problem,
 when you post your [issue](https://github.com/commonsguy/cwac-cam2/issues).
-
-### Other Bug Reports
-
-If you are encountering other problems, particularly those that would not appear to be hardware-specific (e.g.,
-the same problem occurs on multiple devices or is not really tied to camera hardware), just file
-an [issue](https://github.com/commonsguy/cwac-cam2/issues) with your best explanation of the problem and
-the steps to reproduce it. If you cannot reproduce it using the `demo/` or `demo-playground/` sample projects,
-be sure to include code that can reproduce it.
 
 ## Contributing Feature Requests
 
