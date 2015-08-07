@@ -1,58 +1,68 @@
-# Using CameraActivity
+# Using VideoRecorderActivity
 
-The simplest way to use this library is to use `CameraActivity`. This
+`VideoRecorderActivity` works much like [`CameraActivity`](CameraActivity.md)
 gives you the same "API" as you get with the Android SDK's
-`ACTION_IMAGE_CAPTURE`, making it fairly easy for you to get existing
-`ACTION_IMAGE_CAPTURE` working with your own local camera activity.
+`ACTION_VIDEO_CAPTURE`, making it fairly easy for you to get existing
+`ACTION_VIDEO_CAPTURE` working with your own local video-recording activity.
+
+**NOTE**: This only works on Android 4.x devices, or on Android 5.x devices
+where you use `forceClassic()`. Video recording is *very* preliminary at
+the moment; it is recommended that you hold off on it until 
+version 0.3.x of the library.
 
 ## Getting the Intent
 
 The simplest way to craft the right `Intent` to use is to create
-a `CameraActivity.IntentBuilder`, call whatever configuration methods
+a `VideoRecorderActivity.IntentBuilder`, call whatever configuration methods
 that you want on that builder, and have it `build()` you an `Intent`.
 That `Intent` can be used with `startActivityForResult()`, just as you
-might have used it with an `ACTION_IMAGE_CAPTURE` `Intent`.
+might have used it with an `ACTION_VIDEO_CAPTURE` `Intent`.
 
-Under the covers, `CameraActivity.IntentBuilder` is simply packaging a
+Under the covers, `VideoRecorderActivity.IntentBuilder` is simply packaging a
 series of extras on the `Intent`, so you can always put those extras
 on yourself if you so choose. The following table lists the available
-configuration methods on `CameraActivity.IntentBuilder`, the corresponding
-extra names (defined as constants on `CameraActivity`), their default values,
+configuration methods on `VideoRecorderActivity.IntentBuilder`, the corresponding
+extra names (defined as constants on `VideoRecorderActivity`), their default values,
 and what their behavior is:
 
 | `IntentBuilder` Method | Extra Key                 | Data Type                                 | Purpose |
 |:----------------------:|:-------------------------:|:-----------------------------------------:|---------|
+| `durationLimit()`      | `MediaStore.EXTRA_DURATION_LIMIT ` | `int`                            | Indicate the maximum length of the video in milliseconds |
+| `quality()`            | `MediaStore.EXTRA_VIDEO_QUALITY` | `VideoRecorderActivity.Quality`    | Indicate the quality, either `Quality.LOW` or `Quality.HIGH` (default=high) |
+| `sizeLimit()`          | `MediaStore.EXTRA_SIZE_LIMIT` | `int`                                 | Indicate the maximum size of the video in bytes |
 | `debug()`              | `EXTRA_DEBUG_ENABLED`     | `boolean`                                 | Indicate if extra debugging information should be dumped to LogCat (default is `false`) |
-| `facing()`             | `EXTRA_FACING`            | `CameraActivity.Facing`                   | Indicate the preferred camera to start with (`BACK` or `FRONT`, default is `BACK`) |
+| `facing()`             | `EXTRA_FACING`            | `VideoRecorderActivity.Facing`            | Indicate the preferred camera to start with (`BACK` or `FRONT`, default is `BACK`) |
 | `forceClassic()`       | `EXTRA_FORCE_CLASSIC`     | `boolean`                                 | Indicate if the `Camera` API should be used on Android 5.0+ devices instead of `camera2` (default is `false`) |
 | `skipConfirm()`        | `EXTRA_CONFIRM`           | `boolean`                                 | Indicate if the user should be presented with a preview of the image and needs to accept it before proceeding (default is to show the confirmation screen) |
-| `to()`                 | `MediaStore.EXTRA_OUTPUT` | `Uri` (though `to()` also accepts `File`) | Destination for picture to be written, where `null` means to return a thumbnail via the `data` extra (default is `null`) |
+| `to()`                 | `MediaStore.EXTRA_OUTPUT` | `File`                                    | Destination for picture to be written |
 | `updateMediaStore()`   | `EXTRA_UPDATE_MEDIA_STORE`| `boolean`                                 | Indicate if `MediaStore` should be notified about newly-captured photo (default is `false`)|
 
-Note that if you are going to use `skipConfirm()`, you need to call
-that first on the `IntentBuilder` before any of the others.
+Note that `to()` is **required**.
+
+Note that if you are going to use `quality()`, `sizeLimit()`, or
+`durationLimit()`, you need to call
+those first on the `IntentBuilder` before any of the others.
 This limitation will be lifted (hopefully) [in the future](https://github.com/commonsguy/cwac-cam2/issues/69).
 
 ## Example Use of `IntentBuilder`
 
 ```java
   Intent i=new CameraActivity.IntentBuilder(MainActivity.this)
-      .skipConfirm()
+      .quality(Quality.LOW)
       .facing(CameraSelectionCriteria.Facing.FRONT)
-      .to(new File(testRoot, "portrait-front.jpg"))
+      .to(new File(testRoot, "test.mp4"))
       .debug()
       .updateMediaStore()
       .build();
 
-  startActivityForResult(i, REQUEST_PORTRAIT_FFC);
+  startActivityForResult(i, MAKIN_MOVIES);
 ```
 
 ## Output
 
-If you provide the destination `Uri` via `to()`, the image will be written there, and the `Uri` of the `Intent`
-delivered to `onActivityResult()` will be your requested `Uri`.
-
-If you do not provide the destination `Uri`, a thumbnail image will be supplied via the `data` extra on the `Intent` delivered to `onActivityResult()`.
+The video will be written to the `File` that you supply to `to()`,
+and the `Uri` of the `Intent` delivered to `onActivityResult()` will point
+to that file.
 
 And, of course, the `resultCode` passed to `onActivityResult()` will indicate if the user took a picture or abandoned the operation.
 
@@ -63,30 +73,26 @@ However, more often than not, you will want to change aspects of the
 activity, such as its theme.
 
 To do that, add your own `<activity>` element to the manifest, pointing
-to the `CameraActivity` class, and add in whatever attributes or child
+to the `VideoRecorderActivity` class, and add in whatever attributes or child
 elements that you need.
 
 For example, the following manifest entry sets the theme:
 
 ```xml
 <activity
-      android:name="com.commonsware.cwac.cam2.CameraActivity"
+      android:name="com.commonsware.cwac.cam2.VideoRecorderActivity"
       android:theme="@style/AppTheme"/>
 ```
 
-Note that `CameraActivity` does not support being exported. Do not add
+Note that `VideoRecorderActivity` does not support being exported. Do not add
 an `<intent-filter>` to this activity or otherwise mark it as being
 exported.
 
-Also note that `CameraActivity` needs a theme with the native action
-bar, unless you use `skipConfirm()`, in which case `CameraActivity`
-should be able to work without an action bar.
-
-`CameraActivity` supports running in a separate process, via
+`VideoRecorderActivity` supports running in a separate process, via
 the `android:process` attribute. This ensures that the heap space
 consumed in all the camera processing will not affect your main
 process' heap space. It does mean that you will consume more system
 RAM while the user is taking a picture, and it does incrementally
-slow down the launching of the `CameraActivity`. You can see this
+slow down the launching of the `VideoRecorderActivity`. You can see this
 use of `android:process` demonstrated in the `demo-playground/`
 sample project.

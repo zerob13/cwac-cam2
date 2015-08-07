@@ -2,18 +2,19 @@ CWAC-Cam2: Taking Pictures. Made (Somewhat) Sensible. Again.
 ============================================================
 
 Taking pictures using a third-party app is fairly straightforward,
-using `ACTION_IMAGE_CAPTURE`. However, different camera
+using `ACTION_IMAGE_CAPTURE` and `ACTION_VIDEO_CAPTURE`. However, different camera
 apps have slightly different behavior, meaning that you are prone to getting
 inconsistent results.
 
 Taking pictures using the Android SDK camera classes directly is
 eminently possible, but is full of edge and corner cases, not to mention
 its own set of per-device idiosyncracies. Plus, there are now two
-separate APIs for this.
+separate APIs for this, three if you count `MediaRecorder` for
+video recording.
 
-`CWAC-Cam2` is an effort to create an in-app `ACTION_IMAGE_CAPTURE`
+`CWAC-Cam2` is an effort to create an in-app `ACTION_IMAGE_CAPTURE`/`ACTION_VIDEO_CAPTURE`
 workalike, with a bit more configurability. You still integrate by
-opening up a separate activity (`CameraActivity`, in this case), but
+opening up a separate activity (`CameraActivity` and `VideoRecorderActivity`, in this case), but
 it is all within your own app, rather than relying upon device- or
 user-specific third-party camera apps.
 
@@ -23,7 +24,7 @@ The #1 objective of this library is maximum compatibility with hardware. As such
 this library will not be suitable for all use cases.
 
 The targeted use case is an app that might otherwise have relied upon
-`ACTION_IMAGE_CAPTURE`, but needs greater reliablilty and somewhat greater
+`ACTION_IMAGE_CAPTURE`/`ACTION_VIDEO_CAPTURE`, but needs greater reliablilty and somewhat greater
 control (e.g., capture images directly to internal storage).
 
 If you are trying to write "a camera app" &mdash; an app whose primary job is
@@ -41,7 +42,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.commonsware.cwac:cam2:0.1.+'
+    compile 'com.commonsware.cwac:cam2:0.2.+'
 }
 ```
 
@@ -49,14 +50,17 @@ The `cam2` artifact depends on some other libraries, available in
 JCenter or Maven Central. They should be pulled down automatically
 when you integrate in the `cam2` AAR.
 
-You are also welcome to clone this repo and use the `camera/` Android
+You are also welcome to clone this repo and use the `cam2/` Android
 library project2 in source form.
 
 Basic Usage
 -----------
 
 The only supported API at the moment is through
-[`CameraActivity` and its `IntentBuilder`](docs/CameraActivity.md).
+[`CameraActivity` and its `IntentBuilder`](docs/CameraActivity.md) for
+still pictures and
+[`VideoRecorderActivity` and its `IntentBuilder`](docs/VideoRecorderActivity.md)
+for videos.
 
 While there are other `public` classes and methods in the library,
 ones that may be exposed as part of a public API in the future,
@@ -64,7 +68,6 @@ they are not supported at present.
 
 Tested Devices
 --------------
-
 The [compatibility status page](docs/CompatibilityStatus.md) outlines
 what devices have been tested with this library by the library author.
 
@@ -78,7 +81,8 @@ and should be added to your project automatically.
 
 Version
 -------
-This is version v0.1.1 of this library, which means it is brand new.
+This is version v0.2.0 of this library, which means it is a toddler,
+waddling around with a goofy grin on its face.
 
 Demo
 ----
@@ -92,7 +96,8 @@ going to [file a bug report](CONTRIBUTING.md).
 The `demo-playground/` sample project displays a `PreferenceFragment`
 where you can tweak various `IntentBuilder` configurations, then tap
 on an action bar item to take a picture using those settings. This is
-good for experimenting with the `CameraActivity` capabilities.
+good for experimenting with the `CameraActivity` and
+`VideoRecorderActivity` capabilities.
 
 License
 -------
@@ -117,6 +122,7 @@ Do not ask for help via social media.
 
 Release Notes
 -------------
+- v0.2.0: added initial support for video recording, fixed aspect ratio and other bugs
 - v0.1.1: added `forceClassic()` and `updateMediaStore()`, fixed numerous issues
 - v0.1.0: initial release
 
