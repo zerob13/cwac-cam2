@@ -47,9 +47,9 @@ This limitation will be lifted (hopefully) [in the future](https://github.com/co
 ## Example Use of `IntentBuilder`
 
 ```java
-  Intent i=new CameraActivity.IntentBuilder(MainActivity.this)
+  Intent i=new VideoRecorderActivity.IntentBuilder(MainActivity.this)
       .quality(Quality.LOW)
-      .facing(CameraSelectionCriteria.Facing.FRONT)
+      .facing(VideoRecorderActivity.Facing.FRONT)
       .to(new File(testRoot, "test.mp4"))
       .debug()
       .updateMediaStore()
