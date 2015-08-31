@@ -38,7 +38,7 @@ This limitation will be lifted (hopefully) [in the future](https://github.com/co
 ```java
   Intent i=new CameraActivity.IntentBuilder(MainActivity.this)
       .skipConfirm()
-      .facing(CameraSelectionCriteria.Facing.FRONT)
+      .facing(CameraActivity.Facing.FRONT)
       .to(new File(testRoot, "portrait-front.jpg"))
       .debug()
       .updateMediaStore()
