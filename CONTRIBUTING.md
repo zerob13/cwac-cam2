@@ -19,7 +19,8 @@ If pictures taken using this library are coming out incorrectly (garbled, incorr
 best way to document that bug is by running the `demo`/ app from the project and attaching the ZIP archive it generates
 to your [issue](https://github.com/commonsguy/cwac-cam2/issues). The `demo/` app not only takes four pictures (two per
 orientation, two per camera) and includes them in the ZIP archive, but the ZIP also contains a JSON file with some
-hardware details to help identify your hardware.
+hardware details to help identify your hardware, including the
+`Build.MANUFACTURER` and `Build.PRODUCT` values.
 
 If you cannot reproduce the bug using the demo app, but you can reproduce using your own app, include the
 `CameraActivity.IntentBuilder` configuration code that you are using, along with any other code snippets that you think
@@ -42,6 +43,14 @@ when you post your [issue](https://github.com/commonsguy/cwac-cam2/issues).
 If you have an idea for how to make the library better, feel free to file an [issue](https://github.com/commonsguy/cwac-cam2/issues).
 You will have better luck in getting the feature implemented if you can "sell" the library author
 on how this feature will help the library author.
+
+## Asking for Other Sorts of Help
+
+Please read [the project documentation](https://github.com/commonsguy/cwac-cam2#questions)
+for instructions on where and how to ask questions. Note that questions
+regarding using unsupported APIs in your project (e.g., working
+directly with `CameraFragment`) will not get much in the way of a response,
+as there are reasons why those APIs are "unsupported". :-)
 
 ## Contributing Code
 

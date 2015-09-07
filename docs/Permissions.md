@@ -13,13 +13,35 @@ for your apps with respect to permissions.
 
 ## Android 6.0 Runtime Permissions
 
-TBD
+On Android 6.0, all three of the permissions listed above are
+considered `dangerous` permissions and therefore are subject to the
+new runtime permission system. That means that not only do you
+need the `<uses-permission>` element in the manifest for the permission,
+but you need to ask the user for the permission at runtime, until
+the user grants it (or tells you to stop asking).
+
+The library will handle some bare-bones work related to this,
+asking the user for `CAMERA` and `RECORD_AUDIO`. However, really,
+this logic should be in the app, not the library, as you will need to
+deal with the cases where the user declines the permission (the library
+just finishes its activity and returns control to you).
+
+This documentation is not designed to provide complete instructions
+for using the runtime permission system. Please refer to
+[the official documentation](http://developer.android.com/preview/features/runtime-permissions.html)
+or [the author's book](https://commonsware.com/Android) for more
+details.
+
+Note that, at the present time, the demo apps do not handle
+the runtime permissions, though
+[this is planned for the not-too-distant future](https://github.com/commonsguy/cwac-cam2/issues/83).
 
 ## Blocking Permissions
 
 If you do not intend to take videos, you could get away without
 the `RECORD_AUDIO` and perhaps the `WRITE_EXTERNAL_STORAGE`
-permissions. To remove those from your app's manifest, add
+permissions (depending on where you are saving the photos).
+To remove those from your app's manifest, add
 the following elements to your manifest, as children of the
 root `<manifest>` element:
 

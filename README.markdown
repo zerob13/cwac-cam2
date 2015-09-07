@@ -60,11 +60,14 @@ The only supported API at the moment is through
 [`CameraActivity` and its `IntentBuilder`](docs/CameraActivity.md) for
 still pictures and
 [`VideoRecorderActivity` and its `IntentBuilder`](docs/VideoRecorderActivity.md)
-for videos.
+for videos. You will also want to review
+[the documentation regarding permissions](docs/Permissions.md), as
+while the library will work "out of the box", most likely you will
+want to do some permission setup in your app for Android 6.0+ devices.
 
 While there are other `public` classes and methods in the library,
-ones that may be exposed as part of a public API in the future,
-they are not supported at present.
+ones that *may* be exposed as part of a public API in the future,
+**they are not supported at the present time**.
 
 Tested Devices
 --------------
@@ -81,7 +84,7 @@ and should be added to your project automatically.
 
 Version
 -------
-This is version v0.2.0 of this library, which means it is a toddler,
+This is version v0.2.1 of this library, which means it is a toddler,
 waddling around with a goofy grin on its face.
 
 Demo
@@ -122,6 +125,7 @@ Do not ask for help via social media.
 
 Release Notes
 -------------
+- v0.2.1: added Android 6.0 runtime permission support, added missing <uses-feature> element
 - v0.2.0: added initial support for video recording, fixed aspect ratio and other bugs
 - v0.1.1: added `forceClassic()` and `updateMediaStore()`, fixed numerous issues
 - v0.1.0: initial release
