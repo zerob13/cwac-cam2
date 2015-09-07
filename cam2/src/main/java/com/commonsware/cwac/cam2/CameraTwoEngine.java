@@ -563,12 +563,12 @@ public class CameraTwoEngine extends CameraEngine {
 
     @Override
     public boolean isPictureFormatSupported(int format) {
-      return (ImageFormat.JPEG == format);
+      return(ImageFormat.JPEG == format);
     }
 
     @Override
     public ArrayList<Size> getPreviewSizes() {
-      return (previewSizes);
+      return(previewSizes);
     }
 
     private void setPreviewSizes(ArrayList<Size> sizes) {

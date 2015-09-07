@@ -33,7 +33,8 @@ import java.util.List;
  * original android.hardware.Camera API.
  */
 @SuppressWarnings("deprecation")
-public class ClassicCameraEngine extends CameraEngine implements MediaRecorder.OnInfoListener {
+public class ClassicCameraEngine extends CameraEngine
+    implements MediaRecorder.OnInfoListener {
   private List<CameraDescriptor> descriptors=null;
   private MediaRecorder recorder;
   private VideoTransaction xact;
