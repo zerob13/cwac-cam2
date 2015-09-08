@@ -24,6 +24,7 @@
 | Samsung Galaxy S III           | `samsung`/`d2lterefreshspr` | 4.4.2 | |
 | Samsung Galaxy S III           | `samsung`/`d2uc`            | 4.4.2 | |
 | Samsung Galaxy S4              | `samsung`/`jflteuc`         | 4.2.2 | [87](https://github.com/commonsguy/cwac-cam2/issues/87)
+| Samsung Galaxy S4              | `samsung`/`ja3gxx`          | 4.4.2 | [87](https://github.com/commonsguy/cwac-cam2/issues/87)
 | Samsung Galaxy S 4 Zoom        | `samsung`/`mprojectlteuc`   | 4.2.2 | [84](https://github.com/commonsguy/cwac-cam2/issues/84) |
 
 Columns:
