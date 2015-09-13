@@ -20,6 +20,7 @@
 | Samsung Galaxy Camera EK-GC110 | `samsung`/`gd1wifiue`       | 4.1.2 | |
 | Samsung Galaxy Grand GT-I9080L | `samsung`/`baffinssvj`      | 4.2.2 | |
 | Samsung Galaxy Note 2 GT-N7100 | `samsung`/`t03gxx`          | 4.1.2 | |
+| Samsung Galaxy Note 3 SM-N900  | `samsung`/???               | 5.0   | [92](https://github.com/commonsguy/cwac-cam2/issues/92) |
 | Samsung Galaxy Pocket Neo      | `samsung`/`corsicadd`       | 4.1.2 | |
 | Samsung Galaxy S III           | `samsung`/`d2lterefreshspr` | 4.4.2 | |
 | Samsung Galaxy S III           | `samsung`/`d2tmo`           | 4.3   |
