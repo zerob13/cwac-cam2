@@ -385,6 +385,9 @@ public class MainActivity extends Activity {
     String[] cpu={Build.CPU_ABI, Build.CPU_ABI2};
     String version=Build.VERSION.RELEASE;
     int api=Build.VERSION.SDK_INT;
+    String brand=Build.BRAND;
+    String model=Build.MODEL;
+    String hardware=Build.HARDWARE;
   }
 
   private static class CompleteOutputCompletedEvent {
