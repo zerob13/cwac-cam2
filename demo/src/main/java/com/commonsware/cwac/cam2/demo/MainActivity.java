@@ -16,6 +16,7 @@ package com.commonsware.cwac.cam2.demo;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 import com.commonsware.cwac.cam2.AbstractCameraActivity;
 import com.commonsware.cwac.cam2.CameraActivity;
@@ -40,12 +42,20 @@ import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import de.greenrobot.event.EventBus;
+import com.commonsware.cwac.security.RuntimePermissionUtils;
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class MainActivity extends Activity {
+  private static final String[] PERMS_ALL={
+    CAMERA,
+    WRITE_EXTERNAL_STORAGE
+  };
   private static final int REQUEST_PORTRAIT_RFC=1337;
   private static final int REQUEST_PORTRAIT_FFC=REQUEST_PORTRAIT_RFC+1;
   private static final int REQUEST_LANDSCAPE_RFC=REQUEST_PORTRAIT_RFC+2;
   private static final int REQUEST_LANDSCAPE_FFC=REQUEST_PORTRAIT_RFC+3;
+  private static final int RESULT_PERMS_ALL=REQUEST_PORTRAIT_RFC+4;
   private static final String STATE_PAGE="cwac_cam2_demo_page";
   private static final String STATE_TEST_ROOT="cwac_cam2_demo_test_root";
   private ViewFlipper wizardBody;
@@ -53,11 +63,15 @@ public class MainActivity extends Activity {
   private Button next;
   private File testRoot;
   private File testZip;
+  private SharedPreferences prefs;
+  private RuntimePermissionUtils utils;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main);
+
+    utils=new RuntimePermissionUtils(this);
 
     wizardBody=(ViewFlipper)findViewById(R.id.wizard_body);
     previous=(Button)findViewById(R.id.previous);
@@ -77,6 +91,10 @@ public class MainActivity extends Activity {
     }
 
     testZip=new File(testRoot.getAbsolutePath()+".zip");
+
+    if (!haveNecessaryPermissions() && utils.useRuntimePermissions()) {
+      requestPermissions(PERMS_ALL, RESULT_PERMS_ALL);
+    }
 
     handlePage();
   }
@@ -111,7 +129,8 @@ public class MainActivity extends Activity {
     super.onSaveInstanceState(outState);
 
     outState.putInt(STATE_PAGE, wizardBody.getDisplayedChild());
-    outState.putString(STATE_TEST_ROOT, testRoot.getAbsolutePath());
+    outState.putString(STATE_TEST_ROOT,
+      testRoot.getAbsolutePath());
   }
 
   @Override
@@ -151,6 +170,22 @@ public class MainActivity extends Activity {
         handlePage();
         break;
     }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode,
+                                         String[] permissions,
+                                         int[] grantResults) {
+    if (!haveNecessaryPermissions()) {
+      Toast.makeText(this, R.string.msg_perms_missing,
+        Toast.LENGTH_LONG).show();
+      finish();
+    }
+  }
+
+  private boolean haveNecessaryPermissions() {
+    return(utils.hasPermission(CAMERA) &&
+      utils.hasPermission(WRITE_EXTERNAL_STORAGE));
   }
 
   private void handlePage() {
