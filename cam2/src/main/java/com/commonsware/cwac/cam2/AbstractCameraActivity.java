@@ -126,11 +126,13 @@ abstract public class AbstractCameraActivity extends Activity {
         }
       }
       else if (Build.VERSION.SDK_INT<Build.VERSION_CODES.KITKAT) {
+/*
         View v=findViewById(android.R.id.content);
 
         if (v instanceof FrameLayout) {
           v.setForeground(null);
         }
+*/
       }
       else {
         View v=((ViewGroup)getWindow().getDecorView()).getChildAt(0);
