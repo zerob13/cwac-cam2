@@ -17,6 +17,7 @@
 | HTC One S                      | `HTC`/`tmous`               | 4.1.1 | [35](https://github.com/commonsguy/cwac-cam2/issues/35) |
 | HTC One M7 GPE                 | `HTC`/`m7_google`           | 5.1   | |
 | LG G2                          | `LGE`/`g2_open_com`         | 4.4.2 | |
+| Motorola Moto E XT1022         | `motorola`/`condor_retla_ds`| 4.4.4 | |
 | Samsung Galaxy Ace 3           | `samsung`/`loganub`         | 4.2.2 | |
 | Samsung Galaxy Camera EK-GC110 | `samsung`/`gd1wifiue`       | 4.1.2 | |
 | Samsung Galaxy Grand GT-I9080L | `samsung`/`baffinssvj`      | 4.2.2 | |
