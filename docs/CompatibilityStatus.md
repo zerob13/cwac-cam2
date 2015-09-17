@@ -32,6 +32,7 @@
 | Samsung Galaxy S4              | `samsung`/`ja3gxx`          | 4.4.2 | [87](https://github.com/commonsguy/cwac-cam2/issues/87)
 | Samsung Galaxy S4 Zoom         | `samsung`/`mprojectlteuc`   | 4.2.2 | [84](https://github.com/commonsguy/cwac-cam2/issues/84) |
 | Samsung Galaxy S5              | `samsung`/???               | 5.0   | [92](https://github.com/commonsguy/cwac-cam2/issues/92) |
+| Tesco (Pegatron) hudl 2        | `Pegatron`/`HTF8A4XX`       | 4.4.2 | |
 
 Columns:
 - Device = generally accepted marketing term for the device
