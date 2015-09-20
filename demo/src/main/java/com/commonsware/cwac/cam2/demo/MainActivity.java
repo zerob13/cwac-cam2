@@ -71,6 +71,16 @@ public class MainActivity extends Activity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    if (!Environment.MEDIA_MOUNTED
+      .equals(Environment.getExternalStorageState())) {
+      Toast
+        .makeText(this, "Cannot access external storage!",
+          Toast.LENGTH_LONG)
+        .show();
+      finish();
+    }
+
     setContentView(R.layout.main);
 
     utils=new RuntimePermissionUtils(this);
@@ -118,16 +128,20 @@ public class MainActivity extends Activity {
   @Override
   protected void onDestroy() {
     if (!isChangingConfigurations()) {
-      delete(testRoot);
+      if (testRoot.exists()) {
+        delete(testRoot);
+      }
+
+      if (testZip.exists()) {
+        testZip.delete();
+
+        MediaScannerConnection.scanFile(
+          this,
+          new String[]{testZip.getAbsolutePath()},
+          null,
+          null);
+      }
     }
-
-    testZip.delete();
-
-    MediaScannerConnection.scanFile(
-      this,
-      new String[]{testZip.getAbsolutePath()},
-      null,
-      null);
 
     super.onDestroy();
   }
