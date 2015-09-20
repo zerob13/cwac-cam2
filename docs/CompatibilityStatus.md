@@ -33,6 +33,7 @@
 | Samsung Galaxy S4 Zoom         | `samsung`/`mprojectlteuc`   | 4.2.2 | [84](https://github.com/commonsguy/cwac-cam2/issues/84) |
 | Samsung Galaxy S5              | `samsung`/???               | 5.0   | [92](https://github.com/commonsguy/cwac-cam2/issues/92) |
 | SONY Xperia E (C1505)          | `Sony`/`C1505`              | 4.1.1 | |
+| SONY Xperia S (LT26i)          | `Sony Ericsson`/`LT26i_1257-4921` | 4.1.2 | [97](https://github.com/commonsguy/cwac-cam2/issues/97) |
 | SONY Xperia Z Ultra (C6802)    | `Sony`/`C6802`              | 4.4.4 | |
 | SONY Xperia Z (C6603)          | ???                         | 5.1.1 | [96](https://github.com/commonsguy/cwac-cam2/issues/96) |
 | Tesco (Pegatron) hudl 2        | `Pegatron`/`HTF8A4XX`       | 4.4.2 | |
