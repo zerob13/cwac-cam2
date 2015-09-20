@@ -15,8 +15,10 @@
 package com.commonsware.cwac.cam2.demo;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -120,6 +122,12 @@ public class MainActivity extends Activity {
     }
 
     testZip.delete();
+
+    MediaScannerConnection.scanFile(
+      this,
+      new String[]{testZip.getAbsolutePath()},
+      null,
+      null);
 
     super.onDestroy();
   }
@@ -256,9 +264,11 @@ public class MainActivity extends Activity {
 
         i.setType("application/zip");
         i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(testZip));
-        i.putExtra(Intent.EXTRA_SUBJECT, "CWAC-Cam2 Test Results");
+        i.putExtra(Intent.EXTRA_SUBJECT,
+          "CWAC-Cam2 Test Results");
 
-        startActivity(Intent.createChooser(i, "Share Test Results"));
+        startActivity(
+          Intent.createChooser(i, "Share Test Results"));
       }
     });
   }
@@ -305,7 +315,7 @@ public class MainActivity extends Activity {
   private void handleCompletionPage() {
     next.setEnabled(false);
     previous.setEnabled(false);
-    new CompleteOutputThread(testRoot, testZip).start();
+    new CompleteOutputThread(this, testRoot, testZip).start();
   }
 
   // inspired by http://pastebin.com/PqJyzQUx
@@ -316,7 +326,7 @@ public class MainActivity extends Activity {
    * @param f The directory (or file) to delete
    * @return true if the delete succeeded, false otherwise
    */
-  public static boolean delete(File f) {
+  public boolean delete(File f) {
     if (f.isDirectory()) {
       for (File child : f.listFiles()) {
         if (!delete(child)) {
@@ -325,30 +335,50 @@ public class MainActivity extends Activity {
       }
     }
 
-    return(f.delete());
+    boolean result=f.delete();
+
+    MediaScannerConnection.scanFile(
+      this,
+      new String[]{f.getAbsolutePath()},
+      null,
+      null);
+
+    return(result);
   }
 
   // based on http://stackoverflow.com/a/16646691/115145
 
-  private static void zipDirectory(File dir, File zipFile) throws IOException {
+  private static void zipDirectory(Context ctxt, File dir,
+                                   File zipFile) throws IOException {
     FileOutputStream fout = new FileOutputStream(zipFile);
     ZipOutputStream zout = new ZipOutputStream(fout);
-    zipSubDirectory("", dir, zout);
+    zipSubDirectory(ctxt, "", dir, zout);
     zout.flush();
     fout.getFD().sync();
     zout.close();
   }
 
-  private static void zipSubDirectory(String basePath, File dir, ZipOutputStream zout) throws IOException {
+  private static void zipSubDirectory(Context ctxt,
+                                      String basePath, File dir,
+                                      ZipOutputStream zout)
+    throws IOException {
     byte[] buffer = new byte[4096];
     File[] files = dir.listFiles();
+
     for (File file : files) {
       if (file.isDirectory()) {
         String path = basePath + file.getName() + "/";
         zout.putNextEntry(new ZipEntry(path));
-        zipSubDirectory(path, file, zout);
+        zipSubDirectory(ctxt, path, file, zout);
         zout.closeEntry();
-      } else {
+      }
+      else {
+        MediaScannerConnection.scanFile(
+          ctxt,
+          new String[]{file.getAbsolutePath()},
+          null,
+          null);
+
         FileInputStream fin = new FileInputStream(file);
         zout.putNextEntry(new ZipEntry(basePath + file.getName()));
         int length;
@@ -382,10 +412,12 @@ public class MainActivity extends Activity {
   private static class CompleteOutputThread extends Thread {
     private final File testRoot;
     private final File testZip;
+    private final Context ctxt;
 
-    CompleteOutputThread(File testRoot, File testZip) {
+    CompleteOutputThread(Context ctxt, File testRoot, File testZip) {
       this.testRoot=testRoot;
       this.testZip=testZip;
+      this.ctxt=ctxt.getApplicationContext();
     }
 
     @Override
@@ -403,7 +435,12 @@ public class MainActivity extends Activity {
         out.flush();
         fos.getFD().sync();
         out.close();
-        zipDirectory(testRoot, testZip);
+        zipDirectory(ctxt, testRoot, testZip);
+        MediaScannerConnection.scanFile(
+          ctxt,
+          new String[]{testZip.getAbsolutePath()},
+          null,
+          null);
       }
       catch (IOException e) {
         Log.e(getClass().getSimpleName(), "Exception writing JSON", e);
