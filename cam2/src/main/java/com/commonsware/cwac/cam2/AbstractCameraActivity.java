@@ -14,6 +14,7 @@
 
 package com.commonsware.cwac.cam2;
 
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ClipData;
@@ -104,6 +105,7 @@ abstract public class AbstractCameraActivity extends Activity {
    *
    * @param savedInstanceState the state of a previous instance
    */
+  @TargetApi(23)
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -125,15 +127,6 @@ abstract public class AbstractCameraActivity extends Activity {
           getActionBar().setElevation(0);
         }
       }
-      else if (Build.VERSION.SDK_INT<Build.VERSION_CODES.KITKAT) {
-/*
-        View v=findViewById(android.R.id.content);
-
-        if (v instanceof FrameLayout) {
-          v.setForeground(null);
-        }
-*/
-      }
       else {
         View v=((ViewGroup)getWindow().getDecorView()).getChildAt(0);
 
@@ -151,13 +144,18 @@ abstract public class AbstractCameraActivity extends Activity {
       }
     }
 
-    String[] perms=netPermissions(getNeededPermissions());
+    if (useRuntimePermissions()) {
+      String[] perms=netPermissions(getNeededPermissions());
 
-    if (perms.length==0) {
-      init();
+      if (perms.length==0) {
+        init();
+      }
+      else {
+        requestPermissions(perms, REQUEST_PERMS);
+      }
     }
     else {
-      requestPermissions(perms, REQUEST_PERMS);
+      init();
     }
   }
 
@@ -267,6 +265,7 @@ abstract public class AbstractCameraActivity extends Activity {
     }
   }
 
+  @TargetApi(23)
   private boolean hasPermission(String perm) {
     if (useRuntimePermissions()) {
       return(checkSelfPermission(perm)==PackageManager.PERMISSION_GRANTED);
