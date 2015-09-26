@@ -84,6 +84,10 @@ public class VideoFragment extends PreferenceFragment {
       b.facing(AbstractCameraActivity.Facing.BACK);
     }
 
+    if (prefs.getBoolean("exact_match", false)) {
+      b.facingExactMatch();
+    }
+
     if (prefs.getBoolean("debug", false)) {
       b.debug();
     }

@@ -75,12 +75,24 @@ abstract public class AbstractCameraActivity extends Activity {
    * CameraSelectionCriteria.Facing instance.
    */
   public static final String EXTRA_FACING="cwac_cam2_facing";
+
+  /**
+   * Extra name for indicating that the requested facing
+   * must be an exact match, without gracefully degrading to
+   * whatever camera happens to be available. If set to true,
+   * requests to take a picture, for which the desired camera
+   * is not available, will be cancelled. Defaults to false.
+   */
+  public static final String EXTRA_FACING_EXACT_MATCH=
+    "cwac_cam2_facing_exact_match";
+
   /**
    * Extra name for indicating whether extra diagnostic
    * information should be reported, particularly for errors.
    * Default is false.
    */
   public static final String EXTRA_DEBUG_ENABLED="cwac_cam2_debug";
+
   /**
    * Extra name for indicating if MediaStore should be updated
    * to reflect a newly-taken picture. Only relevant if
@@ -88,12 +100,14 @@ abstract public class AbstractCameraActivity extends Activity {
    */
   public static final String EXTRA_UPDATE_MEDIA_STORE=
       "cwac_cam2_update_media_store";
+
   /**
    * If set to true, forces the use of the ClassicCameraEngine
    * on Android 5.0+ devices. Has no net effect on Android 4.x
    * devices. Defaults to false.
    */
   public static final String EXTRA_FORCE_CLASSIC="cwac_cam2_force_classic";
+
   /**
    * If set to true, horizontally flips or mirrors the preview.
    * Does not change the picture or video output. Used mostly for FFC,
@@ -261,9 +275,15 @@ abstract public class AbstractCameraActivity extends Activity {
         facing=Facing.BACK;
       }
 
+      boolean match=getIntent()
+        .getBooleanExtra(EXTRA_FACING_EXACT_MATCH, false);
       CameraSelectionCriteria criteria=
-        new CameraSelectionCriteria.Builder().facing(facing).build();
-      boolean forceClassic=getIntent().getBooleanExtra(EXTRA_FORCE_CLASSIC, false);
+        new CameraSelectionCriteria.Builder()
+          .facing(facing)
+          .facingExactMatch(match)
+          .build();
+      boolean forceClassic=
+        getIntent().getBooleanExtra(EXTRA_FORCE_CLASSIC, false);
 
       ctrl.setEngine(CameraEngine.buildInstance(this, forceClassic), criteria);
       ctrl.getEngine().setDebug(getIntent().getBooleanExtra(EXTRA_DEBUG_ENABLED, false));
@@ -343,6 +363,18 @@ abstract public class AbstractCameraActivity extends Activity {
      */
     public IntentBuilder facing(Facing facing) {
       result.putExtra(EXTRA_FACING, facing);
+
+      return(this);
+    }
+
+    /**
+     * Indicates that the desired facing value for the camera
+     * must be an exact match (and, if not, cancel the request).
+     *
+     * @return the builder, for further configuration
+     */
+    public IntentBuilder facingExactMatch() {
+      result.putExtra(EXTRA_FACING_EXACT_MATCH, true);
 
       return(this);
     }

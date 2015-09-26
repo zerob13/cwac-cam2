@@ -5,6 +5,9 @@
     android:key="ffc"
     android:title="@string/title_ffc"/>
   <SwitchPreference
+    android:key="exact_match"
+    android:title="@string/title_exact_match"/>
+  <SwitchPreference
     android:key="updateMediaStore"
     android:title="@string/title_update_media_store"/>
   <SwitchPreference

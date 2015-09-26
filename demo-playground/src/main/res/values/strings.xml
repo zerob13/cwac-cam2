@@ -16,5 +16,6 @@
 	<string name="title_duration">Set duration limit</string>
 	<string name="title_size">Set size limit</string>
 	<string name="title_mirror_preview">Mirror Preview</string>
+	<string name="title_exact_match">Fail if no camera match</string>
 
 </resources>
