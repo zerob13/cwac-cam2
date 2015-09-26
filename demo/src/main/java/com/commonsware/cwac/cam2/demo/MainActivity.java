@@ -14,6 +14,7 @@
 
 package com.commonsware.cwac.cam2.demo;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -68,6 +69,7 @@ public class MainActivity extends Activity {
   private SharedPreferences prefs;
   private RuntimePermissionUtils utils;
 
+  @TargetApi(23)
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
