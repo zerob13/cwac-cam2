@@ -116,6 +116,21 @@ public class VideoFragment extends PreferenceFragment {
       b.mirrorPreview();
     }
 
+    int rawFocusMode=Integer.valueOf(
+      prefs.getString("focusMode", "-1"));
+
+    switch (rawFocusMode) {
+      case 0:
+        b.focusMode(AbstractCameraActivity.FocusMode.CONTINUOUS);
+        break;
+      case 1:
+        b.focusMode(AbstractCameraActivity.FocusMode.OFF);
+        break;
+      case 2:
+        b.focusMode(AbstractCameraActivity.FocusMode.EDOF);
+        break;
+    }
+
     ((Contract)getActivity()).takeVideo(b.build());
   }
 }

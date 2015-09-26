@@ -27,5 +27,10 @@
   <SwitchPreference
     android:key="mirrorPreview"
     android:title="@string/title_mirror_preview"/>
+  <ListPreference
+    android:key="focusMode"
+    android:entries="@array/focusModes"
+    android:entryValues="@array/focusModeValues"
+    android:title="@string/title_focus_mode" />
 
 </PreferenceScreen>

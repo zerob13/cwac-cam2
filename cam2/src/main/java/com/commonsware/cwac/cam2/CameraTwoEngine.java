@@ -358,6 +358,11 @@ public class CameraTwoEngine extends CameraEngine {
               CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
           // TODO: offer other flash support
 
+          Descriptor camera=(Descriptor)s.getDescriptor();
+          CameraCharacteristics cc=mgr.getCameraCharacteristics(camera.cameraId);
+
+          s.addToPreviewRequest(cc, s.previewRequestBuilder);
+
           s.previewRequest=s.previewRequestBuilder.build();
 
           session.setRepeatingRequest(s.previewRequest, null, handler);
@@ -664,6 +669,17 @@ public class CameraTwoEngine extends CameraEngine {
 
         if (configurator!=null) {
           configurator.addToCaptureRequest(cc, isFacingFront, captureBuilder);
+        }
+      }
+    }
+
+    void addToPreviewRequest(CameraCharacteristics cc,
+                             CaptureRequest.Builder captureBuilder) {
+      for (CameraPlugin plugin : getPlugins()) {
+        CameraTwoConfigurator configurator=plugin.buildConfigurator(CameraTwoConfigurator.class);
+
+        if (configurator!=null) {
+          configurator.addToPreviewRequest(cc, captureBuilder);
         }
       }
     }

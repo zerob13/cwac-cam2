@@ -115,6 +115,14 @@ abstract public class AbstractCameraActivity extends Activity {
    */
   public static final String EXTRA_MIRROR_PREVIEW="cwac_cam2_mirror_preview";
 
+  /**
+   * Extra name for focus mode to apply. Value should be one of the
+   * AbstractCameraActivity.FocusMode enum values. Default is CONTINUOUS.
+   * If the desired focus mode is not available, the device default
+   * focus mode is used.
+   */
+  public static final String EXTRA_FOCUS_MODE="cwac_cam2_focus_mode";
+
   protected static final String TAG_CAMERA=CameraFragment.class.getCanonicalName();
   private static final int REQUEST_PERMS=13401;
   protected CameraFragment cameraFrag;
@@ -261,7 +269,9 @@ abstract public class AbstractCameraActivity extends Activity {
     if (cameraFrag==null) {
       cameraFrag=buildFragment();
 
-      CameraController ctrl=new CameraController();
+      FocusMode focusMode=
+        (FocusMode)getIntent().getSerializableExtra(EXTRA_FOCUS_MODE);
+      CameraController ctrl=new CameraController(focusMode, isVideo());
 
       cameraFrag.setController(ctrl);
       cameraFrag
@@ -328,6 +338,10 @@ abstract public class AbstractCameraActivity extends Activity {
     boolean isFront() {
       return(this==FRONT);
     }
+  }
+
+  public enum FocusMode {
+    CONTINUOUS, OFF, focusMode, EDOF
   }
 
   public static class IntentBuilder {
@@ -453,6 +467,17 @@ abstract public class AbstractCameraActivity extends Activity {
      */
     public IntentBuilder mirrorPreview() {
       result.putExtra(EXTRA_MIRROR_PREVIEW, true);
+
+      return(this);
+    }
+
+    /**
+     * Sets the desired focus mode. Default is CONTINUOUS.
+     *
+     * @return the builder, for further configuration
+     */
+    public IntentBuilder focusMode(FocusMode focusMode) {
+      result.putExtra(EXTRA_FOCUS_MODE, focusMode);
 
       return(this);
     }
