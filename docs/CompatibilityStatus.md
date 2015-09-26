@@ -1,6 +1,8 @@
 # Compatibility Status
 
-| Device                         | Identifier                  | 0.2.0 | Issues |
+## Version 0.2.x
+
+| Device                         | Identifier                  | Version | Issues |
 | ------------------------------ |:---------------------------:|:-----:|--------|
 | Amazon Kindle Fire HD 6        | `Amazon`/`full_ariel`       | 4.4.3 | |
 | Amazon Fire Phone              | `Amazon`/`juniper`          | 4.4.4 | |
