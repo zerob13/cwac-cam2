@@ -108,6 +108,10 @@ public class VideoFragment extends PreferenceFragment {
       b.sizeLimit(Integer.parseInt(sizeLimit));
     }
 
+    if (prefs.getBoolean("mirrorPreview", false)) {
+      b.mirrorPreview();
+    }
+
     ((Contract)getActivity()).takeVideo(b.build());
   }
 }

@@ -94,6 +94,12 @@ abstract public class AbstractCameraActivity extends Activity {
    * devices. Defaults to false.
    */
   public static final String EXTRA_FORCE_CLASSIC="cwac_cam2_force_classic";
+  /**
+   * If set to true, horizontally flips or mirrors the preview.
+   * Does not change the picture or video output. Used mostly for FFC,
+   * though will be honored for any camera. Defaults to false.
+   */
+  public static final String EXTRA_MIRROR_PREVIEW="cwac_cam2_mirror_preview";
 
   protected static final String TAG_CAMERA=CameraFragment.class.getCanonicalName();
   private static final int REQUEST_PERMS=13401;
@@ -244,6 +250,9 @@ abstract public class AbstractCameraActivity extends Activity {
       CameraController ctrl=new CameraController();
 
       cameraFrag.setController(ctrl);
+      cameraFrag
+        .setMirrorPreview(getIntent()
+          .getBooleanExtra(EXTRA_MIRROR_PREVIEW, false));
 
       Facing facing=
         (Facing)getIntent().getSerializableExtra(EXTRA_FACING);
@@ -401,6 +410,17 @@ abstract public class AbstractCameraActivity extends Activity {
      */
     public IntentBuilder forceClassic() {
       result.putExtra(EXTRA_FORCE_CLASSIC, true);
+
+      return(this);
+    }
+
+    /**
+     * Horizontally flips or mirrors the preview images.
+     *
+     * @return the builder, for further configuration
+     */
+    public IntentBuilder mirrorPreview() {
+      result.putExtra(EXTRA_MIRROR_PREVIEW, true);
 
       return(this);
     }

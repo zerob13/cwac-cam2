@@ -21,5 +21,8 @@
   <SwitchPreference
     android:key="forceClassic"
     android:title="@string/title_force_classic"/>
+  <SwitchPreference
+    android:key="mirrorPreview"
+    android:title="@string/title_mirror_preview"/>
 
 </PreferenceScreen>

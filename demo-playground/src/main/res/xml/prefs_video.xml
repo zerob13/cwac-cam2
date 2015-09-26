@@ -26,5 +26,8 @@
     android:entries="@array/sizes"
     android:entryValues="@array/sizeValues"
     android:title="@string/title_size" />
+  <SwitchPreference
+    android:key="mirrorPreview"
+    android:title="@string/title_mirror_preview"/>
 
 </PreferenceScreen>
