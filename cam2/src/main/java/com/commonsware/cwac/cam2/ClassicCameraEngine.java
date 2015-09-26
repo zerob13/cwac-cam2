@@ -301,7 +301,8 @@ public class ClassicCameraEngine extends CameraEngine
         @Override
         public void run() {
           camera.startPreview();
-          getBus().post(new PictureTakenEvent(xact.process(new ImageContext(ctxt, bytes))));
+          getBus().post(new PictureTakenEvent(xact,
+            xact.process(new ImageContext(ctxt, bytes))));
         }
       });
     }
