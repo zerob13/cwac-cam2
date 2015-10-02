@@ -24,7 +24,7 @@ The #1 objective of this library is maximum compatibility with hardware. As such
 this library will not be suitable for all use cases.
 
 The targeted use case is an app that might otherwise have relied upon
-`ACTION_IMAGE_CAPTURE`/`ACTION_VIDEO_CAPTURE`, but needs greater reliablilty and somewhat greater
+`ACTION_IMAGE_CAPTURE`/`ACTION_VIDEO_CAPTURE`, but needs greater reliability and somewhat greater
 control (e.g., capture images directly to internal storage).
 
 If you are trying to write "a camera app" &mdash; an app whose primary job is
