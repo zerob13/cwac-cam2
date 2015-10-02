@@ -11,6 +11,7 @@
 | Google Nexus 5                 | `LGE`/`hammerhead`          | 5.1.1 | |
 | Google Nexus 6                 | `motorola`/`shamu`          | 5.1.1 | |
 | Google Nexus 7 (2012)          | `asus`/`nakasi`             | 5.1.1   | [103](https://github.com/commonsguy/cwac-cam2/issues/103) |
+| Google Nexus 7 (2013)          | `asus`/`razor`              | 5.1.1 | |
 | Google Nexus S                 | `samsung`/`soju`            | 4.1.2 | |
 | HTC One M7 GPE                 | `HTC`/`m7_google`           | 5.1     | |
 | Samsung Galaxy Pocket Neo      | `samsung`/`corsicadd`       | 4.1.2   | |
