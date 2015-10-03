@@ -42,7 +42,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.commonsware.cwac:cam2:0.2.+'
+    compile 'com.commonsware.cwac:cam2:0.3.+'
 }
 ```
 
