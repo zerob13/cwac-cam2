@@ -14,7 +14,10 @@
 | Google Nexus 7 (2013)          | `asus`/`razor`              | 5.1.1 | |
 | Google Nexus S                 | `samsung`/`soju`            | 4.1.2 | |
 | HTC One M7 GPE                 | `HTC`/`m7_google`           | 5.1     | |
+| Samsung Galaxy Note 3 SM-N900  | `samsung`/`ha3gub`          | 5.0   | |
 | Samsung Galaxy Pocket Neo      | `samsung`/`corsicadd`       | 4.1.2   | |
+| Samsung Galaxy S5              | `samsung`/`k3gxx`           | 5.0   | |
+| SONY Xperia Z (C6603)          | `Sony`/`C6603`              | 5.1.1 | |
 
 ## Version 0.2.x
 
