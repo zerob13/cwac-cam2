@@ -24,6 +24,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -158,19 +159,25 @@ public class MainActivity extends Activity {
   }
 
   @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+  protected void onActivityResult(final int requestCode,
+                                  final int resultCode,
+                                  final Intent data) {
     switch(requestCode) {
       case REQUEST_PORTRAIT_RFC:
-        Intent i=new CameraActivity.IntentBuilder(MainActivity.this)
-            .skipConfirm()
-            .facing(AbstractCameraActivity.Facing.FRONT)
-            .facingExactMatch()
-            .to(new File(testRoot, "portrait-front.jpg"))
-            .debug()
-            .updateMediaStore()
-            .build();
+        Runnable r=new Runnable() {
+          @Override
+          public void run() {
+            capturePortraitFFC();
+          }
+        };
 
-        startActivityForResult(i, REQUEST_PORTRAIT_FFC);
+        if (resultCode==Activity.RESULT_CANCELED) {
+          wizardBody.postDelayed(r, 2000);
+        }
+        else {
+          r.run();
+        }
+
         break;
 
       case REQUEST_PORTRAIT_FFC:
@@ -179,16 +186,20 @@ public class MainActivity extends Activity {
         break;
 
       case REQUEST_LANDSCAPE_RFC:
-        i=new CameraActivity.IntentBuilder(MainActivity.this)
-            .skipConfirm()
-            .facing(AbstractCameraActivity.Facing.FRONT)
-            .facingExactMatch()
-            .to(new File(testRoot, "landscape-front.jpg"))
-            .updateMediaStore()
-            .debug()
-            .build();
+        r=new Runnable() {
+          @Override
+          public void run() {
+            captureLandscapeFFC();
+          }
+        };
 
-        startActivityForResult(i, REQUEST_LANDSCAPE_FFC);
+        if (resultCode==Activity.RESULT_CANCELED) {
+          wizardBody.postDelayed(r, 2000);
+        }
+        else {
+          r.run();
+        }
+
         break;
 
       case REQUEST_LANDSCAPE_FFC:
@@ -330,6 +341,32 @@ public class MainActivity extends Activity {
         .build();
 
     startActivityForResult(i, REQUEST_LANDSCAPE_RFC);
+  }
+
+  private void capturePortraitFFC() {
+    Intent i=new CameraActivity.IntentBuilder(MainActivity.this)
+      .skipConfirm()
+      .facing(AbstractCameraActivity.Facing.FRONT)
+      .facingExactMatch()
+      .to(new File(testRoot, "portrait-front.jpg"))
+      .debug()
+      .updateMediaStore()
+      .build();
+
+    startActivityForResult(i, REQUEST_PORTRAIT_FFC);
+  }
+
+  private void captureLandscapeFFC() {
+    Intent i=new CameraActivity.IntentBuilder(MainActivity.this)
+      .skipConfirm()
+      .facing(AbstractCameraActivity.Facing.FRONT)
+      .facingExactMatch()
+      .to(new File(testRoot, "landscape-front.jpg"))
+      .updateMediaStore()
+      .debug()
+      .build();
+
+    startActivityForResult(i, REQUEST_LANDSCAPE_FFC);
   }
 
   private void handleCompletionPage() {
