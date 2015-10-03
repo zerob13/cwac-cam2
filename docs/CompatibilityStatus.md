@@ -4,7 +4,8 @@
 
 | Device                         | Identifier                  | Version | Issues |
 | ------------------------------ |:---------------------------:|:-------:|--------|
-| Amazon Kindle Fire HD 6        | `Amazon`/`full_ariel`       | 4.4.3 | |
+| Amazon Kindle Fire HD 6        | `Amazon`/`full_ariel`       | 4.4.3   | |
+| Amazon Fire HD 10              | `Amazon`/`full_thebes`      | 5.1     | |
 | Amazon Fire Phone              | `Amazon`/`juniper`          | 4.4.4 | |
 | Google Galaxy Nexus            | `samsung`/`yakju`           | 4.3   | |
 | Google Nexus 4                 | `LGE`/`occam`               | 5.1.1   | |
