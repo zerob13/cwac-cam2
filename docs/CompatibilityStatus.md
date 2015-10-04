@@ -15,6 +15,7 @@
 | Google Nexus 7 (2013)          | `asus`/`razor`              | 5.1.1 | |
 | Google Nexus 9                 | `htc`/`volantis`            | 5.1.1   | [106](https://github.com/commonsguy/cwac-cam2/issues/106) |
 | Google Nexus S                 | `samsung`/`soju`            | 4.1.2 | |
+| HTC Incredible HD              | `HTC`/`htc_mecha`           | 4.0.4 | [32](https://github.com/commonsguy/cwac-cam2/issues/32) [33](https://github.com/commonsguy/cwac-cam2/issues/33) |
 | HTC One M7 GPE                 | `HTC`/`m7_google`           | 5.1     | |
 | Samsung Galaxy Note 3 SM-N900  | `samsung`/`ha3gub`          | 5.0   | |
 | Samsung Galaxy Pocket Neo      | `samsung`/`corsicadd`       | 4.1.2   | |
