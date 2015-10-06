@@ -17,6 +17,7 @@
 | Google Nexus S                 | `samsung`/`soju`            | 4.1.2 | |
 | HTC Incredible HD              | `HTC`/`htc_mecha`           | 4.0.4 | [32](https://github.com/commonsguy/cwac-cam2/issues/32) [33](https://github.com/commonsguy/cwac-cam2/issues/33) |
 | HTC One M7 GPE                 | `HTC`/`m7_google`           | 5.1     | |
+| HTC One S                      | `HTC`/`tmous`               | 4.1.1 | [35](https://github.com/commonsguy/cwac-cam2/issues/35) |
 | Samsung Galaxy Note 3 SM-N900  | `samsung`/`ha3gub`          | 5.0   | |
 | Samsung Galaxy Pocket Neo      | `samsung`/`corsicadd`       | 4.1.2   | |
 | Samsung Galaxy S5              | `samsung`/`k3gxx`           | 5.0   | |
