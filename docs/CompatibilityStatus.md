@@ -21,6 +21,7 @@
 | LG G2                          | `LGE`/`g2_open_com`         | 4.4.2 | |
 | Motorola Moto E XT1022         | `motorola`/`condor_retla_ds`| 4.4.4 | |
 | Samsung Galaxy Ace 3           | `samsung`/`loganub`         | 4.2.2 | |
+| Samsung Galaxy Camera EK-GC110 | `samsung`/`gd1wifiue`       | 4.1.2 | |
 | Samsung Galaxy Note 3 SM-N900  | `samsung`/`ha3gub`          | 5.0   | |
 | Samsung Galaxy Pocket Neo      | `samsung`/`corsicadd`       | 4.1.2   | |
 | Samsung Galaxy S III           | `samsung`/`d2lterefreshspr` | 4.4.2 | |
