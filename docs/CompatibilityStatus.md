@@ -11,7 +11,7 @@
 | Google Nexus 4                 | `LGE`/`occam`               | 5.1.1   | |
 | Google Nexus 5                 | `LGE`/`hammerhead`          | 5.1.1 | |
 | Google Nexus 6                 | `motorola`/`shamu`          | 5.1.1 | |
-| Google Nexus 7 (2012)          | `asus`/`nakasi`             | 5.1.1   | [103](https://github.com/commonsguy/cwac-cam2/issues/103) |
+| Google Nexus 7 (2012)          | `asus`/`nakasi`             | 5.1.1   | |
 | Google Nexus 7 (2013)          | `asus`/`razor`              | 5.1.1 | |
 | Google Nexus 9                 | `htc`/`volantis`            | 5.1.1   | [106](https://github.com/commonsguy/cwac-cam2/issues/106) |
 | Google Nexus S                 | `samsung`/`soju`            | 4.1.2 | |
@@ -25,6 +25,7 @@
 | Samsung Galaxy Note 3 SM-N900  | `samsung`/`ha3gub`          | 5.0   | |
 | Samsung Galaxy Pocket Neo      | `samsung`/`corsicadd`       | 4.1.2   | |
 | Samsung Galaxy S III           | `samsung`/`d2lterefreshspr` | 4.4.2 | |
+| Samsung Galaxy S4 Zoom         | `samsung`/`mprojectlteuc`   | 4.2.2 | |
 | Samsung Galaxy S5              | `samsung`/`k3gxx`           | 5.0   | |
 | SONY Xperia Z (C6603)          | `Sony`/`C6603`              | 5.1.1 | |
 
