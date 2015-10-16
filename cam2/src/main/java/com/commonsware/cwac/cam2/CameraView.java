@@ -31,7 +31,7 @@ import com.commonsware.cwac.cam2.util.Size;
  * maintaining aspect ratios and dealing with full-bleed previews.
  */
 public class CameraView extends TextureView implements TextureView.SurfaceTextureListener {
-  interface StateCallback {
+  public interface StateCallback {
     void onReady(CameraView cv);
     void onDestroyed(CameraView cv);
   }
@@ -100,7 +100,7 @@ public class CameraView extends TextureView implements TextureView.SurfaceTextur
     stateCallback=cb;
   }
 
-  void setMirror(boolean mirror) {
+  public void setMirror(boolean mirror) {
     this.mirror=mirror;
   }
 
