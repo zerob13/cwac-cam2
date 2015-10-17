@@ -82,6 +82,20 @@ action button and floating action menu implementation) and
 library). Both are listed as dependencies in the AAR artifact metadata
 and should be added to your project automatically.
 
+ProGuard
+--------
+It is recommended that you not obfuscate the classes in CWAC libraries:
+
+```
+-keep class com.commonsware.cwac.** { *; }
+```
+
+If you feel that obfuscating open source code makes sense,
+at minimum you will need to employ
+[appropriate rules](https://github.com/krschultz/android-proguard-snippets/blob/master/libraries/proguard-eventbus.pro)
+to prevent greenrobot's EventBus code, and this library's
+use of it, from being obfuscated.
+
 Version
 -------
 This is version v0.3.1 of this library, which means it is coming
