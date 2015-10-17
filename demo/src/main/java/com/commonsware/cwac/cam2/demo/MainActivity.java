@@ -18,13 +18,11 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +31,7 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 import com.commonsware.cwac.cam2.AbstractCameraActivity;
 import com.commonsware.cwac.cam2.CameraActivity;
+import com.commonsware.cwac.security.RuntimePermissionUtils;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import java.io.BufferedWriter;
@@ -46,7 +45,6 @@ import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import de.greenrobot.event.EventBus;
-import com.commonsware.cwac.security.RuntimePermissionUtils;
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
@@ -67,7 +65,6 @@ public class MainActivity extends Activity {
   private Button next;
   private File testRoot;
   private File testZip;
-  private SharedPreferences prefs;
   private RuntimePermissionUtils utils;
 
   @TargetApi(23)
