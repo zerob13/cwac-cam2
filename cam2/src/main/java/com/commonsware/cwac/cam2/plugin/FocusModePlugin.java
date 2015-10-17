@@ -159,6 +159,10 @@ public class FocusModePlugin implements CameraPlugin {
           "C6603".equals(Build.PRODUCT)) {
         desiredMode=CameraMetadata.CONTROL_AF_MODE_OFF;
       }
+      else if ("htc".equals(Build.MANUFACTURER) &&
+        "volantis".equals(Build.PRODUCT)) {
+        desiredMode=CameraMetadata.CONTROL_AF_MODE_OFF;
+      }
 
       boolean itsAllGood=false;
 
