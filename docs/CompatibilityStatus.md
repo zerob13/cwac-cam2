@@ -23,6 +23,7 @@
 | Samsung Galaxy Ace 3           | `samsung`/`loganub`         | 4.2.2 | |
 | Samsung Galaxy Camera EK-GC110 | `samsung`/`gd1wifiue`       | 4.1.2 | |
 | Samsung Galaxy Camera EK-GC200 | `samsung`/`sf2wifixx`       | 4.3 | |
+| Samsung Galaxy Note 2 GT-N7100 | `samsung`/`t03gxx`          | 4.1.2 | |
 | Samsung Galaxy Note 3 SM-N900  | `samsung`/`ha3gub`          | 5.0   | |
 | Samsung Galaxy Pocket Neo      | `samsung`/`corsicadd`       | 4.1.2   | |
 | Samsung Galaxy S III           | `samsung`/`d2lterefreshspr` | 4.4.2 | |
