@@ -69,6 +69,11 @@ While there are other `public` classes and methods in the library,
 ones that *may* be exposed as part of a public API in the future,
 **they are not supported at the present time**.
 
+**NOTE**: Ensure that you do not block hardware acceleration for
+the library-provided activities. In other words, do not have
+`android:hardwareAccelerated="false"` for your whole
+`<application>` in the manifest.
+
 Tested Devices
 --------------
 The [compatibility status page](docs/CompatibilityStatus.md) outlines
