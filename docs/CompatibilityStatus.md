@@ -28,6 +28,7 @@
 | Samsung Galaxy Note 3 SM-N900  | `samsung`/`ha3gub`          | 5.0   | |
 | Samsung Galaxy Pocket Neo      | `samsung`/`corsicadd`       | 4.1.2   | |
 | Samsung Galaxy S III           | `samsung`/`d2lterefreshspr` | 4.4.2 | |
+| Samsung Galaxy S III           | `samsung`/`d2uc`            | 4.4.2 | |
 | Samsung Galaxy S4 Zoom         | `samsung`/`mprojectlteuc`   | 4.2.2 | |
 | Samsung Galaxy S5              | `samsung`/`k3gxx`           | 5.0   | |
 | SONY Xperia Z (C6603)          | `Sony`/`C6603`              | 5.1.1 | |
