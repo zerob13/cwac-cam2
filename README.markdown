@@ -143,7 +143,7 @@ post an [issue](https://github.com/commonsguy/cwac-cam2/issues).
 Do not ask for help via social media.
 
 Release Notes
--------------]
+-------------
 - v0.3.2: bug fixes
 - v0.3.1: fixed bugs related to Nexus 7 (2012), SONY Xperia Z, and two Samsung models
 - v0.3.0: added focus modes, exact camera match option, preview mirror option, and demo app improvements
