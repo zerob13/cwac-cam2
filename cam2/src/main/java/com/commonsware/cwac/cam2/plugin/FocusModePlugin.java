@@ -163,6 +163,10 @@ public class FocusModePlugin implements CameraPlugin {
         "volantis".equals(Build.PRODUCT)) {
         desiredMode=CameraMetadata.CONTROL_AF_MODE_OFF;
       }
+      else if ("SONY".equalsIgnoreCase(Build.MANUFACTURER) &&
+        "D5803".equals(Build.PRODUCT)) {
+        desiredMode=CameraMetadata.CONTROL_AF_MODE_OFF;
+      }
 
       boolean itsAllGood=false;
 
