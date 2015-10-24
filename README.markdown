@@ -121,6 +121,16 @@ on an action bar item to take a picture using those settings. This is
 good for experimenting with the `CameraActivity` and
 `VideoRecorderActivity` capabilities.
 
+Additional Documentation
+------------------------
+[The Busy Coder's Guide to Android Development](https://commonsware.com/Android)
+contains three chapters related to this library. One is a tutorial
+for implementing Android 6.0 runtime permissions that happens to use
+this library. Another is a chapter on various ways to take pictures
+that includes coverage of this library. A third chapter explores
+the camera APIs in Android and references implementation details from
+this library.
+
 License
 -------
 The code in this project is licensed under the Apache
