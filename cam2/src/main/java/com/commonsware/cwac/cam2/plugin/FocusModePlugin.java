@@ -156,15 +156,13 @@ public class FocusModePlugin implements CameraPlugin {
       }
 
       if ("Sony".equals(Build.MANUFACTURER) &&
-          "C6603".equals(Build.PRODUCT)) {
+        ("C6603".equals(Build.PRODUCT) ||
+          "D5803".equals(Build.PRODUCT) ||
+          "C6802".equals(Build.PRODUCT))) {
         desiredMode=CameraMetadata.CONTROL_AF_MODE_OFF;
       }
       else if ("htc".equals(Build.MANUFACTURER) &&
         "volantis".equals(Build.PRODUCT)) {
-        desiredMode=CameraMetadata.CONTROL_AF_MODE_OFF;
-      }
-      else if ("SONY".equalsIgnoreCase(Build.MANUFACTURER) &&
-        "D5803".equals(Build.PRODUCT)) {
         desiredMode=CameraMetadata.CONTROL_AF_MODE_OFF;
       }
 

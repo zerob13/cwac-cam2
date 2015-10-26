@@ -36,6 +36,7 @@
 | Samsung Galaxy S5              | `samsung`/`k3gxx`           | 5.0   | |
 | SONY Xperia E4 Dual (E2115)    | `Sony`/`E2115`              | 4.4.4 | |
 | SONY Xperia Z (C6603)          | `Sony`/`C6603`              | 5.1.1 | |
+| SONY Xperia Z Ultra (C6802)    | `Sony`/`C6802`              | 5.1.1 | [116](https://github.com/commonsguy/cwac-cam2/issues/116) |
 
 ## Version 0.2.x
 
