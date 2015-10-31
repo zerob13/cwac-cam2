@@ -15,6 +15,7 @@
 package com.commonsware.cwac.cam2;
 
 import android.hardware.Camera;
+import android.media.MediaRecorder;
 
 /**
  * Camera configurator for the ClassicCameraEngine, to be used as
@@ -36,4 +37,8 @@ public interface ClassicCameraConfigurator extends CameraConfigurator {
   Camera.Parameters configureStillCamera(Camera.CameraInfo info,
                                          Camera camera,
                                          Camera.Parameters params);
+
+  void configureRecorder(int cameraId,
+                         VideoTransaction xact,
+                         MediaRecorder recorder);
 }

@@ -20,6 +20,7 @@ import android.hardware.Camera;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
+import android.media.MediaRecorder;
 import android.os.Build;
 import android.util.Log;
 import android.view.OrientationEventListener;
@@ -33,6 +34,7 @@ import com.commonsware.cwac.cam2.ClassicCameraConfigurator;
 import com.commonsware.cwac.cam2.PictureTransaction;
 import com.commonsware.cwac.cam2.SimpleCameraTwoConfigurator;
 import com.commonsware.cwac.cam2.SimpleClassicCameraConfigurator;
+import com.commonsware.cwac.cam2.VideoTransaction;
 
 /**
  * Plugin for managing focus modes

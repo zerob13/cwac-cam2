@@ -18,7 +18,6 @@ import android.content.Context;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.util.Log;
@@ -190,7 +189,8 @@ public class ClassicCameraEngine extends CameraEngine
         }
 
         try {
-          camera.setParameters(((Session)session).configure(false));
+          camera.setParameters(((Session)session).configureStillCamera(
+            false));
           camera.setPreviewTexture(texture);
           camera.startPreview();
           getBus().post(new OpenedEvent());
@@ -221,33 +221,16 @@ public class ClassicCameraEngine extends CameraEngine
       try {
         recorder=new MediaRecorder();
         recorder.setCamera(camera);
-        recorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
+        recorder.setAudioSource(
+          MediaRecorder.AudioSource.CAMCORDER);
         recorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
 
-        int cameraId=descriptor.getCameraId();
-        boolean canGoHigh=CamcorderProfile.hasProfile(cameraId,
-            CamcorderProfile.QUALITY_HIGH);
-        boolean canGoLow=CamcorderProfile.hasProfile(cameraId,
-            CamcorderProfile.QUALITY_LOW);
-
-        if (canGoHigh && (xact.getQuality()==1 || !canGoLow)) {
-          recorder.setProfile(CamcorderProfile.get(cameraId,
-              CamcorderProfile.QUALITY_HIGH));
-        }
-        else if (canGoLow) {
-          recorder.setProfile(CamcorderProfile.get(cameraId,
-              CamcorderProfile.QUALITY_LOW));
-        }
-        else {
-          throw new IllegalStateException(
-              "cannot find valid CamcorderProfile");
-        }
+        ((Session)session).configureRecorder(xact, recorder);
 
         recorder.setOutputFile(xact.getOutputPath().getAbsolutePath());
         recorder.setMaxFileSize(xact.getSizeLimit());
         recorder.setMaxDuration(xact.getDurationLimit());
         recorder.setOnInfoListener(this);
-        // recorder.setOrientationHint(...);
         recorder.prepare();
         recorder.start();
         this.xact=xact;
@@ -282,7 +265,7 @@ public class ClassicCameraEngine extends CameraEngine
   @Override
   public void handleOrientationChange(CameraSession session,
                                       OrientationChangedEvent event) {
-    ((Session)session).configure(true);
+    ((Session)session).configureStillCamera(true);
   }
 
   @Override
@@ -393,28 +376,49 @@ public class ClassicCameraEngine extends CameraEngine
       super(ctxt, descriptor);
     }
 
-    Camera.Parameters configure(boolean noParams) {
+    Camera.Parameters configureStillCamera(boolean noParams) {
       final Descriptor descriptor=(Descriptor)getDescriptor();
       final Camera camera=descriptor.getCamera();
-      Camera.CameraInfo info=new Camera.CameraInfo();
       Camera.Parameters params=null;
 
-      if (!noParams) {
-        params=camera.getParameters();
-      }
+      if (camera!=null) {
+        Camera.CameraInfo info=new Camera.CameraInfo();
 
-      Camera.getCameraInfo(descriptor.getCameraId(), info);
+        if (!noParams) {
+          params=camera.getParameters();
+        }
 
-      for (CameraPlugin plugin : getPlugins()) {
-        ClassicCameraConfigurator configurator=plugin.buildConfigurator(ClassicCameraConfigurator.class);
+        Camera.getCameraInfo(descriptor.getCameraId(), info);
 
-        if (configurator != null) {
-          params=configurator.configureStillCamera(info, camera,
-            params);
+        for (CameraPlugin plugin : getPlugins()) {
+          ClassicCameraConfigurator configurator=
+            plugin.buildConfigurator(
+              ClassicCameraConfigurator.class);
+
+          if (configurator!=null) {
+            params=
+              configurator.configureStillCamera(info, camera,
+                params);
+          }
         }
       }
 
       return(params);
+    }
+
+    void configureRecorder(VideoTransaction xact,
+                           MediaRecorder recorder) {
+      final Descriptor descriptor=(Descriptor)getDescriptor();
+
+      for (CameraPlugin plugin : getPlugins()) {
+        ClassicCameraConfigurator configurator=
+          plugin.buildConfigurator(ClassicCameraConfigurator.class);
+
+        if (configurator!=null) {
+          configurator.configureRecorder(descriptor.getCameraId(),
+            xact, recorder);
+        }
+      }
     }
   }
 
