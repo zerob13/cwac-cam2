@@ -9,8 +9,9 @@ import android.hardware.Camera;
  */
 public class SimpleClassicCameraConfigurator implements ClassicCameraConfigurator {
   @Override
-  public Camera.Parameters configure(Camera.CameraInfo info,
-                                     Camera camera, Camera.Parameters params) {
+  public Camera.Parameters configureStillCamera(
+    Camera.CameraInfo info,
+    Camera camera, Camera.Parameters params) {
     return null;
   }
 }

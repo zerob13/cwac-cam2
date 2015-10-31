@@ -103,8 +103,9 @@ public class FocusModePlugin implements CameraPlugin {
      * {@inheritDoc}
      */
     @Override
-    public Camera.Parameters configure(Camera.CameraInfo info,
-                                        Camera camera, Camera.Parameters params) {
+    public Camera.Parameters configureStillCamera(
+      Camera.CameraInfo info,
+      Camera camera, Camera.Parameters params) {
       if (params!=null) {
         String desiredMode=null;
 

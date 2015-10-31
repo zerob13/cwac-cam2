@@ -409,7 +409,8 @@ public class ClassicCameraEngine extends CameraEngine
         ClassicCameraConfigurator configurator=plugin.buildConfigurator(ClassicCameraConfigurator.class);
 
         if (configurator != null) {
-          params=configurator.configure(info, camera, params);
+          params=configurator.configureStillCamera(info, camera,
+            params);
         }
       }
 

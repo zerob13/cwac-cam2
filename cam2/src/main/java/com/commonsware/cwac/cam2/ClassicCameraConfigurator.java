@@ -33,6 +33,7 @@ public interface ClassicCameraConfigurator extends CameraConfigurator {
    * @return the same Camera.Parameters as was passed in as params,
    * just with modified contents
    */
-  Camera.Parameters configure(Camera.CameraInfo info,
-                              Camera camera, Camera.Parameters params);
+  Camera.Parameters configureStillCamera(Camera.CameraInfo info,
+                                         Camera camera,
+                                         Camera.Parameters params);
 }
