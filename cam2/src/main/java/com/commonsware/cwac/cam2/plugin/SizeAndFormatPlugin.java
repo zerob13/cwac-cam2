@@ -95,9 +95,13 @@ public class SizeAndFormatPlugin implements CameraPlugin {
     @Override
     public Camera.Parameters configure(Camera.CameraInfo info,
                                        Camera camera, Camera.Parameters params) {
-      params.setPreviewSize(previewSize.getWidth(), previewSize.getHeight());
-      params.setPictureSize(pictureSize.getWidth(), pictureSize.getHeight());
-      params.setPictureFormat(pictureFormat);
+      if (params!=null) {
+        params.setPreviewSize(previewSize.getWidth(),
+          previewSize.getHeight());
+        params.setPictureSize(pictureSize.getWidth(),
+          pictureSize.getHeight());
+        params.setPictureFormat(pictureFormat);
+      }
 
       return(params);
     }

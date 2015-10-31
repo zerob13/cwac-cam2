@@ -105,26 +105,32 @@ public class FocusModePlugin implements CameraPlugin {
     @Override
     public Camera.Parameters configure(Camera.CameraInfo info,
                                         Camera camera, Camera.Parameters params) {
-      String desiredMode=null;
+      if (params!=null) {
+        String desiredMode=null;
 
-      if (focusMode==AbstractCameraActivity.FocusMode.OFF) {
-        desiredMode=Camera.Parameters.FOCUS_MODE_FIXED;
-      }
-      else if (focusMode==AbstractCameraActivity.FocusMode.EDOF) {
-        desiredMode=Camera.Parameters.FOCUS_MODE_EDOF;
-      }
-      else if (isVideo) {
-        desiredMode=Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO;
-      }
-      else {
-        desiredMode=Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE;
-      }
+        if (focusMode==AbstractCameraActivity.FocusMode.OFF) {
+          desiredMode=Camera.Parameters.FOCUS_MODE_FIXED;
+        }
+        else if (focusMode==
+          AbstractCameraActivity.FocusMode.EDOF) {
+          desiredMode=Camera.Parameters.FOCUS_MODE_EDOF;
+        }
+        else if (isVideo) {
+          desiredMode=
+            Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO;
+        }
+        else {
+          desiredMode=
+            Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE;
+        }
 
-      if (params.getSupportedFocusModes().contains(desiredMode)) {
-        params.setFocusMode(desiredMode);
-      }
-      else {
-        Log.e("CWAC-Cam2", "no support for requested focus mode");
+        if (params.getSupportedFocusModes().contains(desiredMode)) {
+          params.setFocusMode(desiredMode);
+        }
+        else {
+          Log.e("CWAC-Cam2",
+            "no support for requested focus mode");
+        }
       }
 
       return(params);

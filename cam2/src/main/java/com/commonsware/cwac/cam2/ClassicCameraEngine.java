@@ -190,7 +190,7 @@ public class ClassicCameraEngine extends CameraEngine
         }
 
         try {
-          camera.setParameters(((Session)session).configure());
+          camera.setParameters(((Session)session).configure(false));
           camera.setPreviewTexture(texture);
           camera.startPreview();
           getBus().post(new OpenedEvent());
@@ -277,6 +277,12 @@ public class ClassicCameraEngine extends CameraEngine
 
     getBus().post(new VideoTakenEvent(xact));
     xact=null;
+  }
+
+  @Override
+  public void handleOrientationChange(CameraSession session,
+                                      OrientationChangedEvent event) {
+    ((Session)session).configure(true);
   }
 
   @Override
@@ -387,11 +393,15 @@ public class ClassicCameraEngine extends CameraEngine
       super(ctxt, descriptor);
     }
 
-    Camera.Parameters configure() {
+    Camera.Parameters configure(boolean noParams) {
       final Descriptor descriptor=(Descriptor)getDescriptor();
       final Camera camera=descriptor.getCamera();
-      Camera.Parameters params=camera.getParameters();
       Camera.CameraInfo info=new Camera.CameraInfo();
+      Camera.Parameters params=null;
+
+      if (!noParams) {
+        params=camera.getParameters();
+      }
 
       Camera.getCameraInfo(descriptor.getCameraId(), info);
 
@@ -403,7 +413,7 @@ public class ClassicCameraEngine extends CameraEngine
         }
       }
 
-      return (params);
+      return(params);
     }
   }
 
