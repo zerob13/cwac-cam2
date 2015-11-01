@@ -16,12 +16,17 @@ package com.commonsware.cwac.cam2;
 
 import android.content.Context;
 import android.graphics.ImageFormat;
+import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
+import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.media.MediaRecorder;
 import android.os.Build;
+import android.os.Environment;
 import android.util.Log;
 import com.commonsware.cwac.cam2.util.Size;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,7 +39,8 @@ import java.util.List;
  */
 @SuppressWarnings("deprecation")
 public class ClassicCameraEngine extends CameraEngine
-    implements MediaRecorder.OnInfoListener {
+    implements MediaRecorder.OnInfoListener,
+    Camera.PreviewCallback {
   private List<Descriptor> descriptors=null;
   private MediaRecorder recorder;
   private VideoTransaction xact;
@@ -150,6 +156,10 @@ public class ClassicCameraEngine extends CameraEngine
       public void run() {
         Descriptor descriptor=(Descriptor)session.getDescriptor();
         Camera camera=descriptor.getCamera();
+
+        if (savePreviewFile()!=null) {
+          camera.setOneShotPreviewCallback(ClassicCameraEngine.this);
+        }
 
         try {
           camera.takePicture(new Camera.ShutterCallback() {
@@ -284,6 +294,39 @@ public class ClassicCameraEngine extends CameraEngine
 
       getBus().post(new VideoTakenEvent(xact));
     }
+  }
+
+  @Override
+  public void onPreviewFrame(final byte[] data, final Camera camera) {
+    new Thread() {
+      @Override
+      public void run() {
+        Camera.Parameters parameters=camera.getParameters();
+        int width=parameters.getPreviewSize().width;
+        int height=parameters.getPreviewSize().height;
+
+        YuvImage yuv=new YuvImage(data, parameters.getPreviewFormat(),
+          width, height, null);
+
+        try {
+          if (savePreviewFile().exists()) {
+            savePreviewFile().delete();
+          }
+
+          FileOutputStream fos=
+            new FileOutputStream(savePreviewFile());
+
+          yuv.compressToJpeg(new Rect(0, 0, width, height), 90, fos);
+          fos.flush();
+          fos.getFD().sync();
+          fos.close();
+        }
+        catch (Exception e) {
+          Log.e(getClass().getSimpleName(),
+            "Exception saving preview frame", e);
+        }
+      }
+    }.start();
   }
 
   private class TakePictureTransaction implements Camera.PictureCallback {

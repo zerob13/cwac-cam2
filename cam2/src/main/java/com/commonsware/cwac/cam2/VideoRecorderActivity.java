@@ -52,6 +52,11 @@ public class VideoRecorderActivity extends AbstractCameraActivity {
   }
 
   @Override
+  protected void configEngine(CameraEngine engine) {
+    // no-op
+  }
+
+  @Override
   protected CameraFragment buildFragment() {
     return(CameraFragment.newVideoInstance(getOutputUri(),
         getIntent().getBooleanExtra(EXTRA_UPDATE_MEDIA_STORE, false),

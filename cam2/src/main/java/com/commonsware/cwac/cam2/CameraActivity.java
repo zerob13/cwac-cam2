@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import java.io.File;
 
 /**
  * Stock activity for taking pictures. Supports the same
@@ -35,6 +36,18 @@ public class CameraActivity extends AbstractCameraActivity
    * to true, meaning that the user should confirm the picture.
    */
   public static final String EXTRA_CONFIRM="cwac_cam2_confirm";
+
+  /**
+   * Extra name for whether a preview frame should be saved
+   * to getExternalCacheDir() at the point when a picture
+   * is taken. This is for debugging purposes, to compare
+   * the preview frame with both the taken picture and what
+   * you see on the activity's preview. It is very unlikely
+   * that you will want this enabled in a production app.
+   * Defaults to false.
+   */
+  public static final String EXTRA_DEBUG_SAVE_PREVIEW_FRAME=
+    "cwac_cam2_save_preview";
 
   private static final String TAG_CONFIRM=ConfirmationFragment.class.getCanonicalName();
   private static final String[] PERMS={Manifest.permission.CAMERA};
@@ -146,6 +159,16 @@ public class CameraActivity extends AbstractCameraActivity
   }
 
   @Override
+  protected void configEngine(CameraEngine engine) {
+    if (getIntent()
+      .getBooleanExtra(EXTRA_DEBUG_SAVE_PREVIEW_FRAME, false)) {
+      engine
+        .setDebugSavePreviewFile(new File(getExternalCacheDir(),
+          "cam2-preview.jpg"));
+    }
+  }
+
+  @Override
   protected CameraFragment buildFragment() {
     return(CameraFragment.newPictureInstance(getOutputUri(),
         getIntent().getBooleanExtra(EXTRA_UPDATE_MEDIA_STORE, false)));
@@ -184,6 +207,12 @@ public class CameraActivity extends AbstractCameraActivity
      */
     public IntentBuilder skipConfirm() {
       result.putExtra(EXTRA_CONFIRM, false);
+
+      return(this);
+    }
+
+    public IntentBuilder debugSavePreviewFrame() {
+      result.putExtra(EXTRA_DEBUG_SAVE_PREVIEW_FRAME, true);
 
       return(this);
     }
