@@ -41,6 +41,7 @@
 | SONY Xperia S (LT26i)          | `Sony Ericsson`/`LT26i_1257-4921` | 4.1.2 | [97](https://github.com/commonsguy/cwac-cam2/issues/97) |
 | SONY Xperia Z (C6603)          | `Sony`/`C6603`              | 5.1.1 | |
 | SONY Xperia Z Ultra (C6802)    | `Sony`/`C6802`              | 5.1.1 | [116](https://github.com/commonsguy/cwac-cam2/issues/116) |
+| Tesco (Pegatron) hudl 2        | `Pegatron`/`HTF8A4XX`       | 4.4.2 | |
 
 ## Version 0.2.x
 
