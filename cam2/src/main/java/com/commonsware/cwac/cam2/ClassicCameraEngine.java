@@ -44,6 +44,8 @@ public class ClassicCameraEngine extends CameraEngine
   private List<Descriptor> descriptors=null;
   private MediaRecorder recorder;
   private VideoTransaction xact;
+  private int previewWidth, previewHeight;
+  private int previewFormat;
 
   /**
    * {@inheritDoc}
@@ -159,6 +161,12 @@ public class ClassicCameraEngine extends CameraEngine
 
         if (savePreviewFile()!=null) {
           camera.setOneShotPreviewCallback(ClassicCameraEngine.this);
+
+          Camera.Parameters parameters=camera.getParameters();
+
+          previewWidth=parameters.getPreviewSize().width;
+          previewHeight=parameters.getPreviewSize().height;
+          previewFormat=parameters.getPreviewFormat();
         }
 
         try {
@@ -301,12 +309,8 @@ public class ClassicCameraEngine extends CameraEngine
     new Thread() {
       @Override
       public void run() {
-        Camera.Parameters parameters=camera.getParameters();
-        int width=parameters.getPreviewSize().width;
-        int height=parameters.getPreviewSize().height;
-
-        YuvImage yuv=new YuvImage(data, parameters.getPreviewFormat(),
-          width, height, null);
+        YuvImage yuv=new YuvImage(data, previewFormat,
+          previewWidth, previewHeight, null);
 
         try {
           if (savePreviewFile().exists()) {
@@ -316,7 +320,8 @@ public class ClassicCameraEngine extends CameraEngine
           FileOutputStream fos=
             new FileOutputStream(savePreviewFile());
 
-          yuv.compressToJpeg(new Rect(0, 0, width, height), 90, fos);
+          yuv.compressToJpeg(new Rect(0, 0, previewWidth, previewHeight),
+            90, fos);
           fos.flush();
           fos.getFD().sync();
           fos.close();
