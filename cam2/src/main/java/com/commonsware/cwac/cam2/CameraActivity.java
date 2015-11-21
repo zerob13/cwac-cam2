@@ -88,17 +88,22 @@ public class CameraActivity extends AbstractCameraActivity
 
   @SuppressWarnings("unused")
   public void onEventMainThread(CameraEngine.PictureTakenEvent event) {
-    if (getIntent().getBooleanExtra(EXTRA_CONFIRM, true)) {
-      confirmFrag.setImage(event.getImageContext());
+    if (event.exception==null) {
+      if (getIntent().getBooleanExtra(EXTRA_CONFIRM, true)) {
+        confirmFrag.setImage(event.getImageContext());
 
-      getFragmentManager()
+        getFragmentManager()
           .beginTransaction()
           .hide(cameraFrag)
           .show(confirmFrag)
           .commit();
+      }
+      else {
+        completeRequest(event.getImageContext(), true);
+      }
     }
     else {
-      completeRequest(event.getImageContext(), true);
+      finish();
     }
   }
 
