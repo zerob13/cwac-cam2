@@ -31,6 +31,7 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 import com.commonsware.cwac.cam2.AbstractCameraActivity;
 import com.commonsware.cwac.cam2.CameraActivity;
+import com.commonsware.cwac.cam2.FlashMode;
 import com.commonsware.cwac.security.RuntimePermissionUtils;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
@@ -257,6 +258,7 @@ public class MainActivity extends Activity {
         .to(new File(testRoot, "portrait-rear.jpg"))
         .updateMediaStore()
         .debug()
+        .flashMode(FlashMode.ALWAYS)
         .build();
 
     startActivityForResult(i, REQUEST_PORTRAIT_RFC);
@@ -334,6 +336,7 @@ public class MainActivity extends Activity {
         .facingExactMatch()
         .to(new File(testRoot, "landscape-rear.jpg"))
         .updateMediaStore()
+        .flashMode(FlashMode.ALWAYS)
         .debug()
         .build();
 
@@ -346,6 +349,7 @@ public class MainActivity extends Activity {
       .facing(AbstractCameraActivity.Facing.FRONT)
       .facingExactMatch()
       .to(new File(testRoot, "portrait-front.jpg"))
+      .flashMode(FlashMode.ALWAYS)
       .debug()
       .updateMediaStore()
       .build();
@@ -360,6 +364,7 @@ public class MainActivity extends Activity {
       .facingExactMatch()
       .to(new File(testRoot, "landscape-front.jpg"))
       .updateMediaStore()
+      .flashMode(FlashMode.ALWAYS)
       .debug()
       .build();
 
