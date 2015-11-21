@@ -329,7 +329,7 @@ public class CameraTwoEngine extends CameraEngine {
     public void onError(CameraDevice cameraDevice, int i) {
       lock.release();
       cameraDevice.close();
-      // TODO: raise event
+      EventBus.getDefault().post(new CameraTwoPreviewErrorEvent(i));
     }
 
     @Override
@@ -389,7 +389,7 @@ public class CameraTwoEngine extends CameraEngine {
 
     @Override
     public void onConfigureFailed(CameraCaptureSession session) {
-      // TODO: raise event
+      EventBus.getDefault().post(new CameraTwoPreviewFailureEvent());
     }
   }
 
@@ -411,7 +411,7 @@ public class CameraTwoEngine extends CameraEngine {
 
     @Override
     public void onCaptureFailed(CameraCaptureSession session, CaptureRequest request, CaptureFailure failure) {
-      // TODO: raise event
+      getBus().post(new PictureTakenEvent(new RuntimeException("generic camera2 capture failure")));
     }
 
     @Override
@@ -528,7 +528,7 @@ public class CameraTwoEngine extends CameraEngine {
 
     @Override
     public void onCaptureFailed(CameraCaptureSession session, CaptureRequest request, CaptureFailure failure) {
-      // TODO: raise event
+      getBus().post(new PictureTakenEvent(new RuntimeException("generic camera2 capture failure")));
     }
 
     private void unlockFocus() {
