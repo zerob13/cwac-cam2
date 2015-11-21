@@ -192,7 +192,8 @@ public class CameraActivity extends AbstractCameraActivity
    * Call setComponent() on the Intent if you are using your
    * own subclass of CameraActivity.
    */
-  public static class IntentBuilder extends AbstractCameraActivity.IntentBuilder {
+  public static class IntentBuilder
+    extends AbstractCameraActivity.IntentBuilder<IntentBuilder> {
     /**
      * Standard constructor. May throw a runtime exception
      * if the environment is not set up properly (see

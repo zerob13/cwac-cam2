@@ -365,7 +365,7 @@ abstract public class AbstractCameraActivity extends Activity {
     CONTINUOUS, OFF, focusMode, EDOF
   }
 
-  public static class IntentBuilder {
+  public static class IntentBuilder<T extends IntentBuilder> {
     protected final Intent result;
 
     /**
@@ -396,10 +396,10 @@ abstract public class AbstractCameraActivity extends Activity {
      * @param facing which camera to use
      * @return the builder, for further configuration
      */
-    public IntentBuilder facing(Facing facing) {
+    public T facing(Facing facing) {
       result.putExtra(EXTRA_FACING, facing);
 
-      return(this);
+      return((T)this);
     }
 
     /**
@@ -408,10 +408,10 @@ abstract public class AbstractCameraActivity extends Activity {
      *
      * @return the builder, for further configuration
      */
-    public IntentBuilder facingExactMatch() {
+    public T facingExactMatch() {
       result.putExtra(EXTRA_FACING_EXACT_MATCH, true);
 
-      return(this);
+      return((T)this);
     }
 
     /**
@@ -420,10 +420,10 @@ abstract public class AbstractCameraActivity extends Activity {
      *
      * @return the builder, for further configuration
      */
-    public IntentBuilder debug() {
+    public T debug() {
       result.putExtra(EXTRA_DEBUG_ENABLED, true);
 
-      return(this);
+      return((T)this);
     }
 
     /**
@@ -435,8 +435,8 @@ abstract public class AbstractCameraActivity extends Activity {
      * @param f file in which to write the picture
      * @return the builder, for further configuration
      */
-    public IntentBuilder to(File f) {
-      return(to(Uri.fromFile(f)));
+    public T to(File f) {
+      return((T)to(Uri.fromFile(f)));
     }
 
     /**
@@ -448,10 +448,10 @@ abstract public class AbstractCameraActivity extends Activity {
      * @param output Uri to which to write the picture
      * @return the builder, for further configuration
      */
-    public IntentBuilder to(Uri output) {
+    public T to(Uri output) {
       result.putExtra(MediaStore.EXTRA_OUTPUT, output);
 
-      return(this);
+      return((T)this);
     }
 
     /**
@@ -464,10 +464,10 @@ abstract public class AbstractCameraActivity extends Activity {
      *
      * @return the builder, for further configuration
      */
-    public IntentBuilder updateMediaStore() {
+    public T updateMediaStore() {
       result.putExtra(EXTRA_UPDATE_MEDIA_STORE, true);
 
-      return(this);
+      return((T)this);
     }
 
     /**
@@ -475,10 +475,10 @@ abstract public class AbstractCameraActivity extends Activity {
      *
      * @return the builder, for further configuration
      */
-    public IntentBuilder forceClassic() {
+    public T forceClassic() {
       result.putExtra(EXTRA_FORCE_CLASSIC, true);
 
-      return(this);
+      return((T)this);
     }
 
     /**
@@ -486,10 +486,10 @@ abstract public class AbstractCameraActivity extends Activity {
      *
      * @return the builder, for further configuration
      */
-    public IntentBuilder mirrorPreview() {
+    public T mirrorPreview() {
       result.putExtra(EXTRA_MIRROR_PREVIEW, true);
 
-      return(this);
+      return((T)this);
     }
 
     /**
@@ -497,10 +497,10 @@ abstract public class AbstractCameraActivity extends Activity {
      *
      * @return the builder, for further configuration
      */
-    public IntentBuilder focusMode(FocusMode focusMode) {
+    public T focusMode(FocusMode focusMode) {
       result.putExtra(EXTRA_FOCUS_MODE, focusMode);
 
-      return(this);
+      return((T)this);
     }
   }
 }
