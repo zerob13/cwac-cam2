@@ -15,6 +15,7 @@
 package com.commonsware.cwac.cam2;
 
 import android.content.pm.PackageInstaller;
+import android.content.res.Configuration;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.os.Build;
@@ -248,7 +249,21 @@ public class CameraController implements CameraView.StateCallback {
       if (camera != null && cv.getWidth() > 0 && cv.getHeight() > 0) {
         previewSize=Utils.chooseOptimalSize(camera.getPreviewSizes(),
             cv.getWidth(), cv.getHeight(), largest);
-        cv.setPreviewSize(previewSize);
+
+        boolean shouldSwapPreviewDimensions=
+          cv
+            .getContext()
+            .getResources()
+            .getConfiguration().orientation==
+            Configuration.ORIENTATION_PORTRAIT;
+        Size virtualPreviewSize=previewSize;
+
+        if (shouldSwapPreviewDimensions) {
+          virtualPreviewSize=new Size(previewSize.getHeight(),
+          previewSize.getWidth());
+        }
+
+        cv.setPreviewSize(virtualPreviewSize);
       }
 
       SurfaceTexture texture=cv.getSurfaceTexture();

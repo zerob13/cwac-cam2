@@ -296,7 +296,7 @@ abstract public class CameraEngine {
         singleton=new CameraTwoEngine(ctxt);
       }
       else {
-        singleton=new ClassicCameraEngine();
+        singleton=new ClassicCameraEngine(ctxt);
       }
     }
 
