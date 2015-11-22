@@ -300,6 +300,11 @@ abstract public class AbstractCameraActivity extends Activity {
         (FocusMode)getIntent().getSerializableExtra(EXTRA_FOCUS_MODE);
       List<FlashMode> flashModes=
         (List<FlashMode>)getIntent().getExtras().getSerializable(EXTRA_FLASH_MODES);
+
+      if (flashModes==null) {
+        flashModes=new ArrayList<FlashMode>();
+      }
+
       CameraController ctrl=
         new CameraController(focusMode, flashModes,isVideo());
 
