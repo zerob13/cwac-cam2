@@ -292,7 +292,8 @@ abstract public class CameraEngine {
                                                         boolean forceClassic) {
     if (singleton==null) {
       if (!forceClassic &&
-          Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
+          Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP
+        && !isProblematicDeviceOnNewCameraApi()) {
         singleton=new CameraTwoEngine(ctxt);
       }
       else {
@@ -356,5 +357,19 @@ abstract public class CameraEngine {
 
   public void setThreadPool(ThreadPoolExecutor pool) {
     this.pool=pool;
+  }
+
+  private static boolean isProblematicDeviceOnNewCameraApi() {
+    if ("Huawei".equals(Build.MANUFACTURER) &&
+      "angler".equals(Build.PRODUCT)) {
+      return(true);
+    }
+
+    if ("LGE".equals(Build.MANUFACTURER) &&
+      "occam".equals(Build.PRODUCT)) {
+      return(true);
+    }
+
+    return(false);
   }
 }
