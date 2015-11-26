@@ -370,6 +370,11 @@ abstract public class CameraEngine {
       return(true);
     }
 
+    if ("Amazon".equals(Build.MANUFACTURER) &&
+      "full_ford".equals(Build.PRODUCT)) {
+      return(true);
+    }
+
     return(false);
   }
 }
