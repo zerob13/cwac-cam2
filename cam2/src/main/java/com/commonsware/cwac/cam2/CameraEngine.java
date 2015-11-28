@@ -385,6 +385,11 @@ abstract public class CameraEngine {
       return(true);
     }
 
+    if ("HTC".equals(Build.MANUFACTURER) &&
+      "hiaeuhl_00709".equals(Build.PRODUCT)) {
+      return(true);
+    }
+
     return(false);
   }
 }
