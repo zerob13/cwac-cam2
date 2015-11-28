@@ -400,6 +400,11 @@ abstract public class CameraEngine {
       return(true);
     }
 
+    if ("Sony".equals(Build.MANUFACTURER) &&
+      "C6802".equals(Build.PRODUCT)) {
+      return(true);
+    }
+
     return(false);
   }
 }
