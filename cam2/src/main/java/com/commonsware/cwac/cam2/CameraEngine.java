@@ -390,6 +390,16 @@ abstract public class CameraEngine {
       return(true);
     }
 
+    if ("Wileyfox".equals(Build.MANUFACTURER) &&
+      "Swift".equals(Build.PRODUCT)) {
+      return(true);
+    }
+
+    if ("Sony".equals(Build.MANUFACTURER) &&
+      "C6603".equals(Build.PRODUCT)) {
+      return(true);
+    }
+
     return(false);
   }
 }
