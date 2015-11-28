@@ -375,6 +375,16 @@ abstract public class CameraEngine {
       return(true);
     }
 
+    if ("Amazon".equals(Build.MANUFACTURER) &&
+      "full_thebes".equals(Build.PRODUCT)) {
+      return(true);
+    }
+
+    if ("HTC".equals(Build.MANUFACTURER) &&
+      "m7_google".equals(Build.PRODUCT)) {
+      return(true);
+    }
+
     return(false);
   }
 }
