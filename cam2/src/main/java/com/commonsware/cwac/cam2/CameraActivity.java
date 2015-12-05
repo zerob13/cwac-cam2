@@ -18,6 +18,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.provider.MediaStore;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -205,6 +206,11 @@ public class CameraActivity extends AbstractCameraActivity
      */
     public IntentBuilder(Context ctxt) {
       super(ctxt, CameraActivity.class);
+    }
+
+    @Override
+    Intent buildChooserBaseIntent() {
+      return(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
     }
 
     /**

@@ -102,6 +102,11 @@ public class VideoRecorderActivity extends AbstractCameraActivity {
     }
 
     @Override
+    Intent buildChooserBaseIntent() {
+      return(new Intent(MediaStore.ACTION_VIDEO_CAPTURE));
+    }
+
+    @Override
     public Intent build() {
       forceClassic();
 
