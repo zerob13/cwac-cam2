@@ -365,7 +365,6 @@ public class CameraTwoEngine extends CameraEngine {
               CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
           s.previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,
               CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
-          // TODO: offer other flash support
 
           Descriptor camera=(Descriptor)s.getDescriptor();
           CameraCharacteristics cc=mgr.getCameraCharacteristics(camera.cameraId);
