@@ -118,6 +118,26 @@ public class OrientationPlugin implements CameraPlugin {
         "sf2wifixx".equals(Build.PRODUCT)) {
         camera.setDisplayOrientation(0);
       }
+      else if ("Huawei".equals(Build.MANUFACTURER) &&
+        "angler".equals(Build.PRODUCT)) {
+        int degrees = 0;
+        int temp=displayOrientation;
+
+        switch (temp) {
+          case Surface.ROTATION_0: degrees = 0; break;
+          case Surface.ROTATION_90: degrees = 90; break;
+          case Surface.ROTATION_180: degrees = 180; break;
+          case Surface.ROTATION_270: degrees = 270; break;
+        }
+
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+          temp = (info.orientation + degrees) % 360;
+          temp = (360 - temp) % 360;  // compensate the mirror
+        } else {  // back-facing
+          temp = (info.orientation - degrees + 360) % 360;
+        }
+        camera.setDisplayOrientation(temp);
+      }
       else if (displayOrientation==180) {
         camera.setDisplayOrientation(270);
       }
