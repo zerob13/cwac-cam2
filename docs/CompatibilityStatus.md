@@ -9,6 +9,7 @@
 | Amazon Fire HD 10              | `Amazon`/`full_thebes`      | 5.1     | |
 | Amazon Fire Phone              | `Amazon`/`juniper`          | 4.4.4   | |
 | Google Galaxy Nexus            | `samsung`/`yakju`           | 4.3     | |
+| Google Nexus 10                | `samsung`/`mantaray`        | 5.1.1   | |
 | Google Nexus 4                 | `LGE`/`occam`               | 5.1.1   | |
 | Google Nexus 5                 | `LGE`/`hammerhead`          | 6.0     | |
 | Google Nexus 5X                | `LGE`/`bullhead`            | 6.0     | |
@@ -18,6 +19,7 @@
 | Google Nexus 7 (2013)          | `asus`/`razor`              | 6.0     | |
 | Google Nexus 9                 | `htc`/`volantis`            | 6.0     | |
 | Google Nexus S                 | `samsung`/`soju`            | 4.1.2   | |
+| HTC Incredible HD              | `HTC`/`htc_mecha`           | 4.0.4 | [32](https://github.com/commonsguy/cwac-cam2/issues/32) [33](https://github.com/commonsguy/cwac-cam2/issues/33) |
 | HTC One A9                     | `HTC`/`hiaeuhl_00709`       | 6.0   | |
 | HTC One M7 GPE                 | `HTC`/`m7_google`           | 5.1     | |
 | Samsung Galaxy Note 3 SM-N900  | `samsung`/`ha3gub`          | 5.0   | |
