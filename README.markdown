@@ -154,6 +154,7 @@ Do not ask for help via social media.
 
 Release Notes
 -------------
+- v0.4.1: Nexus 6P bug fix, support for choosing built-in activities or third-party camera apps
 - v0.4.0: flash mode support, better preview sizing, bug fixes
 - v0.3.4: more bug fixes, added debug preview frame support
 - v0.3.3: yet more bug fixes
