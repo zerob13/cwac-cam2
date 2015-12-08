@@ -24,7 +24,9 @@
 | HTC One M7 GPE                 | `HTC`/`m7_google`           | 5.1     | |
 | HTC One S                      | `HTC`/`tmous`               | 4.1.1 | [35](https://github.com/commonsguy/cwac-cam2/issues/35) |
 | LG G2                          | `LGE`/`g2_open_com`         | 4.4.2 | |
+| Motorola Moto E XT1022         | `motorola`/`condor_retla_ds`| 4.4.4 | |
 | Samsung Galaxy Note 3 SM-N900  | `samsung`/`ha3gub`          | 5.0   | |
+| Samsung Galaxy Pocket Neo      | `samsung`/`corsicadd`       | 4.1.2   | |
 | Samsung Galaxy S5              | `samsung`/`k3gxx`           | 5.0   | |
 | SONY Xperia Z (C6603)          | `Sony`/`C6603`              | 5.1.1 | |
 | SONY Xperia Z Ultra (C6802)    | `Sony`/`C6802`              | 5.1.1 | [116](https://github.com/commonsguy/cwac-cam2/issues/116) |
