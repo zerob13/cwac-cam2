@@ -8,6 +8,7 @@
 | Amazon Fire (7")               | `Amazon`/`full_ford`        | 5.1     | |
 | Amazon Fire HD 10              | `Amazon`/`full_thebes`      | 5.1     | |
 | Amazon Fire Phone              | `Amazon`/`juniper`          | 4.4.4   | |
+| BlackBerry Priv                | `blackberry`/`venicena`     | 5.1.1   | |
 | Google Galaxy Nexus            | `samsung`/`yakju`           | 4.3     | |
 | Google Nexus 10                | `samsung`/`mantaray`        | 5.1.1   | |
 | Google Nexus 4                 | `LGE`/`occam`               | 5.1.1   | |
