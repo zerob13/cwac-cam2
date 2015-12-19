@@ -41,8 +41,10 @@
 | Samsung Galaxy S4              | `samsung`/`jflteuc`         | 4.2.2 | |
 | Samsung Galaxy S4 Zoom         | `samsung`/`mprojectlteuc`   | 4.2.2 | [130](https://github.com/commonsguy/cwac-cam2/issues/130) |
 | Samsung Galaxy S5              | `samsung`/`k3gxx`           | 5.0   | |
+| SONY Xperia E (C1505)          | `Sony`/`C1505`              | 4.1.1 | |
+| SONY Xperia E4 Dual (E2115)    | `Sony`/`E2115`              | 4.4.4 | |
 | SONY Xperia Z (C6603)          | `Sony`/`C6603`              | 5.1.1 | |
-| SONY Xperia Z Ultra (C6802)    | `Sony`/`C6802`              | 5.1.1 | [116](https://github.com/commonsguy/cwac-cam2/issues/116) |
+| SONY Xperia Z Ultra (C6802)    | `Sony`/`C6802`              | 5.1.1 | |
 | Wileyfox Swift                 | `Wileyfox`/`Swift`          | 5.1.1 (CM 12.1) | |
 
 ## Version 0.3.x
