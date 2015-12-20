@@ -43,8 +43,10 @@
 | Samsung Galaxy S5              | `samsung`/`k3gxx`           | 5.0   | |
 | SONY Xperia E (C1505)          | `Sony`/`C1505`              | 4.1.1 | |
 | SONY Xperia E4 Dual (E2115)    | `Sony`/`E2115`              | 4.4.4 | |
+| SONY Xperia S (LT26i)          | `Sony Ericsson`/`LT26i_1257-4921` | 4.1.2 | [97](https://github.com/commonsguy/cwac-cam2/issues/97) |
 | SONY Xperia Z (C6603)          | `Sony`/`C6603`              | 5.1.1 | |
 | SONY Xperia Z Ultra (C6802)    | `Sony`/`C6802`              | 5.1.1 | |
+| Tesco (Pegatron) hudl 2        | `Pegatron`/`HTF8A4XX`       | 5.1   | |
 | Wileyfox Swift                 | `Wileyfox`/`Swift`          | 5.1.1 (CM 12.1) | |
 
 ## Version 0.3.x
