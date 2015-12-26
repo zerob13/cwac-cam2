@@ -114,8 +114,10 @@ public class CameraTwoEngine extends CameraEngine {
               ArrayList<Size> sizes=new ArrayList<Size>();
 
               for (android.util.Size size : rawSizes) {
-                sizes.add(
-                  new Size(size.getWidth(), size.getHeight()));
+                if (size.getWidth()<2160 && size.getHeight()<2160) {
+                  sizes.add(
+                    new Size(size.getWidth(), size.getHeight()));
+                }
               }
 
               camera.setPreviewSizes(sizes);
