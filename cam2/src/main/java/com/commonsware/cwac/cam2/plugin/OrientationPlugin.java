@@ -113,14 +113,15 @@ public class OrientationPlugin implements CameraPlugin {
       Camera.CameraInfo info,
       Camera camera, Camera.Parameters params) {
       int displayOrientation=getDisplayOrientation(info, true);
+      int cameraDisplayOrientation=90;
 
       if ("samsung".equals(Build.MANUFACTURER) &&
         "sf2wifixx".equals(Build.PRODUCT)) {
-        camera.setDisplayOrientation(0);
+        cameraDisplayOrientation=0;
       }
       else if ("Huawei".equals(Build.MANUFACTURER) &&
         "angler".equals(Build.PRODUCT)) {
-        int degrees = 0;
+        int degrees=0;
         int temp=displayOrientation;
 
         switch (temp) {
@@ -136,14 +137,19 @@ public class OrientationPlugin implements CameraPlugin {
         } else {  // back-facing
           temp = (info.orientation - degrees + 360) % 360;
         }
-        camera.setDisplayOrientation(temp);
+
+        cameraDisplayOrientation=temp;
       }
       else if (displayOrientation==180) {
-        camera.setDisplayOrientation(270);
+        cameraDisplayOrientation=270;
       }
+/*
       else {
         camera.setDisplayOrientation(90);
       }
+*/
+
+      camera.setDisplayOrientation(cameraDisplayOrientation);
 
       if (params!=null) {
         int outputOrientation;
