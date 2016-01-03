@@ -119,8 +119,7 @@ public class OrientationPlugin implements CameraPlugin {
         "sf2wifixx".equals(Build.PRODUCT)) {
         cameraDisplayOrientation=0;
       }
-      else if ("Huawei".equals(Build.MANUFACTURER) &&
-        "angler".equals(Build.PRODUCT)) {
+      else if (useAltAlgorithm()) {
         int degrees=0;
         int temp=displayOrientation;
 
@@ -165,6 +164,25 @@ public class OrientationPlugin implements CameraPlugin {
       }
 
       return(params);
+    }
+
+    private boolean useAltAlgorithm() {
+      if ("Huawei".equals(Build.MANUFACTURER) &&
+        "angler".equals(Build.PRODUCT)) {
+        return(true);
+      }
+
+      if ("LGE".equals(Build.MANUFACTURER) &&
+        "bullhead".equals(Build.PRODUCT)) {
+        return(true);
+      }
+
+      if ("samsung".equals(Build.MANUFACTURER) &&
+        "mprojectlteuc".equals(Build.PRODUCT)) {
+        return(true);
+      }
+
+      return(false);
     }
 
     @Override
