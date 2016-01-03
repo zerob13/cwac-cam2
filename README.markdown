@@ -103,7 +103,7 @@ use of it, from being obfuscated.
 
 Version
 -------
-This is version v0.4.3 of this library, which means it is coming
+This is version v0.4.4 of this library, which means it is coming
 along slowly.
 
 Demo
@@ -154,6 +154,7 @@ Do not ask for help via social media.
 
 Release Notes
 -------------
+- v0.4.4: added Nexus 5X, Galaxy S4 Zoom to alt orientation whitelist
 - v0.4.3: too-large camera preview issue fix
 - v0.4.2: Camera2 API timing issue fix
 - v0.4.1: Nexus 6P bug fix, support for choosing built-in activities or third-party camera apps
