@@ -26,6 +26,7 @@
 | HTC One S                      | `HTC`/`tmous`               | 4.1.1 | [35](https://github.com/commonsguy/cwac-cam2/issues/35) |
 | LG G2                          | `LGE`/`g2_open_com`         | 4.4.2 | |
 | Motorola Moto E XT1022         | `motorola`/`condor_retla_ds`| 4.4.4 | |
+| NVIDIA Shield K1               | `NVIDIA`/`sb_na_wf`         | 6.0   | |
 | Samsung Galaxy Ace 3           | `samsung`/`loganub`         | 4.2.2 | |
 | Samsung Galaxy Camera EK-GC110 | `samsung`/`gd1wifiue`       | 4.1.2 | |
 | Samsung Galaxy Camera EK-GC200 | `samsung`/`sf2wifixx`       | 4.3   | |
