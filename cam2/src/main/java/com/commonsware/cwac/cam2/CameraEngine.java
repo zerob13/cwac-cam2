@@ -20,6 +20,7 @@ import android.os.Build;
 import android.util.Log;
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -279,6 +280,19 @@ abstract public class CameraEngine {
 
   abstract public void handleOrientationChange(CameraSession session,
                                                OrientationChangedEvent event);
+
+  /**
+   * @return true if the engine supports changing flash modes
+   * on the fly, false otherwise
+   */
+  abstract public boolean supportsDynamicFlashModes();
+
+  /**
+   * @return list of flash modes supported by this engine. Can
+   * throw a runtime exception if supportsDynamicFlashModes()
+   * returns false for this engine.
+   */
+  abstract public Set<FlashMode> getSupportedFlashModes();
 
   /**
    * Builds a CameraEngine instance based on the device's

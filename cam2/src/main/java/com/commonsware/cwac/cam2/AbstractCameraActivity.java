@@ -55,6 +55,14 @@ abstract public class AbstractCameraActivity extends Activity {
     "cwac_cam2_flash_modes";
 
   /**
+   * True if we should allow the user to change the flash mode
+   * on the fly (if the camera supports it), false otherwise.
+   * Defaults to false.
+   */
+  public static final String EXTRA_ALLOW_SWITCH_FLASH_MODE=
+    "cwac_cam2_allow_switch_flash_mode";
+
+  /**
    * @return true if the activity wants FEATURE_ACTION_BAR_OVERLAY,
    * false otherwise
    */
@@ -592,6 +600,16 @@ abstract public class AbstractCameraActivity extends Activity {
     public T flashModes(List<FlashMode> modes) {
       result.putExtra(EXTRA_FLASH_MODES,
         new ArrayList<FlashMode>(modes));
+
+      return((T)this);
+    }
+
+    /**
+     * Call if we should allow the user to change the flash mode
+     * on the fly (if the camera supports it).
+     */
+    public T allowSwitchFlashMode() {
+      result.putExtra(EXTRA_ALLOW_SWITCH_FLASH_MODE, true);
 
       return((T)this);
     }

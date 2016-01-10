@@ -16,7 +16,6 @@ package com.commonsware.cwac.cam2;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
@@ -38,15 +37,16 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.view.Surface;
-import android.view.WindowManager;
 import com.commonsware.cwac.cam2.util.Size;
-import java.io.File;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -68,6 +68,8 @@ public class CameraTwoEngine extends CameraEngine {
   private CountDownLatch closeLatch=null;
   private MediaActionSound shutter=new MediaActionSound();
   private List<Descriptor> descriptors=null;
+  private HashMap<FlashMode, Integer> availableFlashModes=
+    new HashMap<FlashMode, Integer>();
 
   /**
    * Standard constructor
@@ -114,7 +116,8 @@ public class CameraTwoEngine extends CameraEngine {
               ArrayList<Size> sizes=new ArrayList<Size>();
 
               for (android.util.Size size : rawSizes) {
-                if (size.getWidth()<2160 && size.getHeight()<2160) {
+                if (size.getWidth()<2160 &&
+                  size.getHeight()<2160) {
                   sizes.add(
                     new Size(size.getWidth(), size.getHeight()));
                 }
@@ -185,6 +188,17 @@ public class CameraTwoEngine extends CameraEngine {
         Descriptor camera=(Descriptor)session.getDescriptor();
 
         try {
+          CameraCharacteristics cc=
+            mgr.getCameraCharacteristics(camera.getId());
+
+          availableFlashModes.clear();
+
+          int[] availModes=cc.get(CameraCharacteristics.CONTROL_AE_AVAILABLE_MODES);
+
+          for (int mode : availModes) {
+            availableFlashModes.put(getNormalizedFlashMode(mode), mode);
+          }
+
           if (!lock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
             throw new RuntimeException("Time out waiting to lock camera opening.");
           }
@@ -263,9 +277,10 @@ public class CameraTwoEngine extends CameraEngine {
           // This is how to tell the camera to lock focus.
           s.previewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
               CameraMetadata.CONTROL_AF_TRIGGER_START);
-          s.captureSession.setRepeatingRequest(s.previewRequestBuilder.build(),
-              new RequestCaptureTransaction(s),
-              handler);
+          s.captureSession.setRepeatingRequest(
+            s.previewRequestBuilder.build(),
+            new RequestCaptureTransaction(s),
+            handler);
         }
         catch (Exception e) {
           getBus().post(new PictureTakenEvent(e));
@@ -292,6 +307,84 @@ public class CameraTwoEngine extends CameraEngine {
   @Override
   public void stopVideoRecording(CameraSession session) {
     // TODO
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Set<FlashMode> getSupportedFlashModes() {
+    return(availableFlashModes.keySet());
+  }
+
+  public int getEngineMode(FlashMode mode) {
+    return(availableFlashModes.get(mode));
+  }
+
+  public FlashMode getFlashMode(int engineMode) {
+    for (FlashMode mode : availableFlashModes.keySet()) {
+      if (engineMode==availableFlashModes.get(mode)) {
+        return(mode);
+      }
+    }
+
+    return(null);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean supportsDynamicFlashModes() {
+    return(true);
+  }
+
+  public static FlashMode getNormalizedFlashMode(int mode) {
+    FlashMode result=FlashMode.OFF;
+
+    switch(mode) {
+      case CameraMetadata.CONTROL_AE_MODE_ON_ALWAYS_FLASH:
+        result=FlashMode.ALWAYS;
+        break;
+
+      case CameraMetadata.CONTROL_AE_MODE_ON_AUTO_FLASH:
+        result=FlashMode.AUTO;
+        break;
+
+      case CameraMetadata.CONTROL_AE_MODE_ON_AUTO_FLASH_REDEYE:
+        result=FlashMode.REDEYE;
+        break;
+    }
+
+    return(result);
+  }
+
+  public static int getEngineFlashModeFromNormalizedFlashMode(
+    FlashMode mode,
+    CameraCharacteristics cc) {
+    int[] availModes=cc.get(CameraCharacteristics.CONTROL_AE_AVAILABLE_MODES);
+    int desiredMode=-1;
+
+    if (mode==FlashMode.OFF) {
+      desiredMode=CameraMetadata.CONTROL_AE_MODE_ON;
+    }
+    else if (mode==FlashMode.ALWAYS) {
+      desiredMode=CameraMetadata.CONTROL_AE_MODE_ON_ALWAYS_FLASH;
+    }
+    else if (mode==FlashMode.AUTO) {
+      desiredMode=CameraMetadata.CONTROL_AE_MODE_ON_AUTO_FLASH;
+    }
+    else if (mode==FlashMode.REDEYE) {
+      desiredMode=CameraMetadata.CONTROL_AE_MODE_ON_AUTO_FLASH_REDEYE;
+    }
+
+    for (int availMode : availModes) {
+      if (desiredMode==availMode) {
+        return(desiredMode);
+      }
+    }
+
+    return(-1);
   }
 
   private class InitPreviewTransaction extends CameraDevice.StateCallback {

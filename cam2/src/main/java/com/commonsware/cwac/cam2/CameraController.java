@@ -28,6 +28,7 @@ import com.commonsware.cwac.cam2.util.Utils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -47,6 +48,7 @@ public class CameraController implements CameraView.StateCallback {
   private final AbstractCameraActivity.FocusMode focusMode;
   private final List<FlashMode> flashModes;
   private final boolean isVideo;
+  private FlashModePlugin flashModePlugin;
 
   public CameraController(AbstractCameraActivity.FocusMode focusMode,
                           List<FlashMode> flashModes,
@@ -216,6 +218,14 @@ public class CameraController implements CameraView.StateCallback {
     }
   }
 
+  public boolean supportsDynamicFlashModes() {
+    return(engine.supportsDynamicFlashModes());
+  }
+
+  public Set<FlashMode> getSupportedFlashModes() {
+    return(engine.getSupportedFlashModes());
+  }
+
   private CameraView getPreview(CameraDescriptor camera) {
     CameraView result=previews.get(camera);
 
@@ -257,14 +267,15 @@ public class CameraController implements CameraView.StateCallback {
               previewSize.getHeight());
         }
 
+        flashModePlugin=new FlashModePlugin(flashModes);
+
         session=engine
             .buildSession(cv.getContext(), camera)
             .addPlugin(new SizeAndFormatPlugin(previewSize,
               largest, ImageFormat.JPEG))
             .addPlugin(new OrientationPlugin(cv.getContext()))
             .addPlugin(new FocusModePlugin(cv.getContext(), focusMode, isVideo))
-            .addPlugin(
-              new FlashModePlugin(flashModes))
+            .addPlugin(flashModePlugin)
             .build();
 
         session.setPreviewSize(previewSize);

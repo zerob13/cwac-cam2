@@ -153,6 +153,10 @@ public class PictureFragment extends PreferenceFragment {
         break;
     }
 
+    if (prefs.getBoolean("allowSwitchFlashMode", false)) {
+      b.allowSwitchFlashMode();
+    }
+
     Intent result;
 
     if (prefs.getBoolean("useChooser", false)) {

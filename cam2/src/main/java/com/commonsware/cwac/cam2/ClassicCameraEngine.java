@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Implementation of a CameraEngine that supports the
@@ -365,6 +366,22 @@ public class ClassicCameraEngine extends CameraEngine
         }
       }
     }.start();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean supportsDynamicFlashModes() {
+    return(false);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Set<FlashMode> getSupportedFlashModes() {
+    throw new IllegalStateException("Engine does not support dynamic flash modes");
   }
 
   private class TakePictureTransaction implements Camera.PictureCallback {
