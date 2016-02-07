@@ -217,6 +217,31 @@ public class ClassicCameraEngine extends CameraEngine
           descriptor.setCamera(camera);
         }
 
+        Camera.Parameters params=camera.getParameters();
+
+        eligibleFlashModes.clear();
+
+        for (FlashMode flashMode : preferredFlashModes) {
+          for (String rawFlashMode : params.getSupportedFlashModes()) {
+            if (rawFlashMode.equals(flashMode.getClassicMode())) {
+              eligibleFlashModes.add(flashMode);
+              break;
+            }
+          }
+        }
+
+        if (eligibleFlashModes.isEmpty()) {
+          for (String rawFlashMode : params.getSupportedFlashModes()) {
+            FlashMode flashMode=FlashMode.lookupClassicMode(rawFlashMode);
+
+            if (flashMode!=null) {
+              eligibleFlashModes.add(flashMode);
+            }
+          }
+        }
+
+        session.setCurrentFlashMode(eligibleFlashModes.get(0));
+
         try {
           camera.setParameters(((Session)session).configureStillCamera(
             false));
@@ -376,14 +401,6 @@ public class ClassicCameraEngine extends CameraEngine
     return(false);
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public Set<FlashMode> getSupportedFlashModes() {
-    throw new IllegalStateException("Engine does not support dynamic flash modes");
-  }
-
   private class TakePictureTransaction implements Camera.PictureCallback {
     private final PictureTransaction xact;
     private final Context ctxt;
@@ -495,7 +512,7 @@ public class ClassicCameraEngine extends CameraEngine
 
           if (configurator!=null) {
             params=
-              configurator.configureStillCamera(info, camera,
+              configurator.configureStillCamera(this, info, camera,
                 params);
           }
         }
@@ -513,7 +530,7 @@ public class ClassicCameraEngine extends CameraEngine
           plugin.buildConfigurator(ClassicCameraConfigurator.class);
 
         if (configurator!=null) {
-          configurator.configureRecorder(descriptor.getCameraId(),
+          configurator.configureRecorder(this, descriptor.getCameraId(),
             xact, recorder);
         }
       }

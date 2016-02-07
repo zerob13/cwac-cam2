@@ -174,6 +174,17 @@ public class CameraActivity extends AbstractCameraActivity
         .setDebugSavePreviewFile(new File(getExternalCacheDir(),
           "cam2-preview.jpg"));
     }
+
+    List<FlashMode> flashModes=
+      (List<FlashMode>)getIntent().getSerializableExtra(EXTRA_FLASH_MODES);
+
+    if (flashModes==null) {
+      flashModes=new ArrayList<FlashMode>();
+    }
+
+    if (flashModes!=null) {
+      engine.setPreferredFlashModes(flashModes);
+    }
   }
 
   @Override

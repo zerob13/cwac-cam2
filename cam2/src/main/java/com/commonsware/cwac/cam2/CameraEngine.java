@@ -19,6 +19,7 @@ import android.graphics.SurfaceTexture;
 import android.os.Build;
 import android.util.Log;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -41,6 +42,9 @@ abstract public class CameraEngine {
   private LinkedBlockingQueue<Runnable> queue=new LinkedBlockingQueue<Runnable>();
   private ThreadPoolExecutor pool;
   private File savePreviewFile=null;
+  protected List<FlashMode> preferredFlashModes;
+  protected ArrayList<FlashMode> eligibleFlashModes=
+    new ArrayList<FlashMode>();
 
   private static class CrashableEvent {
     /**
@@ -288,13 +292,6 @@ abstract public class CameraEngine {
   abstract public boolean supportsDynamicFlashModes();
 
   /**
-   * @return list of flash modes supported by this engine. Can
-   * throw a runtime exception if supportsDynamicFlashModes()
-   * returns false for this engine.
-   */
-  abstract public Set<FlashMode> getSupportedFlashModes();
-
-  /**
    * Builds a CameraEngine instance based on the device's
    * API level.
    *
@@ -371,6 +368,14 @@ abstract public class CameraEngine {
 
   public void setThreadPool(ThreadPoolExecutor pool) {
     this.pool=pool;
+  }
+
+  void setPreferredFlashModes(List<FlashMode> flashModes) {
+    preferredFlashModes=flashModes;
+  }
+
+  boolean hasMoreThanOneEligibleFlashMode() {
+    return(eligibleFlashModes.size()>1);
   }
 
   private static boolean isProblematicDeviceOnNewCameraApi() {

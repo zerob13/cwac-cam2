@@ -54,6 +54,10 @@ public class MainActivity extends Activity {
     CAMERA,
     WRITE_EXTERNAL_STORAGE
   };
+  private static final FlashMode[] FLASH_MODES={
+    FlashMode.ALWAYS,
+    FlashMode.AUTO
+  };
   private static final int REQUEST_PORTRAIT_RFC=1337;
   private static final int REQUEST_PORTRAIT_FFC=REQUEST_PORTRAIT_RFC+1;
   private static final int REQUEST_LANDSCAPE_RFC=REQUEST_PORTRAIT_RFC+2;
@@ -285,7 +289,7 @@ public class MainActivity extends Activity {
         .updateMediaStore()
         .debug()
         .debugSavePreviewFrame()
-        .flashMode(FlashMode.ALWAYS)
+        .flashModes(FLASH_MODES)
         .build();
 
     startActivityForResult(i, REQUEST_PORTRAIT_RFC);
@@ -363,7 +367,7 @@ public class MainActivity extends Activity {
       .facingExactMatch()
       .to(new File(testRoot, "landscape-rear.jpg"))
         .updateMediaStore()
-      .flashMode(FlashMode.ALWAYS)
+      .flashModes(FLASH_MODES)
       .debugSavePreviewFrame()
         .debug()
         .build();
@@ -377,7 +381,7 @@ public class MainActivity extends Activity {
       .facing(AbstractCameraActivity.Facing.FRONT)
       .facingExactMatch()
       .to(new File(testRoot, "portrait-front.jpg"))
-      .flashMode(FlashMode.ALWAYS)
+      .flashModes(FLASH_MODES)
       .debug()
       .debugSavePreviewFrame()
       .updateMediaStore()
@@ -393,7 +397,7 @@ public class MainActivity extends Activity {
       .facingExactMatch()
       .to(new File(testRoot, "landscape-front.jpg"))
       .updateMediaStore()
-      .flashMode(FlashMode.ALWAYS)
+      .flashModes(FLASH_MODES)
       .debugSavePreviewFrame()
       .debug()
       .build();

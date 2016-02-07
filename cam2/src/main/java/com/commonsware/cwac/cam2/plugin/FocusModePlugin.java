@@ -106,6 +106,7 @@ public class FocusModePlugin implements CameraPlugin {
      */
     @Override
     public Camera.Parameters configureStillCamera(
+      CameraSession session,
       Camera.CameraInfo info,
       Camera camera, Camera.Parameters params) {
       if (params!=null) {
@@ -146,7 +147,8 @@ public class FocusModePlugin implements CameraPlugin {
      * {@inheritDoc}
      */
     @Override
-    public void addToPreviewRequest(CameraCharacteristics cc,
+    public void addToPreviewRequest(CameraSession session,
+                                    CameraCharacteristics cc,
                                     CaptureRequest.Builder captureBuilder) {
       int desiredMode=getDesiredFocusMode(cc);
 
@@ -160,7 +162,8 @@ public class FocusModePlugin implements CameraPlugin {
     }
 
     @Override
-    public void addToCaptureRequest(CameraCharacteristics cc,
+    public void addToCaptureRequest(CameraSession session,
+                                    CameraCharacteristics cc,
                                     boolean facingFront,
                                     CaptureRequest.Builder captureBuilder) {
       int desiredMode=getDesiredFocusMode(cc);

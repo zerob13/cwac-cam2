@@ -36,6 +36,7 @@ import de.greenrobot.event.EventBus;
  * by CameraFragment or the equivalent.
  */
 public class CameraController implements CameraView.StateCallback {
+  private final boolean allowChangeFlashMode;
   private CameraEngine engine;
   private CameraSession session;
   private List<CameraDescriptor> cameras=null;
@@ -46,17 +47,16 @@ public class CameraController implements CameraView.StateCallback {
   private boolean switchPending=false;
   private boolean isVideoRecording=false;
   private final AbstractCameraActivity.FocusMode focusMode;
-  private final List<FlashMode> flashModes;
   private final boolean isVideo;
   private FlashModePlugin flashModePlugin;
 
   public CameraController(AbstractCameraActivity.FocusMode focusMode,
-                          List<FlashMode> flashModes,
+                          boolean allowChangeFlashMode,
                           boolean isVideo) {
     this.focusMode=focusMode==null ?
       AbstractCameraActivity.FocusMode.CONTINUOUS : focusMode;
-    this.flashModes=flashModes;
     this.isVideo=isVideo;
+    this.allowChangeFlashMode=allowChangeFlashMode;
   }
 
   /**
@@ -218,12 +218,14 @@ public class CameraController implements CameraView.StateCallback {
     }
   }
 
-  public boolean supportsDynamicFlashModes() {
-    return(engine.supportsDynamicFlashModes());
+  public boolean canToggleFlashMode() {
+    return(allowChangeFlashMode &&
+      engine.supportsDynamicFlashModes() &&
+      engine.hasMoreThanOneEligibleFlashMode());
   }
 
-  public Set<FlashMode> getSupportedFlashModes() {
-    return(engine.getSupportedFlashModes());
+  public FlashMode getCurrentFlashMode() {
+    return(session.getCurrentFlashMode());
   }
 
   private CameraView getPreview(CameraDescriptor camera) {
@@ -267,7 +269,7 @@ public class CameraController implements CameraView.StateCallback {
               previewSize.getHeight());
         }
 
-        flashModePlugin=new FlashModePlugin(flashModes);
+        flashModePlugin=new FlashModePlugin();
 
         session=engine
             .buildSession(cv.getContext(), camera)

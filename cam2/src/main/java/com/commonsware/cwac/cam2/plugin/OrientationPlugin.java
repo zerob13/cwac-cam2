@@ -110,6 +110,7 @@ public class OrientationPlugin implements CameraPlugin {
      */
     @Override
     public Camera.Parameters configureStillCamera(
+      CameraSession session,
       Camera.CameraInfo info,
       Camera camera, Camera.Parameters params) {
       int displayOrientation=getDisplayOrientation(info, true);
@@ -186,7 +187,8 @@ public class OrientationPlugin implements CameraPlugin {
     }
 
     @Override
-    public void configureRecorder(int cameraId,
+    public void configureRecorder(CameraSession session,
+                                  int cameraId,
                                   VideoTransaction xact,
                                   MediaRecorder recorder) {
       Camera.CameraInfo info=new Camera.CameraInfo();
@@ -241,7 +243,8 @@ public class OrientationPlugin implements CameraPlugin {
      * {@inheritDoc}
      */
     @Override
-    public void addToCaptureRequest(CameraCharacteristics cc,
+    public void addToCaptureRequest(CameraSession session,
+                                    CameraCharacteristics cc,
                                     boolean facingFront,
                                     CaptureRequest.Builder captureBuilder) {
       // based on https://developer.android.com/reference/android/hardware/camera2/CaptureRequest.html#JPEG_ORIENTATION

@@ -68,8 +68,6 @@ public class CameraTwoEngine extends CameraEngine {
   private CountDownLatch closeLatch=null;
   private MediaActionSound shutter=new MediaActionSound();
   private List<Descriptor> descriptors=null;
-  private HashMap<FlashMode, Integer> availableFlashModes=
-    new HashMap<FlashMode, Integer>();
 
   /**
    * Standard constructor
@@ -191,13 +189,31 @@ public class CameraTwoEngine extends CameraEngine {
           CameraCharacteristics cc=
             mgr.getCameraCharacteristics(camera.getId());
 
-          availableFlashModes.clear();
+          eligibleFlashModes.clear();
 
           int[] availModes=cc.get(CameraCharacteristics.CONTROL_AE_AVAILABLE_MODES);
 
-          for (int mode : availModes) {
-            availableFlashModes.put(getNormalizedFlashMode(mode), mode);
+          for (FlashMode flashMode : preferredFlashModes) {
+            for (int rawFlashMode : availModes) {
+              if (rawFlashMode==flashMode.getCameraTwoMode()) {
+                eligibleFlashModes.add(flashMode);
+                break;
+              }
+            }
           }
+
+          if (eligibleFlashModes.isEmpty()) {
+            for (int rawFlashMode : availModes) {
+              FlashMode flashMode=FlashMode.lookupCameraTwoMode(
+                rawFlashMode);
+
+              if (flashMode!=null) {
+                eligibleFlashModes.add(flashMode);
+              }
+            }
+          }
+
+          session.setCurrentFlashMode(eligibleFlashModes.get(0));
 
           if (!lock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
             throw new RuntimeException("Time out waiting to lock camera opening.");
@@ -313,78 +329,8 @@ public class CameraTwoEngine extends CameraEngine {
    * {@inheritDoc}
    */
   @Override
-  public Set<FlashMode> getSupportedFlashModes() {
-    return(availableFlashModes.keySet());
-  }
-
-  public int getEngineMode(FlashMode mode) {
-    return(availableFlashModes.get(mode));
-  }
-
-  public FlashMode getFlashMode(int engineMode) {
-    for (FlashMode mode : availableFlashModes.keySet()) {
-      if (engineMode==availableFlashModes.get(mode)) {
-        return(mode);
-      }
-    }
-
-    return(null);
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
   public boolean supportsDynamicFlashModes() {
     return(true);
-  }
-
-  public static FlashMode getNormalizedFlashMode(int mode) {
-    FlashMode result=FlashMode.OFF;
-
-    switch(mode) {
-      case CameraMetadata.CONTROL_AE_MODE_ON_ALWAYS_FLASH:
-        result=FlashMode.ALWAYS;
-        break;
-
-      case CameraMetadata.CONTROL_AE_MODE_ON_AUTO_FLASH:
-        result=FlashMode.AUTO;
-        break;
-
-      case CameraMetadata.CONTROL_AE_MODE_ON_AUTO_FLASH_REDEYE:
-        result=FlashMode.REDEYE;
-        break;
-    }
-
-    return(result);
-  }
-
-  public static int getEngineFlashModeFromNormalizedFlashMode(
-    FlashMode mode,
-    CameraCharacteristics cc) {
-    int[] availModes=cc.get(CameraCharacteristics.CONTROL_AE_AVAILABLE_MODES);
-    int desiredMode=-1;
-
-    if (mode==FlashMode.OFF) {
-      desiredMode=CameraMetadata.CONTROL_AE_MODE_ON;
-    }
-    else if (mode==FlashMode.ALWAYS) {
-      desiredMode=CameraMetadata.CONTROL_AE_MODE_ON_ALWAYS_FLASH;
-    }
-    else if (mode==FlashMode.AUTO) {
-      desiredMode=CameraMetadata.CONTROL_AE_MODE_ON_AUTO_FLASH;
-    }
-    else if (mode==FlashMode.REDEYE) {
-      desiredMode=CameraMetadata.CONTROL_AE_MODE_ON_AUTO_FLASH_REDEYE;
-    }
-
-    for (int availMode : availModes) {
-      if (desiredMode==availMode) {
-        return(desiredMode);
-      }
-    }
-
-    return(-1);
   }
 
   private class InitPreviewTransaction extends CameraDevice.StateCallback {
@@ -779,7 +725,7 @@ public class CameraTwoEngine extends CameraEngine {
         CameraTwoConfigurator configurator=plugin.buildConfigurator(CameraTwoConfigurator.class);
 
         if (configurator!=null) {
-          configurator.addToCaptureRequest(cc, isFacingFront, captureBuilder);
+          configurator.addToCaptureRequest(this, cc, isFacingFront, captureBuilder);
         }
       }
     }
@@ -790,7 +736,7 @@ public class CameraTwoEngine extends CameraEngine {
         CameraTwoConfigurator configurator=plugin.buildConfigurator(CameraTwoConfigurator.class);
 
         if (configurator!=null) {
-          configurator.addToPreviewRequest(cc, captureBuilder);
+          configurator.addToPreviewRequest(this, cc, captureBuilder);
         }
       }
     }
