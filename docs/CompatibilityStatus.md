@@ -24,6 +24,7 @@
 | HTC One A9                     | `HTC`/`hiaeuhl_00709`       | 6.0   | |
 | HTC One M7 GPE                 | `HTC`/`m7_google`           | 5.1     | |
 | HTC One S                      | `HTC`/`tmous`               | 4.1.1 | [35](https://github.com/commonsguy/cwac-cam2/issues/35) |
+| Huawei Honor 5X                | `HUAWEI`/`KIW-L24`          | 5.1.1 | |
 | LG G2                          | `LGE`/`g2_open_com`         | 4.4.2 | |
 | Motorola Moto E XT1022         | `motorola`/`condor_retla_ds`| 4.4.4 | |
 | NVIDIA Shield K1               | `NVIDIA`/`sb_na_wf`         | 6.0   | |
