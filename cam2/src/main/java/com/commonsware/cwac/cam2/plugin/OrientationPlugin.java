@@ -168,6 +168,7 @@ public class OrientationPlugin implements CameraPlugin {
     }
 
     private boolean useAltAlgorithm() {
+/*
       if ("Huawei".equals(Build.MANUFACTURER) &&
         "angler".equals(Build.PRODUCT)) {
         return(true);
@@ -184,6 +185,8 @@ public class OrientationPlugin implements CameraPlugin {
       }
 
       return(false);
+*/
+      return(true);
     }
 
     @Override
