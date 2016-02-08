@@ -218,29 +218,34 @@ public class ClassicCameraEngine extends CameraEngine
         }
 
         Camera.Parameters params=camera.getParameters();
+        List<String> rawFlashModes=params.getSupportedFlashModes();
 
         eligibleFlashModes.clear();
 
-        for (FlashMode flashMode : preferredFlashModes) {
-          for (String rawFlashMode : params.getSupportedFlashModes()) {
-            if (rawFlashMode.equals(flashMode.getClassicMode())) {
-              eligibleFlashModes.add(flashMode);
-              break;
+        if (rawFlashModes!=null) {
+          for (FlashMode flashMode : preferredFlashModes) {
+            for (String rawFlashMode : rawFlashModes) {
+              if (rawFlashMode.equals(
+                flashMode.getClassicMode())) {
+                eligibleFlashModes.add(flashMode);
+                break;
+              }
             }
           }
-        }
 
-        if (eligibleFlashModes.isEmpty()) {
-          for (String rawFlashMode : params.getSupportedFlashModes()) {
-            FlashMode flashMode=FlashMode.lookupClassicMode(rawFlashMode);
+          if (eligibleFlashModes.isEmpty()) {
+            for (String rawFlashMode : rawFlashModes) {
+              FlashMode flashMode=
+                FlashMode.lookupClassicMode(rawFlashMode);
 
-            if (flashMode!=null) {
-              eligibleFlashModes.add(flashMode);
+              if (flashMode!=null) {
+                eligibleFlashModes.add(flashMode);
+              }
             }
           }
-        }
 
-        session.setCurrentFlashMode(eligibleFlashModes.get(0));
+          session.setCurrentFlashMode(eligibleFlashModes.get(0));
+        }
 
         try {
           camera.setParameters(((Session)session).configureStillCamera(
