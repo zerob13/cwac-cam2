@@ -29,7 +29,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.FrameLayout;
 import com.commonsware.cwac.cam2.util.Utils;
 import java.io.File;
 import java.util.ArrayList;
@@ -375,21 +374,6 @@ abstract public class AbstractCameraActivity extends Activity {
     }
 
     return(result.toArray(new String[result.size()]));
-  }
-
-  /**
-   * Possible values for the facing property
-   */
-  public enum Facing {
-    FRONT, BACK;
-
-    boolean isFront() {
-      return(this==FRONT);
-    }
-  }
-
-  public enum FocusMode {
-    CONTINUOUS, OFF, EDOF
   }
 
   abstract public static class IntentBuilder<T extends IntentBuilder> {

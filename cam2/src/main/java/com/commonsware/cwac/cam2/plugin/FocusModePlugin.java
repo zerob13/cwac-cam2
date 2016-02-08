@@ -20,21 +20,16 @@ import android.hardware.Camera;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
-import android.media.MediaRecorder;
 import android.os.Build;
 import android.util.Log;
 import android.view.OrientationEventListener;
-import android.view.Surface;
-import android.view.WindowManager;
-import com.commonsware.cwac.cam2.AbstractCameraActivity;
 import com.commonsware.cwac.cam2.CameraConfigurator;
 import com.commonsware.cwac.cam2.CameraPlugin;
 import com.commonsware.cwac.cam2.CameraSession;
 import com.commonsware.cwac.cam2.ClassicCameraConfigurator;
-import com.commonsware.cwac.cam2.PictureTransaction;
+import com.commonsware.cwac.cam2.FocusMode;
 import com.commonsware.cwac.cam2.SimpleCameraTwoConfigurator;
 import com.commonsware.cwac.cam2.SimpleClassicCameraConfigurator;
-import com.commonsware.cwac.cam2.VideoTransaction;
 
 /**
  * Plugin for managing focus modes
@@ -42,12 +37,12 @@ import com.commonsware.cwac.cam2.VideoTransaction;
 public class FocusModePlugin implements CameraPlugin {
   private final Context ctxt;
   private final boolean isVideo;
-  private final AbstractCameraActivity.FocusMode focusMode;
+  private final FocusMode focusMode;
   private OrientationEventListener orientationEventListener;
   private int lastOrientation=OrientationEventListener.ORIENTATION_UNKNOWN;
 
   public FocusModePlugin(Context ctxt,
-                         AbstractCameraActivity.FocusMode focusMode,
+                         FocusMode focusMode,
                          boolean isVideo) {
     this.ctxt=ctxt.getApplicationContext();
     this.focusMode=focusMode;
@@ -112,11 +107,11 @@ public class FocusModePlugin implements CameraPlugin {
       if (params!=null) {
         String desiredMode=null;
 
-        if (focusMode==AbstractCameraActivity.FocusMode.OFF) {
+        if (focusMode==FocusMode.OFF) {
           desiredMode=Camera.Parameters.FOCUS_MODE_FIXED;
         }
         else if (focusMode==
-          AbstractCameraActivity.FocusMode.EDOF) {
+          FocusMode.EDOF) {
           desiredMode=Camera.Parameters.FOCUS_MODE_EDOF;
         }
         else if (isVideo) {
@@ -181,10 +176,10 @@ public class FocusModePlugin implements CameraPlugin {
       int[] availModes=cc.get(CameraCharacteristics.CONTROL_AF_AVAILABLE_MODES);
       int desiredMode;
 
-      if (focusMode==AbstractCameraActivity.FocusMode.OFF) {
+      if (focusMode==FocusMode.OFF) {
         desiredMode=CameraMetadata.CONTROL_AF_MODE_OFF;
       }
-      else if (focusMode==AbstractCameraActivity.FocusMode.EDOF) {
+      else if (focusMode==FocusMode.EDOF) {
         desiredMode=CameraMetadata.CONTROL_AF_MODE_EDOF;
       }
       else if (isVideo) {

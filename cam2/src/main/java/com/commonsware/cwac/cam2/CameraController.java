@@ -28,7 +28,6 @@ import com.commonsware.cwac.cam2.util.Utils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Queue;
-import java.util.Set;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -46,15 +45,15 @@ public class CameraController implements CameraView.StateCallback {
   private Queue<CameraView> availablePreviews=null;
   private boolean switchPending=false;
   private boolean isVideoRecording=false;
-  private final AbstractCameraActivity.FocusMode focusMode;
+  private final FocusMode focusMode;
   private final boolean isVideo;
   private FlashModePlugin flashModePlugin;
 
-  public CameraController(AbstractCameraActivity.FocusMode focusMode,
+  public CameraController(FocusMode focusMode,
                           boolean allowChangeFlashMode,
                           boolean isVideo) {
     this.focusMode=focusMode==null ?
-      AbstractCameraActivity.FocusMode.CONTINUOUS : focusMode;
+      FocusMode.CONTINUOUS : focusMode;
     this.isVideo=isVideo;
     this.allowChangeFlashMode=allowChangeFlashMode;
   }

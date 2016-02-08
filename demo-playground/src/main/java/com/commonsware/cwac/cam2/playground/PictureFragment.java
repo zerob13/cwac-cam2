@@ -20,13 +20,13 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import com.commonsware.cwac.cam2.AbstractCameraActivity;
 import com.commonsware.cwac.cam2.CameraActivity;
+import com.commonsware.cwac.cam2.Facing;
 import com.commonsware.cwac.cam2.FlashMode;
+import com.commonsware.cwac.cam2.FocusMode;
 import java.io.File;
 
 public class PictureFragment extends PreferenceFragment {
@@ -82,10 +82,10 @@ public class PictureFragment extends PreferenceFragment {
     }
 
     if (prefs.getBoolean("ffc", false)) {
-      b.facing(AbstractCameraActivity.Facing.FRONT);
+      b.facing(Facing.FRONT);
     }
     else {
-      b.facing(AbstractCameraActivity.Facing.BACK);
+      b.facing(Facing.BACK);
     }
 
     if (prefs.getBoolean("exact_match", false)) {
@@ -121,13 +121,13 @@ public class PictureFragment extends PreferenceFragment {
 
     switch (rawFocusMode) {
       case 0:
-        b.focusMode(AbstractCameraActivity.FocusMode.CONTINUOUS);
+        b.focusMode(FocusMode.CONTINUOUS);
         break;
       case 1:
-        b.focusMode(AbstractCameraActivity.FocusMode.OFF);
+        b.focusMode(FocusMode.OFF);
         break;
       case 2:
-        b.focusMode(AbstractCameraActivity.FocusMode.EDOF);
+        b.focusMode(FocusMode.EDOF);
         break;
     }
 

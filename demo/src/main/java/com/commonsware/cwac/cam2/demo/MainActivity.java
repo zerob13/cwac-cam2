@@ -29,8 +29,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
-import com.commonsware.cwac.cam2.AbstractCameraActivity;
 import com.commonsware.cwac.cam2.CameraActivity;
+import com.commonsware.cwac.cam2.Facing;
 import com.commonsware.cwac.cam2.FlashMode;
 import com.commonsware.cwac.security.RuntimePermissionUtils;
 import com.squareup.moshi.JsonAdapter;
@@ -283,7 +283,7 @@ public class MainActivity extends Activity {
   public void onEventMainThread(InitCaptureCompletedEvent event) {
     Intent i=new CameraActivity.IntentBuilder(this)
         .skipConfirm()
-        .facing(AbstractCameraActivity.Facing.BACK)
+        .facing(Facing.BACK)
         .facingExactMatch()
         .to(new File(testRoot, "portrait-rear.jpg"))
         .updateMediaStore()
@@ -363,7 +363,7 @@ public class MainActivity extends Activity {
 
     Intent i=new CameraActivity.IntentBuilder(this)
       .skipConfirm()
-      .facing(AbstractCameraActivity.Facing.BACK)
+      .facing(Facing.BACK)
       .facingExactMatch()
       .to(new File(testRoot, "landscape-rear.jpg"))
         .updateMediaStore()
@@ -378,7 +378,7 @@ public class MainActivity extends Activity {
   private void capturePortraitFFC() {
     Intent i=new CameraActivity.IntentBuilder(MainActivity.this)
       .skipConfirm()
-      .facing(AbstractCameraActivity.Facing.FRONT)
+      .facing(Facing.FRONT)
       .facingExactMatch()
       .to(new File(testRoot, "portrait-front.jpg"))
       .flashModes(FLASH_MODES)
@@ -393,7 +393,7 @@ public class MainActivity extends Activity {
   private void captureLandscapeFFC() {
     Intent i=new CameraActivity.IntentBuilder(MainActivity.this)
       .skipConfirm()
-      .facing(AbstractCameraActivity.Facing.FRONT)
+      .facing(Facing.FRONT)
       .facingExactMatch()
       .to(new File(testRoot, "landscape-front.jpg"))
       .updateMediaStore()
