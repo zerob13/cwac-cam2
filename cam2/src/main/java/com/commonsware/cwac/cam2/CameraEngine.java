@@ -424,6 +424,11 @@ abstract public class CameraEngine {
       return(true);
     }
 
+    if ("samsung".equals(Build.MANUFACTURER) &&
+      "zerofltexx".equals(Build.PRODUCT)) {
+      return(true);
+    }
+
     return(false);
   }
 }
