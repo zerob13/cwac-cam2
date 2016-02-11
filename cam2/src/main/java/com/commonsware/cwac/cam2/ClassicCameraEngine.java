@@ -36,6 +36,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import de.greenrobot.event.EventBus;
 
 /**
  * Implementation of a CameraEngine that supports the
@@ -44,7 +45,7 @@ import java.util.Set;
 @SuppressWarnings("deprecation")
 public class ClassicCameraEngine extends CameraEngine
     implements MediaRecorder.OnInfoListener,
-    Camera.PreviewCallback {
+    Camera.PreviewCallback, Camera.OnZoomChangeListener {
   private final Context ctxt;
   private List<Descriptor> descriptors=null;
   private MediaRecorder recorder;
@@ -404,6 +405,37 @@ public class ClassicCameraEngine extends CameraEngine
   @Override
   public boolean supportsDynamicFlashModes() {
     return(false);
+  }
+
+  @Override
+  public boolean zoomTo(CameraSession session, int zoomLevel) {
+    Descriptor descriptor=(Descriptor)session.getDescriptor();
+    Camera camera=descriptor.getCamera();
+    Camera.Parameters params=camera.getParameters();
+    int zoom=zoomLevel*params.getMaxZoom()/100;
+    boolean result=false;
+
+    if (params.isSmoothZoomSupported()) {
+      camera.setZoomChangeListener(this);
+      camera.startSmoothZoom(zoom);
+      result=true;
+    }
+    else if (params.isZoomSupported()) {
+      params.setZoom(zoom);
+      camera.setParameters(params);
+    }
+
+Log.e("20160211", Boolean.toString(result));
+
+    return(result);
+  }
+
+  @Override
+  public void onZoomChange(int zoomValue, boolean stopped,
+                           Camera camera) {
+    if (stopped) {
+      EventBus.getDefault().post(new SmoothZoomCompletedEvent());
+    }
   }
 
   private class TakePictureTransaction implements Camera.PictureCallback {

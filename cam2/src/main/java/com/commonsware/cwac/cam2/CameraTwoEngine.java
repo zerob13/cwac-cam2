@@ -333,6 +333,14 @@ public class CameraTwoEngine extends CameraEngine {
     return(true);
   }
 
+  @Override
+  public boolean zoomTo(CameraSession session,
+                         int zoomLevel) {
+    // TODO
+
+    return(false);
+  }
+
   private class InitPreviewTransaction extends CameraDevice.StateCallback {
     private final Session s;
     private final Surface surface;

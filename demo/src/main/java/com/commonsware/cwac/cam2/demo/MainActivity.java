@@ -32,6 +32,7 @@ import android.widget.ViewFlipper;
 import com.commonsware.cwac.cam2.CameraActivity;
 import com.commonsware.cwac.cam2.Facing;
 import com.commonsware.cwac.cam2.FlashMode;
+import com.commonsware.cwac.cam2.ZoomStyle;
 import com.commonsware.cwac.security.RuntimePermissionUtils;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
@@ -290,6 +291,7 @@ public class MainActivity extends Activity {
         .debug()
         .debugSavePreviewFrame()
         .flashModes(FLASH_MODES)
+        .zoomStyle(ZoomStyle.SEEKBAR)
         .build();
 
     startActivityForResult(i, REQUEST_PORTRAIT_RFC);
@@ -368,6 +370,7 @@ public class MainActivity extends Activity {
       .to(new File(testRoot, "landscape-rear.jpg"))
         .updateMediaStore()
       .flashModes(FLASH_MODES)
+      .zoomStyle(ZoomStyle.SEEKBAR)
       .debugSavePreviewFrame()
         .debug()
         .build();
@@ -382,6 +385,7 @@ public class MainActivity extends Activity {
       .facingExactMatch()
       .to(new File(testRoot, "portrait-front.jpg"))
       .flashModes(FLASH_MODES)
+      .zoomStyle(ZoomStyle.SEEKBAR)
       .debug()
       .debugSavePreviewFrame()
       .updateMediaStore()
@@ -398,6 +402,7 @@ public class MainActivity extends Activity {
       .to(new File(testRoot, "landscape-front.jpg"))
       .updateMediaStore()
       .flashModes(FLASH_MODES)
+      .zoomStyle(ZoomStyle.SEEKBAR)
       .debugSavePreviewFrame()
       .debug()
       .build();

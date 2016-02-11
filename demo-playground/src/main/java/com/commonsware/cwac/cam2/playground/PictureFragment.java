@@ -27,6 +27,7 @@ import com.commonsware.cwac.cam2.CameraActivity;
 import com.commonsware.cwac.cam2.Facing;
 import com.commonsware.cwac.cam2.FlashMode;
 import com.commonsware.cwac.cam2.FocusMode;
+import com.commonsware.cwac.cam2.ZoomStyle;
 import java.io.File;
 
 public class PictureFragment extends PreferenceFragment {
@@ -116,8 +117,8 @@ public class PictureFragment extends PreferenceFragment {
       b.mirrorPreview();
     }
 
-    int rawFocusMode=Integer.valueOf(
-      prefs.getString("focusMode", "-1"));
+    int rawFocusMode=
+      Integer.valueOf(prefs.getString("focusMode", "-1"));
 
     switch (rawFocusMode) {
       case 0:
@@ -135,8 +136,8 @@ public class PictureFragment extends PreferenceFragment {
       b.debugSavePreviewFrame();
     }
 
-    int rawFlashMode=Integer.valueOf(
-      prefs.getString("flashMode", "-1"));
+    int rawFlashMode=
+      Integer.valueOf(prefs.getString("flashMode", "-1"));
 
     switch (rawFlashMode) {
       case 0:
@@ -155,6 +156,19 @@ public class PictureFragment extends PreferenceFragment {
 
     if (prefs.getBoolean("allowSwitchFlashMode", false)) {
       b.allowSwitchFlashMode();
+    }
+
+    int rawZoomStyle=
+      Integer.valueOf(prefs.getString("zoomStyle", "0"));
+
+    switch (rawZoomStyle) {
+      case 1:
+        b.zoomStyle(ZoomStyle.PINCH);
+        break;
+
+      case 2:
+        b.zoomStyle(ZoomStyle.SEEKBAR);
+        break;
     }
 
     Intent result;

@@ -48,6 +48,7 @@ public class CameraController implements CameraView.StateCallback {
   private final FocusMode focusMode;
   private final boolean isVideo;
   private FlashModePlugin flashModePlugin;
+  private int zoomLevel=0;
 
   public CameraController(FocusMode focusMode,
                           boolean allowChangeFlashMode,
@@ -225,6 +226,29 @@ public class CameraController implements CameraView.StateCallback {
 
   public FlashMode getCurrentFlashMode() {
     return(session.getCurrentFlashMode());
+  }
+
+  boolean changeZoom(int delta) {
+    zoomLevel+=delta;
+
+    return(handleZoom());
+  }
+
+  boolean setZoom(int zoomLevel) {
+    this.zoomLevel=zoomLevel;
+
+    return(handleZoom());
+  }
+
+  private boolean handleZoom() {
+    if (zoomLevel<0) {
+      zoomLevel=0;
+    }
+    else if (zoomLevel>100) {
+      zoomLevel=100;
+    }
+
+    return(engine.zoomTo(session, zoomLevel));
   }
 
   private CameraView getPreview(CameraDescriptor camera) {

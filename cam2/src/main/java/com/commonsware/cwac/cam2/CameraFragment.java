@@ -28,10 +28,13 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import java.io.File;
@@ -49,6 +52,8 @@ public class CameraFragment extends Fragment {
   private static final String ARG_VIDEO_QUALITY="quality";
   private static final String ARG_SIZE_LIMIT="sizeLimit";
   private static final String ARG_DURATION_LIMIT="durationLimit";
+  private static final String ARG_ZOOM_STYLE="zoomStyle";
+  private static final int PINCH_ZOOM_DELTA=20;
   private CameraController ctlr;
   private ViewGroup previewStack;
   private FloatingActionButton fabPicture;
@@ -56,15 +61,20 @@ public class CameraFragment extends Fragment {
   private View progress;
   private boolean isVideoRecording=false;
   private boolean mirrorPreview=false;
+  private ScaleGestureDetector scaleDetector;
+  private boolean inSmoothPinchZoom=false;
+  private SeekBar zoomSlider;
 
   public static CameraFragment newPictureInstance(Uri output,
-                                                  boolean updateMediaStore) {
+                                                  boolean updateMediaStore,
+                                                  ZoomStyle zoomStyle) {
     CameraFragment f=new CameraFragment();
     Bundle args=new Bundle();
 
     args.putParcelable(ARG_OUTPUT, output);
     args.putBoolean(ARG_UPDATE_MEDIA_STORE, updateMediaStore);
     args.putBoolean(ARG_IS_VIDEO, false);
+    args.putSerializable(ARG_ZOOM_STYLE, zoomStyle);
     f.setArguments(args);
 
     return(f);
@@ -83,6 +93,7 @@ public class CameraFragment extends Fragment {
     args.putInt(ARG_VIDEO_QUALITY, quality);
     args.putInt(ARG_SIZE_LIMIT, sizeLimit);
     args.putInt(ARG_DURATION_LIMIT, durationLimit);
+    args.putBoolean(ARG_ZOOM_STYLE, false);
     f.setArguments(args);
 
     return(f);
@@ -98,6 +109,8 @@ public class CameraFragment extends Fragment {
     super.onCreate(savedInstanceState);
 
     setRetainInstance(true);
+    scaleDetector=new ScaleGestureDetector(getActivity(),
+      scaleListener);
   }
 
   /**
@@ -186,8 +199,23 @@ public class CameraFragment extends Fragment {
     View v=inflater.inflate(R.layout.cwac_cam2_fragment, container, false);
 
     previewStack=(ViewGroup)v.findViewById(R.id.cwac_cam2_preview_stack);
-    progress=v.findViewById(R.id.cwac_cam2_progress);
 
+    if (getZoomStyle()==ZoomStyle.PINCH) {
+      previewStack.setOnTouchListener(
+        new View.OnTouchListener() {
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+            return(scaleDetector.onTouchEvent(event));
+          }
+        });
+    }
+    else if (getZoomStyle()==ZoomStyle.SEEKBAR) {
+      zoomSlider=(SeekBar)v.findViewById(R.id.cwac_cam2_zoom);
+      zoomSlider.setVisibility(View.VISIBLE);
+      zoomSlider.setOnSeekBarChangeListener(seekListener);
+    }
+
+    progress=v.findViewById(R.id.cwac_cam2_progress);
     fabPicture=(FloatingActionButton)v.findViewById(R.id.cwac_cam2_picture);
 
     if (isVideo()) {
@@ -292,13 +320,21 @@ public class CameraFragment extends Fragment {
       }
 
       isVideoRecording=false;
-      fabPicture.setImageResource(R.drawable.cwac_cam2_ic_videocam);
-      fabPicture.setColorNormalResId(R.color.cwac_cam2_picture_fab);
-      fabPicture.setColorPressedResId(R.color.cwac_cam2_picture_fab_pressed);
+      fabPicture.setImageResource(
+        R.drawable.cwac_cam2_ic_videocam);
+      fabPicture.setColorNormalResId(
+        R.color.cwac_cam2_picture_fab);
+      fabPicture.setColorPressedResId(
+        R.color.cwac_cam2_picture_fab_pressed);
     }
     else {
       getActivity().finish();
     }
+  }
+
+  public void onEventMainThread(CameraEngine.SmoothZoomCompletedEvent event) {
+    inSmoothPinchZoom=false;
+    zoomSlider.setEnabled(true);
   }
 
   protected void performCameraAction() {
@@ -411,4 +447,63 @@ public class CameraFragment extends Fragment {
     set.setInterpolator(new OvershootInterpolator(2));
     menu.setIconToggleAnimatorSet(set);
   }
+
+  private ZoomStyle getZoomStyle() {
+    ZoomStyle result=(ZoomStyle)getArguments().getSerializable(ARG_ZOOM_STYLE);
+
+    if (result==null) {
+      result=ZoomStyle.NONE;
+    }
+
+    return(result);
+  }
+
+  private ScaleGestureDetector.OnScaleGestureListener scaleListener=
+    new ScaleGestureDetector.SimpleOnScaleGestureListener() {
+      @Override
+      public void onScaleEnd(ScaleGestureDetector detector) {
+        float scale=detector.getScaleFactor();
+        int delta;
+
+        if (scale>1.0f) {
+          delta=PINCH_ZOOM_DELTA;
+        }
+        else if (scale<1.0f) {
+          delta=-1*PINCH_ZOOM_DELTA;
+        }
+        else {
+          return;
+        }
+
+        if (!inSmoothPinchZoom) {
+          if (ctlr.changeZoom(delta)) {
+            inSmoothPinchZoom=true;
+          }
+        }
+      }
+    };
+
+  private SeekBar.OnSeekBarChangeListener seekListener=
+    new SeekBar.OnSeekBarChangeListener() {
+      @Override
+      public void onProgressChanged(SeekBar seekBar,
+                                    int progress,
+                                    boolean fromUser) {
+        if (fromUser) {
+          if (ctlr.setZoom(progress)) {
+            seekBar.setEnabled(false);
+          }
+        }
+      }
+
+      @Override
+      public void onStartTrackingTouch(SeekBar seekBar) {
+        // no-op
+      }
+
+      @Override
+      public void onStopTrackingTouch(SeekBar seekBar) {
+        // no-op
+      }
+    };
 }

@@ -131,6 +131,10 @@ abstract public class CameraEngine {
 
   }
 
+  public static class SmoothZoomCompletedEvent {
+
+  }
+
   /**
    * Event raised when picture is taken, as a result of a
    * takePicture() call. May include an exception if there was
@@ -290,6 +294,17 @@ abstract public class CameraEngine {
    * on the fly, false otherwise
    */
   abstract public boolean supportsDynamicFlashModes();
+
+  /**
+   * Sets the zoom level for the camera.
+   *
+   * @param session the session for the camera of interest
+   * @param zoomLevel 0-100, 100=max zoom
+   * @return true if "smooth zoom" (and should not request
+   * zoom until complete), false otherwise
+   */
+  abstract public boolean zoomTo(CameraSession session,
+                                   int zoomLevel);
 
   /**
    * Builds a CameraEngine instance based on the device's
