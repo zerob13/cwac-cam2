@@ -425,8 +425,6 @@ public class ClassicCameraEngine extends CameraEngine
       camera.setParameters(params);
     }
 
-Log.e("20160211", Boolean.toString(result));
-
     return(result);
   }
 

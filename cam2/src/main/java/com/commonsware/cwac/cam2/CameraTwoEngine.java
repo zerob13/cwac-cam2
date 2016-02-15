@@ -17,6 +17,7 @@ package com.commonsware.cwac.cam2;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.ImageFormat;
+import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -336,9 +337,53 @@ public class CameraTwoEngine extends CameraEngine {
   @Override
   public boolean zoomTo(CameraSession session,
                          int zoomLevel) {
-    // TODO
+    final Session s=(Session)session;
+    final Descriptor descriptor=(Descriptor)session.getDescriptor();
+
+    if (s.previewRequest!=null) {
+      try {
+        final CameraCharacteristics cc=
+          mgr.getCameraCharacteristics(descriptor.cameraId);
+        final float maxZoom=
+          cc.get(
+            CameraCharacteristics.SCALER_AVAILABLE_MAX_DIGITAL_ZOOM);
+
+        // if <=1, zoom not possible, so eat the the event
+        if (maxZoom>1.0f) {
+          float zoomTo=1.0f+((float)zoomLevel*(maxZoom-1.0f)/100.0f);
+          Rect zoomRect=cropRegionForZoom(cc, zoomTo);
+
+          s.previewRequestBuilder
+            .set(CaptureRequest.SCALER_CROP_REGION, zoomRect);
+          s.setZoomRect(zoomRect);
+          s.previewRequest=s.previewRequestBuilder.build();
+          s.captureSession.setRepeatingRequest(s.previewRequest,
+            null, handler);
+        }
+      }
+      catch (CameraAccessException e) {
+        e.printStackTrace();
+      }
+    }
 
     return(false);
+  }
+
+  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+  private static Rect cropRegionForZoom(CameraCharacteristics cc,
+                                        float zoomTo) {
+    Rect sensor=
+      cc.get(CameraCharacteristics.SENSOR_INFO_ACTIVE_ARRAY_SIZE);
+    int sensorCenterX=sensor.width()/2;
+    int sensorCenterY=sensor.height()/2;
+    int deltaX=(int)(0.5f*sensor.width()/zoomTo);
+    int deltaY=(int)(0.5f*sensor.height()/zoomTo);
+
+    return(new Rect(
+      sensorCenterX-deltaX,
+      sensorCenterY-deltaY,
+      sensorCenterX+deltaX,
+      sensorCenterY+deltaY));
   }
 
   private class InitPreviewTransaction extends CameraDevice.StateCallback {
@@ -417,6 +462,13 @@ public class CameraTwoEngine extends CameraEngine {
 
           Descriptor camera=(Descriptor)s.getDescriptor();
           CameraCharacteristics cc=mgr.getCameraCharacteristics(camera.cameraId);
+
+          if (s.getZoomRect()!=null) {
+            s
+              .previewRequestBuilder
+              .set(CaptureRequest.SCALER_CROP_REGION,
+                s.getZoomRect());
+          }
 
           s.addToPreviewRequest(cc, s.previewRequestBuilder);
 
@@ -539,6 +591,12 @@ public class CameraTwoEngine extends CameraEngine {
 
         Descriptor camera=(Descriptor)s.getDescriptor();
         CameraCharacteristics cc=mgr.getCameraCharacteristics(camera.cameraId);
+
+        if (s.getZoomRect()!=null) {
+          captureBuilder
+            .set(CaptureRequest.SCALER_CROP_REGION,
+              s.getZoomRect());
+        }
 
         s.addToCaptureRequest(cc, camera.isFacingFront, captureBuilder);
 
@@ -705,6 +763,7 @@ public class CameraTwoEngine extends CameraEngine {
     CaptureRequest previewRequest;
     ImageReader reader;
     boolean isClosed=false;
+    Rect zoomRect=null;
 
     private Session(Context ctxt, CameraDescriptor descriptor) {
       super(ctxt, descriptor);
@@ -755,6 +814,14 @@ public class CameraTwoEngine extends CameraEngine {
 
     void setClosed(boolean isClosed) {
       this.isClosed=isClosed;
+    }
+
+    Rect getZoomRect() {
+      return(zoomRect);
+    }
+
+    void setZoomRect(Rect zoomRect) {
+      this.zoomRect=zoomRect;
     }
   }
 
