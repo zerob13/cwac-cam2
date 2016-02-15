@@ -1,5 +1,18 @@
 # Compatibility Status
 
+## Version 0.5.x
+| Device                         | Identifier                  | Version | Issues |
+| ------------------------------ |:---------------------------:|:-------:|--------|
+| Google Galaxy Nexus            | `samsung`/`yakju`           | 4.3     | |
+| Google Nexus 5                 | `LGE`/`hammerhead`          | 6.0.1   | |
+| Google Nexus 5X                | `LGE`/`bullhead`            | 6.0.1   | |
+| Google Nexus 6P                | `Huawei`/`angler`           | 6.0.1   | [121](https://github.com/commonsguy/cwac-cam2/issues/121) |
+| HTC One A9                     | `HTC`/`hiaeuhl_00709`       | 6.0.1   | |
+| LG G2                          | `LGE`/`g2_open_com`         | 4.4.2   | |
+| Samsung Galaxy S5              | `samsung`/`k3gxx`           | 5.0     | |
+| SONY Xperia Z Ultra (C6802)    | `Sony`/`C6802`              | 5.1.1   | |
+| Wileyfox Swift                 | `Wileyfox`/`Swift`          | 5.1.1 (CM 12.1) | |
+
 ## Version 0.4.x
 
 | Device                         | Identifier                  | Version | Issues |

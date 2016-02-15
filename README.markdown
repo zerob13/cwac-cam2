@@ -42,7 +42,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.commonsware.cwac:cam2:0.4.+'
+    compile 'com.commonsware.cwac:cam2:0.5.+'
 }
 ```
 
@@ -55,7 +55,6 @@ library project2 in source form.
 
 Basic Usage
 -----------
-
 The only supported API at the moment is through
 [`CameraActivity` and its `IntentBuilder`](docs/CameraActivity.md) for
 still pictures and
@@ -73,6 +72,14 @@ ones that *may* be exposed as part of a public API in the future,
 the library-provided activities. In other words, do not have
 `android:hardwareAccelerated="false"` for your whole
 `<application>` in the manifest.
+
+Upgrade Notes
+-------------
+If you are moving from 0.3.x or 0.4.x to 0.5.0 or higher, please
+note that `FocusMode` is no longer an inner `enum` of
+`AbstractCameraActivity`, but rather is a standalone Java file.
+You will need to switch your import statement to
+`com.commonsware.cwac.cam2.FocusMode`.
 
 Tested Devices
 --------------
@@ -103,7 +110,7 @@ use of it, from being obfuscated.
 
 Version
 -------
-This is version v0.4.4 of this library, which means it is coming
+This is version v0.5.0 of this library, which means it is coming
 along slowly.
 
 Demo
@@ -154,6 +161,7 @@ Do not ask for help via social media.
 
 Release Notes
 -------------
+- v0.5.0: added zoom support, better display orientation support
 - v0.4.4: added Nexus 5X, Galaxy S4 Zoom to alt orientation whitelist
 - v0.4.3: too-large camera preview issue fix
 - v0.4.2: Camera2 API timing issue fix
