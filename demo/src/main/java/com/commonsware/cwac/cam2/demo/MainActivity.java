@@ -368,12 +368,12 @@ public class MainActivity extends Activity {
       .facing(Facing.BACK)
       .facingExactMatch()
       .to(new File(testRoot, "landscape-rear.jpg"))
-        .updateMediaStore()
+      .updateMediaStore()
       .flashModes(FLASH_MODES)
       .zoomStyle(ZoomStyle.SEEKBAR)
       .debugSavePreviewFrame()
-        .debug()
-        .build();
+      .debug()
+      .build();
 
     startActivityForResult(i, REQUEST_LANDSCAPE_RFC);
   }
