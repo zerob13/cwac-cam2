@@ -5,13 +5,16 @@
 | ------------------------------ |:---------------------------:|:-------:|--------|
 | Amazon Kindle Fire HD 6        | `Amazon`/`full_ariel`       | 4.4.3   | |
 | Amazon Fire (7")               | `Amazon`/`full_ford`        | 5.1.1   | |
+| Amazon Fire HD 10              | `Amazon`/`full_thebes`      | 5.1     | |
 | Amazon Fire Phone              | `Amazon`/`juniper`          | 4.4.4   | |
 | Google Galaxy Nexus            | `samsung`/`yakju`           | 4.3     | |
 | Google Nexus 5                 | `LGE`/`hammerhead`          | 6.0.1   | |
 | Google Nexus 5X                | `LGE`/`bullhead`            | 6.0.1   | |
 | Google Nexus 6P                | `Huawei`/`angler`           | 6.0.1   | |
+| Google Nexus 10                | `samsung`/`mantaray`        | 5.1.1   | |
 | HTC One A9                     | `HTC`/`hiaeuhl_00709`       | 6.0.1   | |
 | LG G2                          | `LGE`/`g2_open_com`         | 4.4.2   | |
+| Samsung Galaxy Camera EK-GC200 | `samsung`/`sf2wifixx`       | 4.3     | |
 | Samsung Galaxy S5              | `samsung`/`k3gxx`           | 5.0     | |
 | SONY Xperia Z Ultra (C6802)    | `Sony`/`C6802`              | 5.1.1   | [149](https://github.com/commonsguy/cwac-cam2/issues/149) |
 | Wileyfox Swift                 | `Wileyfox`/`Swift`          | 5.1.1 (CM 12.1) | |
