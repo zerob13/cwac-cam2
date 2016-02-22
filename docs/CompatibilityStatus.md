@@ -21,7 +21,10 @@
 | LG G2                          | `LGE`/`g2_open_com`         | 4.4.2   | |
 | LG G-Pad                       | `LGE`/`palman`              | 5.1     | |
 | Motorola Moto E XT1022         | `motorola`/`condor_retla_ds`| 4.4.4 | |
+| NVIDIA Shield K1               | `NVIDIA`/`sb_na_wf`         | 6.0   | |
 | Samsung Galaxy Camera EK-GC200 | `samsung`/`sf2wifixx`       | 4.3     | |
+| Samsung Galaxy Pocket Neo      | `samsung`/`corsicadd`       | 4.1.2   | |
+| Samsung Galaxy S III           | `samsung`/`d2lterefreshspr` | 4.4.2   | [149](https://github.com/commonsguy/cwac-cam2/issues/149) |
 | Samsung Galaxy S5              | `samsung`/`k3gxx`           | 5.0     | |
 | SONY Xperia Z Ultra (C6802)    | `Sony`/`C6802`              | 5.1.1   | [149](https://github.com/commonsguy/cwac-cam2/issues/149) |
 | Wileyfox Swift                 | `Wileyfox`/`Swift`          | 5.1.1 (CM 12.1) | |
