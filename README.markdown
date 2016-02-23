@@ -110,7 +110,7 @@ use of it, from being obfuscated.
 
 Version
 -------
-This is version v0.5.0 of this library, which means it is coming
+This is version v0.5.1 of this library, which means it is coming
 along slowly.
 
 Demo
@@ -161,6 +161,7 @@ Do not ask for help via social media.
 
 Release Notes
 -------------
+- v0.5.1: fixed [critical bug in video recording](https://github.com/commonsguy/cwac-cam2/issues/154)
 - v0.5.0: added zoom support, better display orientation support
 - v0.4.4: added Nexus 5X, Galaxy S4 Zoom to alt orientation whitelist
 - v0.4.3: too-large camera preview issue fix
