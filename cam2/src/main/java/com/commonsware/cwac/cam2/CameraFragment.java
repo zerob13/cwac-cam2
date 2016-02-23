@@ -93,7 +93,6 @@ public class CameraFragment extends Fragment {
     args.putInt(ARG_VIDEO_QUALITY, quality);
     args.putInt(ARG_SIZE_LIMIT, sizeLimit);
     args.putInt(ARG_DURATION_LIMIT, durationLimit);
-    args.putBoolean(ARG_ZOOM_STYLE, false);
     f.setArguments(args);
 
     return(f);
