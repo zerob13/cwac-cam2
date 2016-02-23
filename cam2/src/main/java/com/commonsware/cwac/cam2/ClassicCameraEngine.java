@@ -223,7 +223,7 @@ public class ClassicCameraEngine extends CameraEngine
 
         eligibleFlashModes.clear();
 
-        if (rawFlashModes!=null) {
+        if (rawFlashModes!=null && preferredFlashModes!=null) {
           for (FlashMode flashMode : preferredFlashModes) {
             for (String rawFlashMode : rawFlashModes) {
               if (rawFlashMode.equals(
