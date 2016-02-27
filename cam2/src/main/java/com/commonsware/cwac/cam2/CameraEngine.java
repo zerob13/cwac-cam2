@@ -296,6 +296,11 @@ abstract public class CameraEngine {
   abstract public boolean supportsDynamicFlashModes();
 
   /**
+   * @return true if this camera supports zoom, false otherwise
+   */
+  abstract public boolean supportsZoom(CameraSession session);
+
+  /**
    * Sets the zoom level for the camera.
    *
    * @param session the session for the camera of interest

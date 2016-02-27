@@ -335,6 +335,27 @@ public class CameraTwoEngine extends CameraEngine {
   }
 
   @Override
+  public boolean supportsZoom(CameraSession session) {
+    boolean result=false;
+    Descriptor descriptor=(Descriptor)session.getDescriptor();
+
+    try {
+      CameraCharacteristics cc=
+        mgr.getCameraCharacteristics(descriptor.cameraId);
+
+      float maxZoom=cc.get(
+        CameraCharacteristics.SCALER_AVAILABLE_MAX_DIGITAL_ZOOM);
+
+      result=(maxZoom>=1.0f);
+    }
+    catch (CameraAccessException e) {
+      e.printStackTrace();
+    }
+
+    return(result);
+  }
+
+  @Override
   public boolean zoomTo(CameraSession session,
                          int zoomLevel) {
     final Session s=(Session)session;

@@ -199,21 +199,6 @@ public class CameraFragment extends Fragment {
 
     previewStack=(ViewGroup)v.findViewById(R.id.cwac_cam2_preview_stack);
 
-    if (getZoomStyle()==ZoomStyle.PINCH) {
-      previewStack.setOnTouchListener(
-        new View.OnTouchListener() {
-          @Override
-          public boolean onTouch(View v, MotionEvent event) {
-            return(scaleDetector.onTouchEvent(event));
-          }
-        });
-    }
-    else if (getZoomStyle()==ZoomStyle.SEEKBAR) {
-      zoomSlider=(SeekBar)v.findViewById(R.id.cwac_cam2_zoom);
-      zoomSlider.setVisibility(View.VISIBLE);
-      zoomSlider.setOnSeekBarChangeListener(seekListener);
-    }
-
     progress=v.findViewById(R.id.cwac_cam2_progress);
     fabPicture=(FloatingActionButton)v.findViewById(R.id.cwac_cam2_picture);
 
@@ -289,10 +274,32 @@ public class CameraFragment extends Fragment {
 
   @SuppressWarnings("unused")
   public void onEventMainThread(CameraEngine.OpenedEvent event) {
+
     if (event.exception==null) {
       progress.setVisibility(View.GONE);
       fabSwitch.setEnabled(true);
       fabPicture.setEnabled(true);
+      zoomSlider=(SeekBar)getView().findViewById(R.id.cwac_cam2_zoom);
+
+      if (ctlr.supportsZoom()) {
+        if (getZoomStyle()==ZoomStyle.PINCH) {
+          previewStack.setOnTouchListener(
+            new View.OnTouchListener() {
+              @Override
+              public boolean onTouch(View v, MotionEvent event) {
+                return (scaleDetector.onTouchEvent(event));
+              }
+            });
+        }
+        else if (getZoomStyle()==ZoomStyle.SEEKBAR) {
+          zoomSlider.setVisibility(View.VISIBLE);
+          zoomSlider.setOnSeekBarChangeListener(seekListener);
+        }
+      }
+      else {
+        previewStack.setOnTouchListener(null);
+        zoomSlider.setVisibility(View.GONE);
+      }
     }
     else {
       getActivity().finish();

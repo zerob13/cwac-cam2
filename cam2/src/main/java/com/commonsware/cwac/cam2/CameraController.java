@@ -228,6 +228,10 @@ public class CameraController implements CameraView.StateCallback {
     return(session.getCurrentFlashMode());
   }
 
+  boolean supportsZoom() {
+    return(engine.supportsZoom(session));
+  }
+
   boolean changeZoom(int delta) {
     zoomLevel+=delta;
 

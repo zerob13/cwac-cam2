@@ -408,6 +408,15 @@ public class ClassicCameraEngine extends CameraEngine
   }
 
   @Override
+  public boolean supportsZoom(CameraSession session) {
+    Descriptor descriptor=(Descriptor)session.getDescriptor();
+    Camera camera=descriptor.getCamera();
+    Camera.Parameters params=camera.getParameters();
+
+    return(params.isZoomSupported());
+  }
+
+  @Override
   public boolean zoomTo(CameraSession session, int zoomLevel) {
     Descriptor descriptor=(Descriptor)session.getDescriptor();
     Camera camera=descriptor.getCamera();
