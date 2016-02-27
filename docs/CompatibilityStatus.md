@@ -27,13 +27,21 @@
 | Samsung Galaxy Camera EK-GC200 | `samsung`/`sf2wifixx`       | 4.3     | |
 | Samsung Galaxy Grand GT-I9080L | `samsung`/`baffinssvj`      | 4.2.2   | |
 | Samsung Galaxy Note 2 GT-N7100 | `samsung`/`t03gxx`          | 4.1.2   | [149](https://github.com/commonsguy/cwac-cam2/issues/149) |
+| Samsung Galaxy Note 3 SM-N900  | `samsung`/`ha3gub`          | 5.0   | |
 | Samsung Galaxy Pocket Neo      | `samsung`/`corsicadd`       | 4.1.2   | |
 | Samsung Galaxy S III           | `samsung`/`d2lterefreshspr` | 4.4.2   | [149](https://github.com/commonsguy/cwac-cam2/issues/149) |
+| Samsung Galaxy S III           | `samsung`/`d2tmo`           | 4.3     | [149](https://github.com/commonsguy/cwac-cam2/issues/149) |
 | Samsung Galaxy S III           | `samsung`/`d2uc`            | 4.4.2   | [149](https://github.com/commonsguy/cwac-cam2/issues/149) |
+| Samsung Galaxy S III           | `samsung`/`m0xx`            | 4.3     | [149](https://github.com/commonsguy/cwac-cam2/issues/149) |
+| Samsung Galaxy S4              | `samsung`/`ja3gxx`          | 5.0.1   | |
+| Samsung Galaxy S4              | `samsung`/`jfltespr`        | 5.0.1   | [149](https://github.com/commonsguy/cwac-cam2/issues/149) [151](https://github.com/commonsguy/cwac-cam2/issues/151) |
+| Samsung Galaxy S4              | `samsung`/`jflteuc`         | 4.2.2   | [149](https://github.com/commonsguy/cwac-cam2/issues/149) |
 | Samsung Galaxy S4 Zoom         | `samsung`/`mprojectlteuc`   | 4.2.2   | [146](https://github.com/commonsguy/cwac-cam2/issues/146) [149](https://github.com/commonsguy/cwac-cam2/issues/149) |
 | Samsung Galaxy S5              | `samsung`/`k3gxx`           | 5.0     | |
 | SONY Xperia Z Ultra (C6802)    | `Sony`/`C6802`              | 5.1.1   | [149](https://github.com/commonsguy/cwac-cam2/issues/149) |
+| SONY Xperia Z3 Compact         | `Sony`/`D5803`              | 5.1.1   | [149](https://github.com/commonsguy/cwac-cam2/issues/149) |
 | Wileyfox Swift                 | `Wileyfox`/`Swift`          | 5.1.1 (CM 12.1) | |
+| Xiaomi Redmi                   | `Xiaomi`/`2014501`          | 4.4.2   | [35](https://github.com/commonsguy/cwac-cam2/issues/35) |
 
 ## Version 0.4.x
 
