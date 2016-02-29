@@ -69,7 +69,7 @@ public class VideoRecorderActivity extends AbstractCameraActivity {
   public void onEventMainThread(CameraEngine.VideoTakenEvent event) {
     if (event.getVideoTransaction()==null) {
       setResult(RESULT_CANCELED);
-      cameraFrag.shutdown();
+      finish();
       // TODO: something with the exception
     }
     else {
@@ -77,7 +77,7 @@ public class VideoRecorderActivity extends AbstractCameraActivity {
         @Override
         public void run() {
          setResult(RESULT_OK, new Intent().setData(getOutputUri()));
-         cameraFrag.shutdown();
+         finish();
         }
       });
     }

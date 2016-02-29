@@ -64,7 +64,6 @@ public class CameraFragment extends Fragment {
   private ScaleGestureDetector scaleDetector;
   private boolean inSmoothPinchZoom=false;
   private SeekBar zoomSlider;
-  private boolean isShutdownPending;
 
   public static CameraFragment newPictureInstance(Uri output,
                                                   boolean updateMediaStore,
@@ -157,6 +156,35 @@ public class CameraFragment extends Fragment {
   }
 
   /**
+   * Standard lifecycle method, for when the fragment moves into
+   * the stopped state. Passed along to the CameraController.
+   */
+  @Override
+  public void onStop() {
+    if (ctlr!=null) {
+      ctlr.stop();
+    }
+
+    EventBus.getDefault().unregister(this);
+
+    super.onStop();
+  }
+
+  /**
+   * Standard lifecycle method, for when the fragment is utterly,
+   * ruthlessly destroyed. Passed along to the CameraController,
+   * because why should the fragment have all the fun?
+   */
+  @Override
+  public void onDestroy() {
+    if (ctlr!=null) {
+      ctlr.destroy();
+    }
+
+    super.onDestroy();
+  }
+
+  /**
    * Standard callback method to create the UI managed by
    * this fragment.
    *
@@ -210,17 +238,6 @@ public class CameraFragment extends Fragment {
     return(v);
   }
 
-  public void shutdown() {
-    if (isVideoRecording) {
-      isShutdownPending=true;
-      stopVideoRecording();
-    }
-    else {
-      progress.setVisibility(View.VISIBLE);
-      ctlr.stop();
-    }
-  }
-
   /**
    * @return the CameraController this fragment delegates to
    */
@@ -257,6 +274,7 @@ public class CameraFragment extends Fragment {
 
   @SuppressWarnings("unused")
   public void onEventMainThread(CameraEngine.OpenedEvent event) {
+
     if (event.exception==null) {
       progress.setVisibility(View.GONE);
       fabSwitch.setEnabled(true);
@@ -284,7 +302,7 @@ public class CameraFragment extends Fragment {
       }
     }
     else {
-      shutdown();
+      getActivity().finish();
     }
   }
 
@@ -315,25 +333,14 @@ public class CameraFragment extends Fragment {
       fabPicture.setColorPressedResId(
         R.color.cwac_cam2_picture_fab_pressed);
     }
-    else if (isShutdownPending) {
-      shutdown();
-    }
     else {
-      shutdown();
+      getActivity().finish();
     }
   }
 
   public void onEventMainThread(CameraEngine.SmoothZoomCompletedEvent event) {
     inSmoothPinchZoom=false;
     zoomSlider.setEnabled(true);
-  }
-
-  public void onEventMainThread(CameraEngine.ClosedEvent event) {
-    EventBus.getDefault().unregister(this);
-
-    if (ctlr!=null) {
-      ctlr.destroy();
-    }
   }
 
   protected void performCameraAction() {
@@ -362,7 +369,13 @@ public class CameraFragment extends Fragment {
 
   private void recordVideo() {
     if (isVideoRecording) {
-      stopVideoRecording();
+      try {
+        ctlr.stopVideoRecording();
+      }
+      catch (Exception e) {
+        Log.e(getClass().getSimpleName(), "Exception stopping recording of video", e);
+        // TODO: um, do something here
+      }
     }
     else {
       try {
@@ -384,19 +397,6 @@ public class CameraFragment extends Fragment {
         Log.e(getClass().getSimpleName(), "Exception recording video", e);
         // TODO: um, do something here
       }
-    }
-  }
-
-  private void stopVideoRecording() {
-    try {
-      ctlr.stopVideoRecording();
-    }
-    catch (Exception e) {
-      Log.e(getClass().getSimpleName(), "Exception stopping recording of video", e);
-      // TODO: um, do something here
-    }
-    finally {
-      isVideoRecording=false;
     }
   }
 
