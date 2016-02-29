@@ -36,7 +36,8 @@ abstract public class CameraEngine {
   private static final int CORE_POOL_SIZE=1;
   private static final int MAX_POOL_SIZE=Runtime.getRuntime().availableProcessors();
   private static final int KEEP_ALIVE_SECONDS=60;
-  private static volatile CameraEngine singleton=null;
+  private static volatile CameraEngine singletonClassic=null;
+  private static volatile CameraEngine singletonTwo=null;
   private EventBus bus=EventBus.getDefault();
   private boolean isDebug=false;
   private LinkedBlockingQueue<Runnable> queue=new LinkedBlockingQueue<Runnable>();
@@ -321,18 +322,26 @@ abstract public class CameraEngine {
    */
   synchronized public static CameraEngine buildInstance(Context ctxt,
                                                         boolean forceClassic) {
-    if (singleton==null) {
-      if (!forceClassic &&
-          Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP
-        && !isProblematicDeviceOnNewCameraApi()) {
-        singleton=new CameraTwoEngine(ctxt);
+    CameraEngine result=null;
+
+    if (!forceClassic &&
+        Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP
+      && !isProblematicDeviceOnNewCameraApi()) {
+      if (singletonTwo==null) {
+        singletonTwo=new CameraTwoEngine(ctxt);
       }
-      else {
-        singleton=new ClassicCameraEngine(ctxt);
+
+      result=singletonTwo;
+    }
+    else {
+      if (singletonClassic==null) {
+        singletonClassic=new ClassicCameraEngine(ctxt);
       }
+
+      result=singletonClassic;
     }
 
-    return(singleton);
+    return(result);
   }
 
   /**
