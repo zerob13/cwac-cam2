@@ -110,7 +110,7 @@ use of it, from being obfuscated.
 
 Version
 -------
-This is version v0.5.2 of this library, which means it is coming
+This is version v0.5.3 of this library, which means it is coming
 along slowly.
 
 Demo
@@ -161,6 +161,7 @@ Do not ask for help via social media.
 
 Release Notes
 -------------
+- v0.5.3: reverts [inadequate shutdown](https://github.com/commonsguy/cwac-cam2/issues/155) change from v0.5.2 due to bugs
 - v0.5.2: fixed [zoom](https://github.com/commonsguy/cwac-cam2/issues/149), [inadequate shutdown](https://github.com/commonsguy/cwac-cam2/issues/155), and [dual engines](https://github.com/commonsguy/cwac-cam2/issues/156) issues
 - v0.5.1: fixed [critical bug in video recording](https://github.com/commonsguy/cwac-cam2/issues/154)
 - v0.5.0: added zoom support, better display orientation support
