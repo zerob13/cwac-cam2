@@ -111,11 +111,16 @@ public class CameraController implements CameraView.StateCallback {
    */
   public void stop() {
     if (session!=null) {
-      CameraSession temp=session;
+      final CameraSession temp=session;
 
       session=null;
-      engine.close(temp);
-      // session.destroy(); -- moved into engines
+
+      new Thread() {
+        @Override
+        public void run() {
+          engine.close(temp);
+        }
+      }.start();
     }
   }
 
@@ -202,8 +207,12 @@ public class CameraController implements CameraView.StateCallback {
 
   public void recordVideo(VideoTransaction xact) throws Exception {
     if (session!=null) {
-      engine.recordVideo(session, xact);
-      isVideoRecording=true;
+      try {
+        engine.recordVideo(session, xact);
+      }
+      finally {
+        isVideoRecording=true;
+      }
     }
   }
 

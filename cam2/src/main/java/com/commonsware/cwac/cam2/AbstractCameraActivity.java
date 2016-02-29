@@ -264,6 +264,13 @@ abstract public class AbstractCameraActivity extends Activity {
     return(super.onKeyUp(keyCode, event));
   }
 
+  @Override
+  public void onBackPressed() {
+    if (cameraFrag!=null) {
+      cameraFrag.shutdown();
+    }
+  }
+
   @SuppressWarnings("unused")
   public void onEventMainThread(CameraController.NoSuchCameraEvent event) {
     finish();

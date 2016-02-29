@@ -113,7 +113,7 @@ public class CameraActivity extends AbstractCameraActivity
       }
     }
     else {
-      finish();
+      cameraFrag.shutdown();
     }
   }
 
@@ -130,7 +130,7 @@ public class CameraActivity extends AbstractCameraActivity
   public void completeRequest(ImageContext imageContext, boolean isOK) {
     if (!isOK) {
       setResult(RESULT_CANCELED);
-      finish();
+      cameraFrag.shutdown();
     }
     else {
       if (needsThumbnail) {
