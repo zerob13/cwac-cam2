@@ -161,6 +161,7 @@ Do not ask for help via social media.
 
 Release Notes
 -------------
+- v0.5.4: fixed [two](https://github.com/commonsguy/cwac-cam2/issues/155) video [recording](https://github.com/commonsguy/cwac-cam2/issues/159) bugs
 - v0.5.3: reverts [inadequate shutdown](https://github.com/commonsguy/cwac-cam2/issues/155) change from v0.5.2 due to bugs
 - v0.5.2: fixed [zoom](https://github.com/commonsguy/cwac-cam2/issues/149), [inadequate shutdown](https://github.com/commonsguy/cwac-cam2/issues/155), and [dual engines](https://github.com/commonsguy/cwac-cam2/issues/156) issues
 - v0.5.1: fixed [critical bug in video recording](https://github.com/commonsguy/cwac-cam2/issues/154)
