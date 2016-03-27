@@ -355,12 +355,7 @@ public class CameraFragment extends Fragment {
       }
 
       isVideoRecording=false;
-      fabPicture.setImageResource(
-        R.drawable.cwac_cam2_ic_videocam);
-      fabPicture.setColorNormalResId(
-        R.color.cwac_cam2_picture_fab);
-      fabPicture.setColorPressedResId(
-        R.color.cwac_cam2_picture_fab_pressed);
+      setVideoFABToNormal();
     }
     else if (getActivity().isFinishing()) {
       shutdown();
@@ -437,6 +432,8 @@ public class CameraFragment extends Fragment {
   }
 
   private void stopVideoRecording(boolean abandon) {
+    setVideoFABToNormal();
+
     try {
       ctlr.stopVideoRecording(abandon);
     }
@@ -447,6 +444,15 @@ public class CameraFragment extends Fragment {
     finally {
       isVideoRecording=false;
     }
+  }
+
+  private void setVideoFABToNormal() {
+    fabPicture.setImageResource(
+      R.drawable.cwac_cam2_ic_videocam);
+    fabPicture.setColorNormalResId(
+      R.color.cwac_cam2_picture_fab);
+    fabPicture.setColorPressedResId(
+      R.color.cwac_cam2_picture_fab_pressed);
   }
 
   private boolean isVideo() {
