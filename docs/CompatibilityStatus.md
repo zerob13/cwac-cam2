@@ -7,6 +7,7 @@
 | Amazon Fire (7")               | `Amazon`/`full_ford`        | 5.1.1   | |
 | Amazon Fire HD 10              | `Amazon`/`full_thebes`      | 5.1     | |
 | Amazon Fire Phone              | `Amazon`/`juniper`          | 4.4.4   | |
+| ASUS ZenFone Zoom ZX550 (ZX551ML) | `asus`/`WW_Z00X`         | 5.0     | | 
 | BlackBerry Priv                | `blackberry`/`venicena`     | 5.1.1   | |
 | Google Galaxy Nexus            | `samsung`/`yakju`           | 4.3     | |
 | Google Nexus 5                 | `LGE`/`hammerhead`          | 6.0.1   | |
