@@ -15,7 +15,6 @@
 package com.commonsware.cwac.cam2;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
@@ -23,19 +22,14 @@ import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.media.MediaRecorder;
 import android.os.Build;
-import android.os.Environment;
 import android.util.Log;
-import android.view.Surface;
-import android.view.WindowManager;
 import com.commonsware.cwac.cam2.util.Size;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -304,7 +298,8 @@ public class ClassicCameraEngine extends CameraEngine
   }
 
   @Override
-  public void stopVideoRecording(CameraSession session) throws Exception {
+  public void stopVideoRecording(CameraSession session,
+                                 boolean abandon) throws Exception {
     Descriptor descriptor=(Descriptor)session.getDescriptor();
     Camera camera=descriptor.getCamera();
 
@@ -314,11 +309,17 @@ public class ClassicCameraEngine extends CameraEngine
       recorder=null;
       tempRecorder.stop();
       tempRecorder.release();
-      camera.reconnect();
-      camera.startPreview();
+
+      if (!abandon) {
+        camera.reconnect();
+        camera.startPreview();
+      }
     }
 
-    getBus().post(new VideoTakenEvent(xact));
+    if (!abandon) {
+      getBus().post(new VideoTakenEvent(xact));
+    }
+
     xact=null;
   }
 

@@ -109,8 +109,10 @@ public class CameraController implements CameraView.StateCallback {
    * from an equivalent point in time, to indicate that you want
    * the camera preview to stop.
    */
-  public void stop() {
+  public void stop() throws Exception {
     if (session!=null) {
+      stopVideoRecording(true);
+
       CameraSession temp=session;
 
       session=null;
@@ -136,7 +138,7 @@ public class CameraController implements CameraView.StateCallback {
    * switch the preview and pictures to the camera other than
    * the one presently being used.
    */
-  public void switchCamera() {
+  public void switchCamera() throws Exception {
     if (session!=null) {
       getPreview(session.getDescriptor()).setVisibility(View.INVISIBLE);
       switchPending=true;
@@ -183,7 +185,7 @@ public class CameraController implements CameraView.StateCallback {
    * @param cv the CameraView that is now destroyed
    */
   @Override
-  public void onDestroyed(CameraView cv) {
+  public void onDestroyed(CameraView cv) throws Exception {
     stop();
   }
 
@@ -207,10 +209,10 @@ public class CameraController implements CameraView.StateCallback {
     }
   }
 
-  public void stopVideoRecording() throws Exception {
+  public void stopVideoRecording(boolean abandon) throws Exception {
     if (session!=null && isVideoRecording) {
       try {
-        engine.stopVideoRecording(session);
+        engine.stopVideoRecording(session, abandon);
       }
       finally {
         isVideoRecording=false;

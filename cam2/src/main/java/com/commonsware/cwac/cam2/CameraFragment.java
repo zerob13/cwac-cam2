@@ -162,7 +162,12 @@ public class CameraFragment extends Fragment {
   @Override
   public void onStop() {
     if (ctlr!=null) {
-      ctlr.stop();
+      try {
+        ctlr.stop();
+      }
+      catch (Exception e) {
+        Log.e(getClass().getSimpleName(), "Exception stopping controller", e);
+      }
     }
 
     EventBus.getDefault().unregister(this);
@@ -219,7 +224,13 @@ public class CameraFragment extends Fragment {
       public void onClick(View view) {
         progress.setVisibility(View.VISIBLE);
         fabSwitch.setEnabled(false);
-        ctlr.switchCamera();
+
+        try {
+          ctlr.switchCamera();
+        }
+        catch (Exception e) {
+          Log.e(getClass().getSimpleName(), "Exception switching camera", e);
+        }
       }
     });
 
@@ -236,6 +247,22 @@ public class CameraFragment extends Fragment {
     }
 
     return(v);
+  }
+
+  public void shutdown() {
+    if (isVideoRecording) {
+      stopVideoRecording(true);
+    }
+    else {
+      progress.setVisibility(View.VISIBLE);
+
+      try {
+        ctlr.stop();
+      }
+      catch (Exception e) {
+        Log.e(getClass().getSimpleName(), "Exception stopping controller", e);
+      }
+    }
   }
 
   /**
@@ -308,6 +335,8 @@ public class CameraFragment extends Fragment {
 
   @SuppressWarnings("unused")
   public void onEventMainThread(CameraEngine.VideoTakenEvent event) {
+    isVideoRecording=false;
+
     if (event.exception==null) {
       if (getArguments().getBoolean(ARG_UPDATE_MEDIA_STORE, false)) {
         final Context app=getActivity().getApplicationContext();
@@ -332,6 +361,9 @@ public class CameraFragment extends Fragment {
         R.color.cwac_cam2_picture_fab);
       fabPicture.setColorPressedResId(
         R.color.cwac_cam2_picture_fab_pressed);
+    }
+    else if (getActivity().isFinishing()) {
+      shutdown();
     }
     else {
       getActivity().finish();
@@ -369,13 +401,7 @@ public class CameraFragment extends Fragment {
 
   private void recordVideo() {
     if (isVideoRecording) {
-      try {
-        ctlr.stopVideoRecording();
-      }
-      catch (Exception e) {
-        Log.e(getClass().getSimpleName(), "Exception stopping recording of video", e);
-        // TODO: um, do something here
-      }
+      stopVideoRecording(false);
     }
     else {
       try {
@@ -397,6 +423,19 @@ public class CameraFragment extends Fragment {
         Log.e(getClass().getSimpleName(), "Exception recording video", e);
         // TODO: um, do something here
       }
+    }
+  }
+
+  private void stopVideoRecording(boolean abandon) {
+    try {
+      ctlr.stopVideoRecording(abandon);
+    }
+    catch (Exception e) {
+      Log.e(getClass().getSimpleName(), "Exception stopping recording of video", e);
+      // TODO: um, do something here
+    }
+    finally {
+      isVideoRecording=false;
     }
   }
 

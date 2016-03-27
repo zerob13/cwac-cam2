@@ -322,7 +322,7 @@ public class CameraTwoEngine extends CameraEngine {
   }
 
   @Override
-  public void stopVideoRecording(CameraSession session) {
+  public void stopVideoRecording(CameraSession session, boolean abandon) {
     // TODO
   }
 

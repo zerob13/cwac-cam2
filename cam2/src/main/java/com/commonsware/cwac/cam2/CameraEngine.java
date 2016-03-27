@@ -285,7 +285,8 @@ abstract public class CameraEngine {
   abstract public void recordVideo(CameraSession session,
       VideoTransaction xact) throws Exception;
 
-  abstract public void stopVideoRecording(CameraSession session) throws Exception;
+  abstract public void stopVideoRecording(CameraSession session,
+                                          boolean abandon) throws Exception;
 
   abstract public void handleOrientationChange(CameraSession session,
                                                OrientationChangedEvent event);
