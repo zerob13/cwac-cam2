@@ -251,7 +251,10 @@ abstract public class AbstractCameraActivity extends Activity {
   public void onStop() {
     EventBus.getDefault().unregister(this);
 
-    if (!isChangingConfigurations()) {
+    if (isChangingConfigurations()) {
+      cameraFrag.stopVideoRecording();
+    }
+    else {
       cameraFrag.shutdown();
     }
 

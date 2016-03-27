@@ -405,25 +405,35 @@ public class CameraFragment extends Fragment {
     }
     else {
       try {
-        VideoTransaction.Builder b=new VideoTransaction.Builder();
+        VideoTransaction.Builder b=
+          new VideoTransaction.Builder();
         Uri output=getArguments().getParcelable(ARG_OUTPUT);
 
         b.to(new File(output.getPath()))
-         .quality(getArguments().getInt(ARG_VIDEO_QUALITY, 1))
-         .sizeLimit(getArguments().getInt(ARG_SIZE_LIMIT, 0))
-         .durationLimit(getArguments().getInt(ARG_DURATION_LIMIT, 0));
+          .quality(getArguments().getInt(ARG_VIDEO_QUALITY, 1))
+          .sizeLimit(getArguments().getInt(ARG_SIZE_LIMIT, 0))
+          .durationLimit(
+            getArguments().getInt(ARG_DURATION_LIMIT, 0));
 
         ctlr.recordVideo(b.build());
         isVideoRecording=true;
-        fabPicture.setImageResource(R.drawable.cwac_cam2_ic_stop);
-        fabPicture.setColorNormalResId(R.color.cwac_cam2_recording_fab);
-        fabPicture.setColorPressedResId(R.color.cwac_cam2_recording_fab_pressed);
+        fabPicture.setImageResource(
+          R.drawable.cwac_cam2_ic_stop);
+        fabPicture.setColorNormalResId(
+          R.color.cwac_cam2_recording_fab);
+        fabPicture.setColorPressedResId(
+          R.color.cwac_cam2_recording_fab_pressed);
       }
       catch (Exception e) {
-        Log.e(getClass().getSimpleName(), "Exception recording video", e);
+        Log.e(getClass().getSimpleName(),
+          "Exception recording video", e);
         // TODO: um, do something here
       }
     }
+  }
+
+  public void stopVideoRecording() {
+    stopVideoRecording(true);
   }
 
   private void stopVideoRecording(boolean abandon) {
