@@ -301,7 +301,6 @@ public class CameraFragment extends Fragment {
 
   @SuppressWarnings("unused")
   public void onEventMainThread(CameraEngine.OpenedEvent event) {
-
     if (event.exception==null) {
       progress.setVisibility(View.GONE);
       fabSwitch.setEnabled(true);
@@ -418,6 +417,7 @@ public class CameraFragment extends Fragment {
           R.color.cwac_cam2_recording_fab);
         fabPicture.setColorPressedResId(
           R.color.cwac_cam2_recording_fab_pressed);
+        fabSwitch.setEnabled(false);
       }
       catch (Exception e) {
         Log.e(getClass().getSimpleName(),
@@ -453,6 +453,7 @@ public class CameraFragment extends Fragment {
       R.color.cwac_cam2_picture_fab);
     fabPicture.setColorPressedResId(
       R.color.cwac_cam2_picture_fab_pressed);
+    fabSwitch.setEnabled(true);
   }
 
   private boolean isVideo() {
