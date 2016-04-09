@@ -33,6 +33,7 @@ and what their behavior is:
 | `debugSavePreviewFrame()`  | `EXTRA_DEBUG_SAVE_PREVIEW_FRAME` | `boolean`                                 | Indicate if a preview frame should be saved when a picture is taken (default is `false`) |
 | `flashModes()`             | `EXTRA_FLASH_MODES`              | `List<FlashMode>`                         | Request a particular flash mode `FlashMode.OFF`, `FlashMode.ALWAYS`, `FlashMode.AUTO`, `FlashMode.REDYE` (default is device default) |
 | `zoomStyle()`              | `EXTRA_ZOOM_STYLE`               | `ZoomStyle`                               | Request to allow the user to change zoom levels, via gestures (`ZoomStyle.PINCH`) or a `SeekBar` (`ZoomStyle.SEEKBAR`). Default is `ZoomStyle.NONE` for no zoom option |
+| `quality()`                | `MediaStore.EXTRA_VIDEO_QUALITY` | `AbstractCameraActivity.Quality`          | Indicate the quality, either `Quality.LOW` or `Quality.HIGH` (default=high) |
 
 Note that if you are going to use `skipConfirm()`, you need to call
 that first on the `IntentBuilder` before any of the others.

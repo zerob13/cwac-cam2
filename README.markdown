@@ -42,7 +42,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.commonsware.cwac:cam2:0.5.+'
+    compile 'com.commonsware.cwac:cam2:0.5.6'
 }
 ```
 
@@ -110,14 +110,15 @@ use of it, from being obfuscated.
 
 Version
 -------
-This is version v0.5.5 of this library, which means it is coming
+This is version v0.5.6 of this library, which means it is coming
 along slowly.
 
 Demo
 ----
 There are two demo projects.
 
-One is `demo/`. This illustrates taking pictures using the front
+One is `demo/`. This illustrates taking pictures or recording
+videos using the front
 and rear-facing cameras. More importantly, it serves as a way of
 collecting information about a device, particularly if you are
 going to [file a bug report](CONTRIBUTING.md).
@@ -161,6 +162,7 @@ Do not ask for help via social media.
 
 Release Notes
 -------------
+- v0.5.6: added quality control to still photos, added video recording to `demo/`
 - v0.5.5: fixed [LG G3 video bug](https://github.com/commonsguy/cwac-cam2/issues/168) and [disable camera changes during video recording](https://github.com/commonsguy/cwac-cam2/issues/172)
 - v0.5.4: fixed [two](https://github.com/commonsguy/cwac-cam2/issues/155) video [recording](https://github.com/commonsguy/cwac-cam2/issues/159) bugs
 - v0.5.3: reverts [inadequate shutdown](https://github.com/commonsguy/cwac-cam2/issues/155) change from v0.5.2 due to bugs

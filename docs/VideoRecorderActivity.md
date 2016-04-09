@@ -31,7 +31,7 @@ and what their behavior is:
 | `quality()`            | `MediaStore.EXTRA_VIDEO_QUALITY` | `VideoRecorderActivity.Quality`    | Indicate the quality, either `Quality.LOW` or `Quality.HIGH` (default=high) |
 | `sizeLimit()`          | `MediaStore.EXTRA_SIZE_LIMIT` | `int`                                 | Indicate the maximum size of the video in bytes |
 | `debug()`              | `EXTRA_DEBUG_ENABLED`     | `boolean`                                 | Indicate if extra debugging information should be dumped to LogCat (default is `false`) |
-| `facing()`             | `EXTRA_FACING`            | `VideoRecorderActivity.Facing`            | Indicate the preferred camera to start with (`BACK` or `FRONT`, default is `BACK`) |
+| `facing()`             | `EXTRA_FACING`            | `AbstractCameraActivity.Facing`           | Indicate the preferred camera to start with (`BACK` or `FRONT`, default is `BACK`) |
 | `forceClassic()`       | `EXTRA_FORCE_CLASSIC`     | `boolean`                                 | Indicate if the `Camera` API should be used on Android 5.0+ devices instead of `camera2` (default is `false`) |
 | `to()`                 | `MediaStore.EXTRA_OUTPUT` | `File`                                    | Destination for picture to be written |
 | `updateMediaStore()`   | `EXTRA_UPDATE_MEDIA_STORE`| `boolean`                                 | Indicate if `MediaStore` should be notified about newly-captured photo (default is `false`)|
