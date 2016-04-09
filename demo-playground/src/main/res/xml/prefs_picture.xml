@@ -28,6 +28,9 @@
     android:key="forceClassic"
     android:title="@string/title_force_classic"/>
   <SwitchPreference
+    android:key="highQuality"
+    android:title="@string/title_quality"/>
+  <SwitchPreference
     android:key="mirrorPreview"
     android:title="@string/title_mirror_preview"/>
   <ListPreference

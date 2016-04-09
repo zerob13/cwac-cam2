@@ -23,6 +23,7 @@ import android.preference.PreferenceFragment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import com.commonsware.cwac.cam2.AbstractCameraActivity;
 import com.commonsware.cwac.cam2.Facing;
 import com.commonsware.cwac.cam2.FocusMode;
 import com.commonsware.cwac.cam2.VideoRecorderActivity;
@@ -81,10 +82,10 @@ public class VideoFragment extends PreferenceFragment {
     ((Contract)getActivity()).setOutput(Uri.fromFile(f));
 
     if (prefs.getBoolean("highQuality", false)) {
-      b.quality(VideoRecorderActivity.Quality.HIGH);
+      b.quality(AbstractCameraActivity.Quality.HIGH);
     }
     else {
-      b.quality(VideoRecorderActivity.Quality.LOW);
+      b.quality(AbstractCameraActivity.Quality.LOW);
     }
 
     if (prefs.getBoolean("ffc", false)) {

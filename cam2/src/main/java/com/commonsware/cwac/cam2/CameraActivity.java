@@ -198,6 +198,7 @@ public class CameraActivity extends AbstractCameraActivity
   protected CameraFragment buildFragment() {
     return(CameraFragment.newPictureInstance(getOutputUri(),
         getIntent().getBooleanExtra(EXTRA_UPDATE_MEDIA_STORE, false),
+        getIntent().getIntExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1),
         (ZoomStyle)getIntent().getSerializableExtra(EXTRA_ZOOM_STYLE)));
   }
 

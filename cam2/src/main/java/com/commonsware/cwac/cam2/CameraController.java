@@ -49,6 +49,7 @@ public class CameraController implements CameraView.StateCallback {
   private final boolean isVideo;
   private FlashModePlugin flashModePlugin;
   private int zoomLevel=0;
+  private int quality=0;
 
   public CameraController(FocusMode focusMode,
                           boolean allowChangeFlashMode,
@@ -220,6 +221,10 @@ public class CameraController implements CameraView.StateCallback {
     }
   }
 
+  public void setQuality(int quality) {
+    this.quality=quality;
+  }
+
   public boolean canToggleFlashMode() {
     return(allowChangeFlashMode &&
       engine.supportsDynamicFlashModes() &&
@@ -283,11 +288,18 @@ public class CameraController implements CameraView.StateCallback {
       Size previewSize=null;
       CameraDescriptor camera=cameras.get(currentCamera);
       CameraView cv=getPreview(camera);
-      Size largest=Utils.getLargestPictureSize(camera);
+      Size pictureSize;
+
+      if (quality>0) {
+        pictureSize=Utils.getLargestPictureSize(camera);
+      }
+      else {
+        pictureSize=Utils.getSmallestPictureSize(camera);
+      }
 
       if (camera != null && cv.getWidth() > 0 && cv.getHeight() > 0) {
         previewSize=Utils.chooseOptimalSize(camera.getPreviewSizes(),
-            cv.getWidth(), cv.getHeight(), largest);
+            cv.getWidth(), cv.getHeight(), pictureSize);
       }
 
       SurfaceTexture texture=cv.getSurfaceTexture();
@@ -303,7 +315,7 @@ public class CameraController implements CameraView.StateCallback {
         session=engine
             .buildSession(cv.getContext(), camera)
             .addPlugin(new SizeAndFormatPlugin(previewSize,
-              largest, ImageFormat.JPEG))
+              pictureSize, ImageFormat.JPEG))
             .addPlugin(new OrientationPlugin(cv.getContext()))
             .addPlugin(new FocusModePlugin(cv.getContext(), focusMode, isVideo))
             .addPlugin(flashModePlugin)

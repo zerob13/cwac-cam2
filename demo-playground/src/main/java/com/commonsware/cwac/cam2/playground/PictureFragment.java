@@ -23,6 +23,7 @@ import android.preference.PreferenceFragment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import com.commonsware.cwac.cam2.AbstractCameraActivity;
 import com.commonsware.cwac.cam2.CameraActivity;
 import com.commonsware.cwac.cam2.Facing;
 import com.commonsware.cwac.cam2.FlashMode;
@@ -115,6 +116,13 @@ public class PictureFragment extends PreferenceFragment {
 
     if (prefs.getBoolean("mirrorPreview", false)) {
       b.mirrorPreview();
+    }
+
+    if (prefs.getBoolean("highQuality", false)) {
+      b.quality(AbstractCameraActivity.Quality.HIGH);
+    }
+    else {
+      b.quality(AbstractCameraActivity.Quality.LOW);
     }
 
     int rawFocusMode=

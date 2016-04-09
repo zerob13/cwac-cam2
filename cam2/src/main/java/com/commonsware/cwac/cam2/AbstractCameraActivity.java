@@ -384,6 +384,20 @@ abstract public class AbstractCameraActivity extends Activity {
     return(result.toArray(new String[result.size()]));
   }
 
+  public enum Quality {
+    LOW(0), HIGH(1);
+
+    private final int value;
+
+    private Quality(int value) {
+      this.value=value;
+    }
+
+    int getValue() {
+      return(value);
+    }
+  }
+
   abstract public static class IntentBuilder<T extends IntentBuilder> {
     abstract Intent buildChooserBaseIntent();
 
@@ -599,6 +613,21 @@ abstract public class AbstractCameraActivity extends Activity {
      */
     public T allowSwitchFlashMode() {
       result.putExtra(EXTRA_ALLOW_SWITCH_FLASH_MODE, true);
+
+      return((T)this);
+    }
+
+    /**
+     * Indicates the video quality to use for recording this
+     * video. Matches EXTRA_VIDEO_QUALITY, except uses an enum
+     * for type safety. Note that this is also used for still
+     * image quality, despite the name of the extra.
+     *
+     * @param q LOW or HIGH
+     * @return the builder, for further configuration
+     */
+    public T quality(Quality q) {
+      result.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, q.getValue());
 
       return((T)this);
     }
