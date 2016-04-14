@@ -459,6 +459,11 @@ abstract public class CameraEngine {
       return(true);
     }
 
+    if ("OnePlus".equals(Build.MANUFACTURER) &&
+      Build.MODEL.startsWith("ONE E100")) {
+      return(true);
+    }
+
     return(false);
   }
 }
