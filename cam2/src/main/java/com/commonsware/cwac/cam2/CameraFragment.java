@@ -152,7 +152,7 @@ public class CameraFragment extends Fragment {
 
       if (fabPicture!=null) {
         fabPicture.setEnabled(true);
-        fabSwitch.setEnabled(true);
+        fabSwitch.setEnabled(canSwitchSources());
       }
     }
   }
@@ -306,7 +306,7 @@ public class CameraFragment extends Fragment {
   public void onEventMainThread(CameraEngine.OpenedEvent event) {
     if (event.exception==null) {
       progress.setVisibility(View.GONE);
-      fabSwitch.setEnabled(true);
+      fabSwitch.setEnabled(canSwitchSources());
       fabPicture.setEnabled(true);
       zoomSlider=(SeekBar)getView().findViewById(R.id.cwac_cam2_zoom);
 
@@ -456,7 +456,11 @@ public class CameraFragment extends Fragment {
       R.color.cwac_cam2_picture_fab);
     fabPicture.setColorPressedResId(
       R.color.cwac_cam2_picture_fab_pressed);
-    fabSwitch.setEnabled(true);
+    fabSwitch.setEnabled(canSwitchSources());
+  }
+
+  private boolean canSwitchSources() {
+    return(((AbstractCameraActivity)getActivity()).canSwitchSources());
   }
 
   private boolean isVideo() {

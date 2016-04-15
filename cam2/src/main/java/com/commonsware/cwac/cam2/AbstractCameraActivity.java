@@ -359,6 +359,10 @@ abstract public class AbstractCameraActivity extends Activity {
     }
   }
 
+  boolean canSwitchSources() {
+    return(!getIntent().getBooleanExtra(EXTRA_FACING_EXACT_MATCH, false));
+  }
+
   @TargetApi(23)
   private boolean hasPermission(String perm) {
     if (useRuntimePermissions()) {
