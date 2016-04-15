@@ -59,6 +59,15 @@ public class CameraActivity extends AbstractCameraActivity
   public static final String EXTRA_ZOOM_STYLE=
     "cwac_cam2_zoom_style";
 
+  /**
+   * Extra name for how much heap space we should try to use
+   * to load the picture for the confirmation screen. Should
+   * be a `float` greater than 0.0f and less than 1.0f.
+   * Defaults to not being used.
+   */
+  public static final String EXTRA_CONFIRMATION_QUALITY=
+    "cwac_cam2_confirmation_quality";
+
   private static final String TAG_CONFIRM=ConfirmationFragment.class.getCanonicalName();
   private static final String[] PERMS={Manifest.permission.CAMERA};
   private ConfirmationFragment confirmFrag;
@@ -100,7 +109,8 @@ public class CameraActivity extends AbstractCameraActivity
   public void onEventMainThread(CameraEngine.PictureTakenEvent event) {
     if (event.exception==null) {
       if (getIntent().getBooleanExtra(EXTRA_CONFIRM, true)) {
-        confirmFrag.setImage(event.getImageContext());
+        confirmFrag.setImage(event.getImageContext(),
+          getIntent().getExtras().getFloat(EXTRA_CONFIRMATION_QUALITY));
 
         getFragmentManager()
           .beginTransaction()
@@ -259,6 +269,26 @@ public class CameraActivity extends AbstractCameraActivity
      */
     public IntentBuilder zoomStyle(ZoomStyle zoomStyle) {
       result.putExtra(EXTRA_ZOOM_STYLE, zoomStyle);
+
+      return(this);
+    }
+
+    /**
+     * Call to set the quality factor for the confirmation screen.
+     * Value should be greater than 0.0f and below 1.0f, and
+     * represents the fraction of the app's heap size that we
+     * should be willing to use for loading the confirmation
+     * image. Defaults to not being used.
+     *
+     * @param quality something in (0.0f, 1.0f] range
+     * @return the builder, for further configuration
+     */
+    public IntentBuilder confirmationQuality(float quality) {
+      if (quality<=0.0f || quality>1.0f) {
+        throw new IllegalArgumentException("Quality outside (0.0f, 1.0f] range!");
+      }
+
+      result.putExtra(EXTRA_CONFIRMATION_QUALITY, quality);
 
       return(this);
     }

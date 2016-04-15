@@ -188,6 +188,13 @@ public class PictureFragment extends PreferenceFragment {
       result=b.build();
     }
 
+    String confirmationQuality=prefs.getString("confirmationQuality", null);
+
+    if (confirmationQuality!=null &&
+      !"Default".equals(confirmationQuality)) {
+      b.confirmationQuality(Float.parseFloat(confirmationQuality));
+    }
+
     ((Contract)getActivity()).takePicture(result);
   }
 }
