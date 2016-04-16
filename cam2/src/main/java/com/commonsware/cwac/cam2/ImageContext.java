@@ -102,7 +102,6 @@ public class ImageContext {
         }
 
         limit=(int)(1024*1024*memoryClass*quality);
-android.util.Log.e("20160415", Integer.toString(limit));
       }
 
       thumbnail=createThumbnail(null, limit);
@@ -127,9 +126,6 @@ android.util.Log.e("20160415", Integer.toString(limit));
       inSampleSize=1;
     }
 
-android.util.Log.e("20160415", Double.toString(ratio));
-android.util.Log.e("20160415", Integer.toString(inSampleSize));
-
     return(createThumbnail(inSampleSize, inBitmap, limit));
   }
 
@@ -144,8 +140,6 @@ android.util.Log.e("20160415", Integer.toString(inSampleSize));
     if (result.getByteCount()>limit) {
       return(createThumbnail(inSampleSize+1, inBitmap, limit));
     }
-
-android.util.Log.e("20160415", Integer.toString(inSampleSize));
 
     return(result);
   }
