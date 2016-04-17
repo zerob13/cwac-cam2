@@ -34,6 +34,7 @@ and what their behavior is:
 | `flashModes()`             | `EXTRA_FLASH_MODES`              | `List<FlashMode>`                         | Request a particular flash mode `FlashMode.OFF`, `FlashMode.ALWAYS`, `FlashMode.AUTO`, `FlashMode.REDYE` (default is device default) |
 | `zoomStyle()`              | `EXTRA_ZOOM_STYLE`               | `ZoomStyle`                               | Request to allow the user to change zoom levels, via gestures (`ZoomStyle.PINCH`) or a `SeekBar` (`ZoomStyle.SEEKBAR`). Default is `ZoomStyle.NONE` for no zoom option |
 | `quality()`                | `MediaStore.EXTRA_VIDEO_QUALITY` | `AbstractCameraActivity.Quality`          | Indicate the quality, either `Quality.LOW` or `Quality.HIGH` (default=high) |
+| `confirmationQuality()`    | `EXTRA_CONFIRMATION_QUALITY`     | `float` in the (0.0f, 1.0f] range         | The fraction of the app's heap limit that we should be willing to try to use to load the image for confirmation |
 
 Note that if you are going to use `skipConfirm()`, you need to call
 that first on the `IntentBuilder` before any of the others.
