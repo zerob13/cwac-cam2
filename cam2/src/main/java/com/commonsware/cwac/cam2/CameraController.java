@@ -19,16 +19,21 @@ import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.os.Build;
 import android.view.View;
+
 import com.commonsware.cwac.cam2.plugin.FlashModePlugin;
 import com.commonsware.cwac.cam2.plugin.FocusModePlugin;
 import com.commonsware.cwac.cam2.plugin.OrientationPlugin;
 import com.commonsware.cwac.cam2.plugin.SizeAndFormatPlugin;
 import com.commonsware.cwac.cam2.util.Size;
 import com.commonsware.cwac.cam2.util.Utils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Queue;
-import de.greenrobot.event.EventBus;
 
 /**
  * Controller for camera-related functions, designed to be used
@@ -328,7 +333,8 @@ public class CameraController implements CameraView.StateCallback {
   }
 
   @SuppressWarnings("unused")
-  public void onEventMainThread(CameraEngine.CameraDescriptorsEvent event) {
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onCameraDescriptorsEvent(CameraEngine.CameraDescriptorsEvent event) {
     if (event.descriptors.size()>0) {
       cameras=event.descriptors;
       EventBus.getDefault().post(new ControllerReadyEvent(this, cameras.size()));
@@ -339,7 +345,8 @@ public class CameraController implements CameraView.StateCallback {
   }
 
   @SuppressWarnings("unused")
-  public void onEventMainThread(CameraEngine.OpenedEvent event) {
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onOpenedEvent(CameraEngine.OpenedEvent event) {
     CameraDescriptor camera=cameras.get(currentCamera);
     CameraView cv=getPreview(camera);
 
@@ -361,7 +368,8 @@ public class CameraController implements CameraView.StateCallback {
   }
 
   @SuppressWarnings("unused")
-  public void onEventMainThread(CameraEngine.ClosedEvent event) {
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onClosedEvent(CameraEngine.ClosedEvent event) {
     if (switchPending) {
       switchPending=false;
       currentCamera=getNextCameraIndex();
@@ -371,7 +379,8 @@ public class CameraController implements CameraView.StateCallback {
   }
 
   @SuppressWarnings("unused")
-  public void onEventMainThread(CameraEngine.OrientationChangedEvent event) {
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onOrientationChangedEvent(CameraEngine.OrientationChangedEvent event) {
     if (engine!=null) {
       engine.handleOrientationChange(session, event);
     }

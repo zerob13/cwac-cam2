@@ -35,11 +35,16 @@ import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.File;
 import java.util.LinkedList;
-import de.greenrobot.event.EventBus;
 
 /**
  * Fragment for displaying a camera preview, with hooks to allow
@@ -240,7 +245,7 @@ public class CameraFragment extends Fragment {
 
     onHiddenChanged(false); // hack, since this does not get
                             // called on initial display
-    
+
     fabPicture.setEnabled(false);
     fabSwitch.setEnabled(false);
 
@@ -296,14 +301,16 @@ public class CameraFragment extends Fragment {
   }
 
   @SuppressWarnings("unused")
-  public void onEventMainThread(CameraController.ControllerReadyEvent event) {
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onControllerReadyEvent(CameraController.ControllerReadyEvent event) {
     if (event.isEventForController(ctlr)) {
       prepController();
     }
   }
 
   @SuppressWarnings("unused")
-  public void onEventMainThread(CameraEngine.OpenedEvent event) {
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onOpenedEvent(CameraEngine.OpenedEvent event) {
     if (event.exception==null) {
       progress.setVisibility(View.GONE);
       fabSwitch.setEnabled(canSwitchSources());
@@ -336,7 +343,8 @@ public class CameraFragment extends Fragment {
   }
 
   @SuppressWarnings("unused")
-  public void onEventMainThread(CameraEngine.VideoTakenEvent event) {
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onVideoTakenEvent(CameraEngine.VideoTakenEvent event) {
     isVideoRecording=false;
 
     if (event.exception==null) {
@@ -367,7 +375,8 @@ public class CameraFragment extends Fragment {
     }
   }
 
-  public void onEventMainThread(CameraEngine.SmoothZoomCompletedEvent event) {
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onSmoothZoomCampletedEvent(CameraEngine.SmoothZoomCompletedEvent event) {
     inSmoothPinchZoom=false;
     zoomSlider.setEnabled(true);
   }

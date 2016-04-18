@@ -19,6 +19,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,7 +110,8 @@ public class CameraActivity extends AbstractCameraActivity
   }
 
   @SuppressWarnings("unused")
-  public void onEventMainThread(CameraEngine.PictureTakenEvent event) {
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onPictureTakenEvent(CameraEngine.PictureTakenEvent event) {
     if (event.exception==null) {
       if (getIntent().getBooleanExtra(EXTRA_CONFIRM, true)) {
         confirmFrag.setImage(event.getImageContext(),

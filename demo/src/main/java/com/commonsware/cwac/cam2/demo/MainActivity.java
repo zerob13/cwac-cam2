@@ -30,6 +30,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+
 import com.commonsware.cwac.cam2.CameraActivity;
 import com.commonsware.cwac.cam2.Facing;
 import com.commonsware.cwac.cam2.FlashMode;
@@ -38,6 +39,11 @@ import com.commonsware.cwac.cam2.ZoomStyle;
 import com.commonsware.cwac.security.RuntimePermissionUtils;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,7 +54,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-import de.greenrobot.event.EventBus;
+
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -280,7 +286,8 @@ public class MainActivity extends Activity {
     });
   }
 
-  public void onEventMainThread(InitCaptureCompletedEvent event) {
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onInitCaptureCompletedEvent(InitCaptureCompletedEvent event) {
     Intent i;
 
     isVideo=((CompoundButton)findViewById(R.id.is_video)).isChecked();
@@ -313,7 +320,8 @@ public class MainActivity extends Activity {
     startActivityForResult(i, REQUEST_PORTRAIT_RFC);
   }
 
-  public void onEventMainThread(CompleteOutputCompletedEvent event) {
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onCompleteOutputCompletedEvent(CompleteOutputCompletedEvent event) {
     findViewById(R.id.progress).setVisibility(View.GONE);
     findViewById(R.id.results).setVisibility(View.VISIBLE);
 

@@ -25,17 +25,21 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+
 import com.commonsware.cwac.cam2.util.Utils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import de.greenrobot.event.EventBus;
 
 /**
  * Base class for activities that integrate with CameraFragment
@@ -273,17 +277,20 @@ abstract public class AbstractCameraActivity extends Activity {
   }
 
   @SuppressWarnings("unused")
-  public void onEventMainThread(CameraController.NoSuchCameraEvent event) {
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onNoSuchCameraEvent(CameraController.NoSuchCameraEvent event) {
     finish();
   }
 
   @SuppressWarnings("unused")
-  public void onEventMainThread(CameraController.ControllerDestroyedEvent event) {
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onControllerDestroyedEvent(CameraController.ControllerDestroyedEvent event) {
     finish();
   }
 
   @SuppressWarnings("unused")
-  public void onEventMainThread(CameraEngine.CameraTwoGenericEvent event) {
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onCameraTwoGenericEvent(CameraEngine.CameraTwoGenericEvent event) {
     finish();
   }
 
